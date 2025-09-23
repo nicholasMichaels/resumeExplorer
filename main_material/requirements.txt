@@ -1,0 +1,17 @@
+# Your existing dependencies
+groq==0.8.0
+crewai==0.28.8
+crewai-tools==0.1.7
+PyPDF2>=3.0.0
+pdfplumber>=0.9.0
+textstat>=0.7.0
+nltk>=3.8
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0
+requests>=2.28.0
+numpy>=1.21.0
+python-dotenv>=1.0.0
+
+# Add these Flask dependencies for web interface
+Flask>=2.3.0
+Flask-CORS>=4.0.0

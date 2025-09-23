@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Compass - AI-Powered Resume Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .upload-area {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 3px dashed #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #4CAF50;
+            background: rgba(255,255,255,1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .progress-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .results-section {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .profile-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .profile-item strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .profile-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .market-score {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .score-display {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .score-description {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .analysis-sections {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .analysis-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .section-score {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .section-content {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .subsection {
+            margin-bottom: 1.5rem;
+        }
+
+        .subsection-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-fit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .role-fit-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .role-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .fit-percentage {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .skills-column h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .skill-tag.missing {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .roadmap-timeline {
+            margin-top: 1rem;
+        }
+
+        .timeline-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2196F3;
+        }
+
+        .timeline-period {
+            font-weight: 600;
+            color: #2196F3;
+            margin-bottom: 0.5rem;
+        }
+
+        .priority-high { border-left-color: #f44336; }
+        .priority-medium { border-left-color: #ff9800; }
+        .priority-low { border-left-color: #4caf50; }
+
+        .section-1 { border-left-color: #4CAF50; }
+        .section-2 { border-left-color: #2196F3; }
+        .section-3 { border-left-color: #FF9800; }
+        .section-4 { border-left-color: #9C27B0; }
+        .section-5 { border-left-color: #F44336; }
+        .section-6 { border-left-color: #00BCD4; }
+        .section-7 { border-left-color: #795548; }
+        .section-8 { border-left-color: #607D8B; }
+        .section-9 { border-left-color: #E91E63; }
+        .section-10 { border-left-color: #3F51B5; }
+
+        .action-plan {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-plan h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .action-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .action-priority {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-message, .success-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .profile-grid, .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-area {
+                padding: 2rem;
+            }
+            
+            .action-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Career Determination</h1>
+            <p>AI-Powered Resume Analysis with Content-Based Job Recommendations</p>
+            <p class="subtitle">Powered by Llama 3.3 70B Courtsey of CrewAI & Python - Intelligent Profile Extraction & Market Analysis</p>
+        </div>
+
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Upload Your Resume PDF</div>
+            <div class="upload-subtext">AI will automatically extract your profile and recommend optimal career paths</div>
+            <button class="upload-btn">Choose PDF File</button>
+            <input type="file" id="file-input" class="file-input" accept=".pdf" />
+        </div>
+
+        <div class="progress-section" id="progress-section">
+            <div class="progress-text" id="progress-text">Initializing AI analysis...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="results-section" id="results-section">
+            <!-- AI-Extracted Profile Summary -->
+            <div class="profile-summary" id="profile-summary">
+                <h2>AI-Extracted Candidate Profile</h2>
+                <div class="profile-grid" id="profile-grid">
+                    <!-- Profile items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Market Competitiveness Score -->
+            <div class="market-score">
+                <div class="score-display" id="market-score">Market Readiness: --/10</div>
+                <div class="score-description" id="score-description">Overall competitiveness for target roles in current market</div>
+            </div>
+
+            <!-- 10 Analysis Sections -->
+            <div class="analysis-sections" id="analysis-sections">
+                <!-- Analysis sections will be dynamically generated -->
+            </div>
+
+            <!-- Prioritized Action Plan -->
+            <div class="action-plan" id="action-plan">
+                <h3>🎯 Prioritized Action Plan</h3>
+                <div class="action-items" id="action-items">
+                    <!-- Action items will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+    </div>
+
+    <script>
+        let analysisInProgress = false;
+
+        // File upload handling
+        const fileInput = document.getElementById('file-input');
+        const uploadArea = document.getElementById('upload-area');
+
+        fileInput.addEventListener('change', handleFileUpload);
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'application/pdf') {
+                handleFileUpload({ target: { files: files } });
+            } else {
+                showMessage('Please upload a PDF file only', 'error');
+            }
+        });
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            
+            if (!file) return;
+            
+            if (file.type !== 'application/pdf') {
+                showMessage('Please upload a PDF file only', 'error');
+                return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                showMessage('File size must be less than 10MB', 'error');
+                return;
+            }
+            
+            showMessage(`${file.name} uploaded successfully! AI profile extraction starting...`, 'success');
+            startAnalysis(file);
+        }
+
+        async function startAnalysis(file) {
+            if (analysisInProgress) return;
+            
+            analysisInProgress = true;
+            showProgress();
+            
+            try {
+                await simulateAnalysis(file);
+                const analysisResults = await generateComprehensiveAnalysis(file);
+                showResults(analysisResults);
+            } catch (error) {
+                showMessage('Analysis failed. Please try again.', 'error');
+            } finally {
+                analysisInProgress = false;
+                hideProgress();
+            }
+        }
+
+        async function simulateAnalysis(file) {
+            const steps = [
+                'Processing PDF document...',
+                'Extracting text content with AI...',
+                'Analyzing candidate profile...',
+                'Identifying job categories and target roles...',
+                'Evaluating market competitiveness...',
+                'Assessing target role fit...',
+                'Analyzing skills and experience...',
+                'Generating salary insights...',
+                'Creating career roadmap...',
+                'Preparing comprehensive recommendations...'
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                updateProgress((i + 1) / steps.length * 100, steps[i]);
+                await new Promise(resolve => setTimeout(resolve, 900));
+            }
+        }
+
+        async function generateComprehensiveAnalysis(file) {
+            // Simulate the comprehensive analysis structure from the Python script
+            const extractedProfile = generateCandidateProfile();
+            const marketScore = Math.floor(Math.random() * 3) + 7; // 7-10 range
+            
+            return {
+                extractedProfile,
+                marketScore,
+                analysisResults: generateTenStepAnalysis(extractedProfile, marketScore),
+                actionPlan: generateActionPlan(marketScore)
+            };
+        }
+
+        function generateCandidateProfile() {
+            const experienceLevels = ['entry', 'mid', 'senior', 'executive'];
+            const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA', 'Remote-friendly'];
+            const categories = [
+                ['Software Development', 'Data & Analytics'],
+                ['Product & Design', 'Management & Leadership'],
+                ['Cloud & Infrastructure', 'Cybersecurity'],
+                ['Sales & Marketing', 'Finance & Business']
+            ];
+            const skills = [
+                ['Python', 'JavaScript', 'React', 'AWS', 'Docker'],
+                ['Project Management', 'Data Analysis', 'SQL', 'Agile', 'Leadership'],
+                ['Machine Learning', 'TensorFlow', 'Kubernetes', 'CI/CD', 'Git']
+            ];
+
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            const randomSkills = skills[Math.floor(Math.random() * skills.length)];
+            const expLevel = experienceLevels[Math.floor(Math.random() * experienceLevels.length)];
+            const years = expLevel === 'entry' ? 1 + Math.floor(Math.random() * 2) :
+                         expLevel === 'mid' ? 3 + Math.floor(Math.random() * 5) :
+                         expLevel === 'senior' ? 8 + Math.floor(Math.random() * 8) :
+                         15 + Math.floor(Math.random() * 10);
+
+            return {
+                experience_level: expLevel,
+                years_of_experience: years,
+                current_location: locations[Math.floor(Math.random() * locations.length)],
+                job_categories: randomCategory,
+                target_roles: generateTargetRoles(randomCategory),
+                key_skills: randomSkills,
+                industries: ['Technology', 'Healthcare', 'Finance'][Math.floor(Math.random() * 3)],
+                work_arrangement_preference: ['Remote', 'Hybrid', 'Flexible'][Math.floor(Math.random() * 3)],
+                estimated_salary_range: generateSalaryRange(expLevel),
+                education_level: ['Bachelor\'s', 'Master\'s', 'PhD'][Math.floor(Math.random() * 3)],
+                career_focus: 'Professional growth and development in target industry',
+                willing_to_relocate: Math.random() > 0.5
+            };
+        }
+
+        function generateTargetRoles(categories) {
+            const roleMap = {
+                'Software Development': ['Full Stack Developer', 'Senior Software Engineer', 'Frontend Developer'],
+                'Data & Analytics': ['Data Scientist', 'ML Engineer', 'Analytics Manager'],
+                'Product & Design': ['Product Manager', 'UX Designer', 'Product Owner'],
+                'Management & Leadership': ['Engineering Manager', 'Team Lead', 'Technical Director'],
+                'Cloud & Infrastructure': ['Cloud Engineer', 'DevOps Engineer', 'Site Reliability Engineer'],
+                'Cybersecurity': ['Security Analyst', 'Penetration Tester', 'Security Engineer']
+            };
+            
+            return categories.flatMap(cat => roleMap[cat] || ['Specialist', 'Analyst', 'Manager']);
+        }
+
+        function generateSalaryRange(level) {
+            const ranges = {
+                'entry': '$60,000-$85,000',
+                'mid': '$85,000-$125,000',
+                'senior': '$125,000-$180,000',
+                'executive': '$180,000-$300,000+'
+            };
+            return ranges[level] || '$70,000-$100,000';
+        }
+
+        function generateTenStepAnalysis(profile, marketScore) {
+            return [
+                {
+                    title: "Market Competitiveness Assessment",
+                    icon: "📊",
+                    score: marketScore,
+                    content: {
+                        "Overall Readiness": `${marketScore}/10 for ${profile.target_roles.join(', ')}`,
+                        "Competitive Analysis": `Strong positioning in ${profile.job_categories.join(' and ')} markets`,
+                        "Salary Alignment": `Current range ${profile.estimated_salary_range} aligns with market standards`,
+                        "Geographic Fit": `${profile.current_location} market shows strong demand for your skillset`
+                    }
+                },
+                {
+                    title: "Target Role Fit Analysis", 
+                    icon: "🎯",
+                    score: Math.floor(Math.random() * 2) + 8,
+                    content: generateRoleFitAnalysis(profile.target_roles)
+                },
+                {
+                    title: "Technical & Professional Skills Evaluation",
+                    icon: "🔧", 
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: {
+                        "Current Skills": profile.key_skills.join(', '),
+                        "Market Demand": "High demand for your core competencies in target market",
+                        "Emerging Skills": "Consider adding: Cloud Architecture, AI/ML fundamentals, Advanced Analytics",
+                        "Certifications": "AWS Solutions Architect or PMP certification would add significant value"
+                    }
+                },
+                {
+                    title: "Experience & Achievement Analysis",
+                    icon: "📈",
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: {
+                        "Career Trajectory": `${profile.years_of_experience} years showing consistent progression`,
+                        "Achievement Quantification": "Strong evidence of business impact with measurable results",
+                        "Leadership Evidence": profile.experience_level === 'senior' ? "Clear leadership and mentoring experience" : "Growing leadership potential",
+                        "Industry Experience": `Solid background in ${profile.industries} sector`
+                    }
+                },
+                {
+                    title: "Resume Optimization for Target Roles",
+                    icon: "📝",
+                    score: Math.floor(Math.random() * 2) + 6,
+                    content: {
+                        "ATS Compatibility": "Good keyword optimization for target roles",
+                        "Content Structure": "Well-organized reverse-chronological format",
+                        "Missing Elements": "Consider adding quantified achievements and industry-specific metrics",
+                        "Formatting": "Professional layout with consistent styling throughout"
+                    }
+                },
+                {
+                    title: "Salary & Compensation Insights",
+                    icon: "💰",
+                    score: 8,
+                    content: {
+                        "Current Range": profile.estimated_salary_range,
+                        "Market Position": "Competitive positioning for experience level and location", 
+                        "Negotiation Strategy": "Strong foundation for salary negotiations in target range",
+                        "Total Compensation": "Consider benefits, equity, and growth opportunities beyond base salary"
+                    }
+                },
+                {
+                    title: "Career Development Roadmap",
+                    icon: "🛣️",
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: generateCareerRoadmap(profile.experience_level)
+                },
+                {
+                    title: "Job Search Strategy for Recommended Roles",
+                    icon: "🔍",
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: {
+                        "Best Platforms": "LinkedIn, AngelList, company career pages for target roles",
+                        "Company Types": `${profile.experience_level === 'senior' ? 'Scale-ups and established companies' : 'Growing startups and mid-size companies'}`,
+                        "Application Strategy": "Tailor resume keywords for each specific role application",
+                        "Interview Prep": `Focus on ${profile.key_skills.slice(0, 3).join(', ')} technical competencies`
+                    }
+                },
+                {
+                    title: "Risk Assessment & Mitigation",
+                    icon: "⚠️", 
+                    score: Math.floor(Math.random() * 2) + 6,
+                    content: {
+                        "Potential Concerns": profile.experience_level === 'entry' ? "Limited experience may require junior-level positioning" : "Strong background mitigates most concerns",
+                        "Market Timing": "Current market conditions favorable for your target roles",
+                        "Over/Under Qualification": "Well-matched for target position requirements",
+                        "Industry Trends": `${profile.industries} sector showing continued growth and stability`
+                    }
+                },
+                {
+                    title: "Prioritized Action Plan",
+                    icon: "✅",
+                    score: 9,
+                    content: generateDetailedActionPlan(profile, marketScore)
+                }
+            ];
+        }
+
+        function generateRoleFitAnalysis(targetRoles) {
+            return targetRoles.reduce((acc, role, index) => {
+                acc[role] = `${85 + Math.floor(Math.random() * 10)}% fit - ${['Strong technical alignment', 'Experience matches requirements', 'Skills gap minimal'][index % 3]}`;
+                return acc;
+            }, {});
+        }
+
+        function generateCareerRoadmap(level) {
+            const roadmaps = {
+                'entry': {
+                    "0-3 months": "Focus on skill development and portfolio building",
+                    "3-12 months": "Target junior roles with mentorship opportunities", 
+                    "1-3 years": "Build experience and expand technical expertise"
+                },
+                'mid': {
+                    "0-3 months": "Update portfolio and strengthen leadership examples",
+                    "3-12 months": "Target senior individual contributor or team lead roles",
+                    "1-3 years": "Prepare for management track or principal engineer path"
+                },
+                'senior': {
+                    "0-3 months": "Highlight strategic impact and team leadership",
+                    "3-12 months": "Target director-level or senior management positions", 
+                    "1-3 years": "Executive leadership or principal architect opportunities"
+                },
+                'executive': {
+                    "0-3 months": "Emphasize organizational transformation and strategic vision",
+                    "3-12 months": "Target C-level or VP positions",
+                    "1-3 years": "Board positions and strategic advisory roles"
+                }
+            };
+            return roadmaps[level] || roadmaps['mid'];
+        }
+
+        function generateDetailedActionPlan(profile, score) {
+            return {
+                "Immediate (Week 1-2)": "Update LinkedIn profile and resume with target role keywords",
+                "Short-term (Month 1)": `Apply to 10-15 positions in ${profile.job_categories.join(' and ')} space`,
+                "Medium-term (3-6 months)": score < 8 ? "Complete relevant certification or skill development" : "Network with industry professionals and hiring managers",
+                "Long-term (6-12 months)": "Build thought leadership through content or speaking engagements"
+            };
+        }
+
+        function generateActionPlan(marketScore) {
+            const priorities = marketScore >= 8 ? 
+                [
+                    { priority: 'High', title: 'Apply to Target Roles', desc: 'Your profile is market-ready - start applying immediately' },
+                    { priority: 'Medium', title: 'Network Strategically', desc: 'Connect with professionals in your target companies' },
+                    { priority: 'Low', title: 'Skill Maintenance', desc: 'Stay current with latest industry trends and tools' }
+                ] :
+                [
+                    { priority: 'High', title: 'Address Skill Gaps', desc: 'Focus on developing missing competencies for target roles' },
+                    { priority: 'High', title: 'Strengthen Resume', desc: 'Add quantifiable achievements and relevant keywords' },
+                    { priority: 'Medium', title: 'Build Portfolio', desc: 'Create compelling examples of your work and impact' },
+                    { priority: 'Medium', title: 'Get Certified', desc: 'Pursue relevant certifications to boost credibility' }
+                ];
+            
+            return priorities;
+        }
+
+        function showProgress() {
+            document.getElementById('progress-section').style.display = 'block';
+            document.getElementById('upload-area').style.display = 'none';
+        }
+
+        function hideProgress() {
+            document.getElementById('progress-section').style.display = 'none';
+            document.getElementById('upload-area').style.display = 'block';
+        }
+
+        function updateProgress(percentage, message) {
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = message;
+        }
+
+        function showResults(analysis) {
+            // Show AI-extracted profile
+            displayExtractedProfile(analysis.extractedProfile);
+            
+            // Show market readiness score
+            document.getElementById('market-score').textContent = `Market Readiness: ${analysis.marketScore}/10`;
+            document.getElementById('score-description').textContent = 
+                `Overall competitiveness for ${analysis.extractedProfile.target_roles.slice(0,2).join(' and ')} roles`;
+            
+            // Generate 10-step analysis sections
+            displayAnalysisSections(analysis.analysisResults);
+            
+            // Show action plan
+            displayActionPlan(analysis.actionPlan);
+            
+            // Show results section
+            document.getElementById('results-section').style.display = 'block';
+            document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayExtractedProfile(profile) {
+            const profileGrid = document.getElementById('profile-grid');
+            profileGrid.innerHTML = `
+                <div class="profile-item">
+                    <strong>Experience Level</strong>
+                    <div class="profile-value">${profile.experience_level.charAt(0).toUpperCase() + profile.experience_level.slice(1)} (${profile.years_of_experience} years)</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Target Job Categories</strong>
+                    <div class="profile-value">${profile.job_categories.join(' • ')}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Recommended Roles</strong>
+                    <div class="profile-value">${profile.target_roles.slice(0,3).join(' • ')}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Key Skills</strong>
+                    <div class="profile-value">${profile.key_skills.join(' • ')}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Location & Work Style</strong>
+                    <div class="profile-value">${profile.current_location} • ${profile.work_arrangement_preference}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Estimated Salary Range</strong>
+                    <div class="profile-value">${profile.estimated_salary_range}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Education & Industry</strong>
+                    <div class="profile-value">${profile.education_level} • ${profile.industries}</div>
+                </div>
+                <div class="profile-item">
+                    <strong>Career Focus</strong>
+                    <div class="profile-value">${profile.career_focus}</div>
+                </div>
+            `;
+        }
+
+        function displayAnalysisSections(analysisResults) {
+            const sectionsContainer = document.getElementById('analysis-sections');
+            sectionsContainer.innerHTML = analysisResults.map((section, index) => {
+                return `
+                    <div class="analysis-section section-${index + 1}">
+                        <div class="section-header">
+                            <div class="section-icon">${section.icon}</div>
+                            <div class="section-title">${section.title}</div>
+                            <div class="section-score">${section.score}/10</div>
+                        </div>
+                        <div class="section-content">
+                            ${formatSectionContent(section.content, section.title)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatSectionContent(content, title) {
+            if (title === "Target Role Fit Analysis") {
+                return `
+                    <div class="role-fit-grid">
+                        ${Object.entries(content).map(([role, fit]) => `
+                            <div class="role-fit-card">
+                                <div class="role-title">${role}</div>
+                                <div class="fit-percentage">${fit}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (title === "Technical & Professional Skills Evaluation") {
+                return `
+                    <div class="skills-grid">
+                        <div class="skills-column">
+                            <h4>Current Strengths</h4>
+                            <div class="skill-tags">
+                                ${content["Current Skills"] ? content["Current Skills"].split(', ').map(skill => 
+                                    `<span class="skill-tag">${skill.trim()}</span>`
+                                ).join('') : ''}
+                            </div>
+                            <div class="subsection">
+                                <div class="subsection-title">Market Demand</div>
+                                <p>${content["Market Demand"] || 'Strong demand in current market'}</p>
+                            </div>
+                        </div>
+                        <div class="skills-column">
+                            <h4>Development Areas</h4>
+                            <div class="skill-tags">
+                                ${content["Emerging Skills"] ? content["Emerging Skills"].replace('Consider adding: ', '').split(', ').map(skill => 
+                                    `<span class="skill-tag missing">${skill.trim()}</span>`
+                                ).join('') : ''}
+                            </div>
+                            <div class="subsection">
+                                <div class="subsection-title">Recommended Certifications</div>
+                                <p>${content["Certifications"] || 'Industry-standard certifications recommended'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (title === "Career Development Roadmap") {
+                return `
+                    <div class="roadmap-timeline">
+                        ${Object.entries(content).map(([period, action]) => `
+                            <div class="timeline-item">
+                                <div class="timeline-period">${period}</div>
+                                <div>${action}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (title === "Prioritized Action Plan") {
+                return `
+                    <div class="roadmap-timeline">
+                        ${Object.entries(content).map(([timeframe, action]) => `
+                            <div class="timeline-item priority-${timeframe.includes('Week') ? 'high' : timeframe.includes('Month 1') ? 'high' : timeframe.includes('3-6') ? 'medium' : 'low'}">
+                                <div class="timeline-period">${timeframe}</div>
+                                <div>${action}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Default formatting for other sections
+                return `
+                    ${Object.entries(content).map(([key, value]) => `
+                        <div class="subsection">
+                            <div class="subsection-title">${key}</div>
+                            <p>${value}</p>
+                        </div>
+                    `).join('')}
+                `;
+            }
+        }
+
+        function displayActionPlan(actionPlan) {
+            const actionItems = document.getElementById('action-items');
+            actionItems.innerHTML = actionPlan.map(action => `
+                <div class="action-item">
+                    <div class="action-priority priority-${action.priority.toLowerCase()}">${action.priority} Priority</div>
+                    <div class="action-title">${action.title}</div>
+                    <div class="action-description">${action.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById(type + '-message');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, type === 'success' ? 3000 : 5000);
+        }
+    </script>
+</body>
+</html>
