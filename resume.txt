@@ -1,0 +1,15 @@
+resume_intelligence/
+├── agents/
+│   ├── resume_extractor.py
+│   ├── resume_evaluator.py
+│   ├── feedback_generator.py
+│   └── job_search.py
+├── crew/
+│   └── resume_crew.py
+├── utils/
+│   ├── rag_utils.py
+│   └── api_clients.py
+├── data/
+│   └── job_embeddings.faiss
+├── main.py
+└── config.py

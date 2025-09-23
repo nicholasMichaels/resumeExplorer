@@ -1,0 +1,11 @@
+2025-09-20 21:52:03,580 INFO __main__ Database initialized successfully
+2025-09-20 21:52:27,733 INFO __main__ Database initialized successfully
+2025-09-20 21:52:35,486 INFO __main__ Resume Analyzer API starting up...
+2025-09-20 21:52:42,733 INFO __main__ Database initialized successfully
+2025-09-20 21:52:48,532 INFO __main__ Resume Analyzer API starting up...
+2025-09-20 21:52:51,341 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.19.88.147:5001
+2025-09-20 21:52:51,341 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-09-20 21:53:39,728 INFO __main__ Database initialized successfully
