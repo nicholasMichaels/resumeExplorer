@@ -143,6 +143,167 @@
             color: #333;
         }
 
+        /* New Profile Review Section */
+        .profile-review-section {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .review-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .review-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .skills-input-container {
+            position: relative;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            min-height: 40px;
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-remove {
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .skill-remove:hover {
+            color: #f44336;
+        }
+
+        .multi-select-container {
+            position: relative;
+        }
+
+        .multi-select-input {
+            cursor: pointer;
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .multi-select-option {
+            padding: 0.8rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .multi-select-option:hover {
+            background: #f5f5f5;
+        }
+
+        .multi-select-option.selected {
+            background: #e8f5e8;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .generate-analysis-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            min-width: 250px;
+        }
+
+        .generate-analysis-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
         .results-section {
             display: none;
             background: rgba(255,255,255,0.95);
@@ -262,138 +423,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .role-fit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .role-fit-card {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .role-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .fit-percentage {
-            color: #4CAF50;
-            font-weight: 600;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .skills-column h4 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 0.3rem 0.8rem;
-            border-radius: 16px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .skill-tag.missing {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .roadmap-timeline {
-            margin-top: 1rem;
-        }
-
-        .timeline-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #2196F3;
-        }
-
-        .timeline-period {
-            font-weight: 600;
-            color: #2196F3;
-            margin-bottom: 0.5rem;
-        }
-
-        .priority-high { border-left-color: #f44336; }
-        .priority-medium { border-left-color: #ff9800; }
-        .priority-low { border-left-color: #4caf50; }
-
-        .section-1 { border-left-color: #4CAF50; }
-        .section-2 { border-left-color: #2196F3; }
-        .section-3 { border-left-color: #FF9800; }
-        .section-4 { border-left-color: #9C27B0; }
-        .section-5 { border-left-color: #F44336; }
-        .section-6 { border-left-color: #00BCD4; }
-        .section-7 { border-left-color: #795548; }
-        .section-8 { border-left-color: #607D8B; }
-        .section-9 { border-left-color: #E91E63; }
-        .section-10 { border-left-color: #3F51B5; }
-
-        .action-plan {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-top: 2rem;
-        }
-
-        .action-plan h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .action-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .action-item {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            border-left: 4px solid rgba(255,255,255,0.3);
-        }
-
-        .action-priority {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .action-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
         .error-message, .success-message {
             padding: 1rem;
             border-radius: 8px;
@@ -413,6 +442,12 @@
             border-left: 4px solid #4caf50;
         }
 
+        .section-1 { border-left-color: #4CAF50; }
+        .section-2 { border-left-color: #2196F3; }
+        .section-3 { border-left-color: #FF9800; }
+        .section-4 { border-left-color: #9C27B0; }
+        .section-5 { border-left-color: #F44336; }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -422,16 +457,12 @@
                 font-size: 2.2rem;
             }
             
-            .profile-grid, .skills-grid {
+            .profile-form {
                 grid-template-columns: 1fr;
             }
             
             .upload-area {
                 padding: 2rem;
-            }
-            
-            .action-items {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -441,9 +472,10 @@
         <div class="header">
             <h1>Career Determination</h1>
             <p>AI-Powered Resume Analysis with Content-Based Job Recommendations</p>
-            <p class="subtitle">Powered by Llama 3.3 70B Courtsey of CrewAI & Python - Intelligent Profile Extraction & Market Analysis</p>
+            <p class="subtitle">Powered by Llama 3.3 70B Courtesy of CrewAI & Python - Intelligent Profile Extraction & Market Analysis</p>
         </div>
 
+        <!-- Step 1: Upload Area -->
         <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
             <div class="upload-icon">📄</div>
             <div class="upload-text">Upload Your Resume PDF</div>
@@ -452,6 +484,7 @@
             <input type="file" id="file-input" class="file-input" accept=".pdf" />
         </div>
 
+        <!-- Step 2: Progress Section -->
         <div class="progress-section" id="progress-section">
             <div class="progress-text" id="progress-text">Initializing AI analysis...</div>
             <div class="progress-bar">
@@ -459,10 +492,139 @@
             </div>
         </div>
 
+        <!-- Step 3: Profile Review Section (NEW) -->
+        <div class="profile-review-section" id="profile-review-section">
+            <div class="review-header">
+                <h2>Review & Customize Your Profile</h2>
+                <p>AI has extracted your profile information. Please review and modify as needed before generating your detailed analysis.</p>
+            </div>
+
+            <form class="profile-form" id="profile-form">
+                <div class="form-group">
+                    <label class="form-label">Experience Level</label>
+                    <select class="form-select" id="experience-level">
+                        <option value="entry">Entry Level (0-2 years)</option>
+                        <option value="mid">Mid Level (3-7 years)</option>
+                        <option value="senior">Senior Level (8-15 years)</option>
+                        <option value="executive">Executive Level (15+ years)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Current Location</label>
+                    <input type="text" class="form-input" id="current-location" placeholder="e.g., San Francisco, CA">
+                </div>
+
+                <div class="profile-review-section" id="profile-review-section">
+                <form class="profile-form" id="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Target Job Categories</label>
+                        <div class="multi-select-container">
+                            <input type="text" class="form-input multi-select-input" id="job-categories-input" placeholder="Select job categories..." readonly onclick="toggleDropdown('job-categories')">
+                            <div class="multi-select-dropdown" id="job-categories-dropdown">
+                                <div class="multi-select-option" data-value="Accountant">Accountant</div>
+                                <div class="multi-select-option" data-value="Advocate">Advocate (Legal/Policy)</div>
+                                <div class="multi-select-option" data-value="Agriculture">Agriculture</div>
+                                <div class="multi-select-option" data-value="Apparel">Apparel</div>
+                                <div class="multi-select-option" data-value="Arts">Arts & Culture</div>
+                                <div class="multi-select-option" data-value="Automobile">Automobile</div>
+                                <div class="multi-select-option" data-value="Aviation">Aviation</div>
+                                <div class="multi-select-option" data-value="Banking">Banking</div>
+                                <div class="multi-select-option" data-value="BOP">Business Operations (BOP)</div>
+                                <div class="multi-select-option" data-value="Business-Development">Business Development</div>
+                                <div class="multi-select-option" data-value="Chef">Chef / Culinary</div>
+                                <div class="multi-select-option" data-value="Construction">Construction</div>
+                                <div class="multi-select-option" data-value="Designer">Designer</div>
+                                <div class="multi-select-option" data-value="Digital Media">Digital Media</div>
+                                <div class="multi-select-option" data-value="Engineering">Engineering</div>
+                                <div class="multi-select-option" data-value="Finance">Finance</div>
+                                <div class="multi-select-option" data-value="Fitness">Fitness</div>
+                                <div class="multi-select-option" data-value="Healthcare">Healthcare</div>
+                                <div class="multi-select-option" data-value="HR">Human Resources (HR)</div>
+                                <div class="multi-select-option" data-value="IT">Information Technology (IT)</div>
+                                <div class="multi-select-option" data-value="PR">Public Relations (PR)</div>
+                                <div class="multi-select-option" data-value="Sales">Sales</div>
+                                <div class="multi-select-option" data-value="Teacher">Teacher / Education</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </form>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Recommended Roles</label>
+                    <textarea class="form-textarea" id="target-roles" placeholder="e.g., Full Stack Developer, Software Engineer, Technical Lead"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Key Skills</label>
+                    <div class="skills-input-container">
+                        <input type="text" class="form-input" id="skills-input" placeholder="Type a skill and press Enter">
+                        <div class="skills-tags" id="skills-tags"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Work Style Preference</label>
+                    <select class="form-select" id="work-style">
+                        <option value="Remote">Remote</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="On-site">On-site</option>
+                        <option value="Flexible">Flexible</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Estimated Salary Range</label>
+                    <input type="text" class="form-input" id="salary-range" placeholder="e.g., $80,000-$120,000">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Education Level</label>
+                    <select class="form-select" id="education-level">
+                        <option value="High School">High School</option>
+                        <option value="Associate's">Associate's Degree</option>
+                        <option value="Bachelor's">Bachelor's Degree</option>
+                        <option value="Master's">Master's Degree</option>
+                        <option value="PhD">PhD</option>
+                        <option value="Professional">Professional Certification</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Target Industries</label>
+                    <div class="multi-select-container">
+                        <input type="text" class="form-input multi-select-input" id="industries-input" placeholder="Select industries..." readonly onclick="toggleDropdown('industries')">
+                        <div class="multi-select-dropdown" id="industries-dropdown">
+                            <div class="multi-select-option" data-value="Technology">Technology</div>
+                            <div class="multi-select-option" data-value="Finance">Finance</div>
+                            <div class="multi-select-option" data-value="Healthcare">Healthcare</div>
+                            <div class="multi-select-option" data-value="Education">Education</div>
+                            <div class="multi-select-option" data-value="Retail">Retail</div>
+                            <div class="multi-select-option" data-value="Manufacturing">Manufacturing</div>
+                            <div class="multi-select-option" data-value="Media & Entertainment">Media & Entertainment</div>
+                            <div class="multi-select-option" data-value="Government">Government</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label">Career Focus</label>
+                    <textarea class="form-textarea" id="career-focus" placeholder="Describe your career goals and focus areas"></textarea>
+                </div>
+            </form>
+
+            <button class="generate-analysis-btn" onclick="generateDetailedAnalysis()">
+                Generate Detailed Analysis
+            </button>
+        </div>
+
+        <!-- Step 4: Results Section -->
         <div class="results-section" id="results-section">
-            <!-- AI-Extracted Profile Summary -->
+            <!-- Final Profile Summary -->
             <div class="profile-summary" id="profile-summary">
-                <h2>AI-Extracted Candidate Profile</h2>
+                <h2>Your Professional Profile</h2>
                 <div class="profile-grid" id="profile-grid">
                     <!-- Profile items will be inserted here -->
                 </div>
@@ -474,17 +636,9 @@
                 <div class="score-description" id="score-description">Overall competitiveness for target roles in current market</div>
             </div>
 
-            <!-- 10 Analysis Sections -->
+            <!-- Analysis Sections -->
             <div class="analysis-sections" id="analysis-sections">
                 <!-- Analysis sections will be dynamically generated -->
-            </div>
-
-            <!-- Prioritized Action Plan -->
-            <div class="action-plan" id="action-plan">
-                <h3>🎯 Prioritized Action Plan</h3>
-                <div class="action-items" id="action-items">
-                    <!-- Action items will be inserted here -->
-                </div>
             </div>
         </div>
 
@@ -494,6 +648,10 @@
 
     <script>
         let analysisInProgress = false;
+        let extractedProfile = {};
+        let selectedJobCategories = [];
+        let selectedIndustries = [];
+        let skillsList = [];
 
         // File upload handling
         const fileInput = document.getElementById('file-input');
@@ -540,96 +698,75 @@
             }
             
             showMessage(`${file.name} uploaded successfully! AI profile extraction starting...`, 'success');
-            startAnalysis(file);
+            startProfileExtraction(file);
         }
 
-        async function startAnalysis(file) {
+        async function startProfileExtraction(file) {
             if (analysisInProgress) return;
             
             analysisInProgress = true;
             showProgress();
             
             try {
-                await simulateAnalysis(file);
-                const analysisResults = await generateComprehensiveAnalysis(file);
-                showResults(analysisResults);
+                await simulateProfileExtraction(file);
+                const profile = await extractProfileFromFile(file);
+                showProfileReviewSection(profile);
             } catch (error) {
-                showMessage('Analysis failed. Please try again.', 'error');
+                showMessage('Profile extraction failed. Please try again.', 'error');
             } finally {
                 analysisInProgress = false;
                 hideProgress();
             }
         }
 
-        async function simulateAnalysis(file) {
+        async function simulateProfileExtraction(file) {
             const steps = [
                 'Processing PDF document...',
-                'Extracting text content with AI...',
-                'Analyzing candidate profile...',
-                'Identifying job categories and target roles...',
-                'Evaluating market competitiveness...',
-                'Assessing target role fit...',
-                'Analyzing skills and experience...',
-                'Generating salary insights...',
-                'Creating career roadmap...',
-                'Preparing comprehensive recommendations...'
+                'Extracting text content with OCR...',
+                'Analyzing candidate background...',
+                'Identifying skills and experience...',
+                'Determining job categories...',
+                'Estimating experience level...',
+                'Extracting education and location...',
+                'Preparing profile for review...'
             ];
             
             for (let i = 0; i < steps.length; i++) {
                 updateProgress((i + 1) / steps.length * 100, steps[i]);
-                await new Promise(resolve => setTimeout(resolve, 900));
+                await new Promise(resolve => setTimeout(resolve, 800));
             }
         }
 
-        async function generateComprehensiveAnalysis(file) {
-            // Simulate the comprehensive analysis structure from the Python script
-            const extractedProfile = generateCandidateProfile();
-            const marketScore = Math.floor(Math.random() * 3) + 7; // 7-10 range
-            
-            return {
-                extractedProfile,
-                marketScore,
-                analysisResults: generateTenStepAnalysis(extractedProfile, marketScore),
-                actionPlan: generateActionPlan(marketScore)
-            };
-        }
-
-        function generateCandidateProfile() {
-            const experienceLevels = ['entry', 'mid', 'senior', 'executive'];
-            const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA', 'Remote-friendly'];
+        async function extractProfileFromFile(file) {
+            // Simulate AI profile extraction
+            const experienceLevels = ['entry', 'mid', 'senior'];
+            const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA', 'Remote'];
             const categories = [
                 ['Software Development', 'Data & Analytics'],
                 ['Product & Design', 'Management & Leadership'],
-                ['Cloud & Infrastructure', 'Cybersecurity'],
-                ['Sales & Marketing', 'Finance & Business']
+                ['Cloud & Infrastructure', 'Cybersecurity']
             ];
             const skills = [
                 ['Python', 'JavaScript', 'React', 'AWS', 'Docker'],
                 ['Project Management', 'Data Analysis', 'SQL', 'Agile', 'Leadership'],
-                ['Machine Learning', 'TensorFlow', 'Kubernetes', 'CI/CD', 'Git']
+                ['Machine Learning', 'Node.js', 'Kubernetes', 'Git', 'API Design']
             ];
 
             const randomCategory = categories[Math.floor(Math.random() * categories.length)];
             const randomSkills = skills[Math.floor(Math.random() * skills.length)];
             const expLevel = experienceLevels[Math.floor(Math.random() * experienceLevels.length)];
-            const years = expLevel === 'entry' ? 1 + Math.floor(Math.random() * 2) :
-                         expLevel === 'mid' ? 3 + Math.floor(Math.random() * 5) :
-                         expLevel === 'senior' ? 8 + Math.floor(Math.random() * 8) :
-                         15 + Math.floor(Math.random() * 10);
 
             return {
                 experience_level: expLevel,
-                years_of_experience: years,
                 current_location: locations[Math.floor(Math.random() * locations.length)],
                 job_categories: randomCategory,
                 target_roles: generateTargetRoles(randomCategory),
                 key_skills: randomSkills,
-                industries: ['Technology', 'Healthcare', 'Finance'][Math.floor(Math.random() * 3)],
+                industries: ['Technology', 'Finance'][Math.floor(Math.random() * 2)],
                 work_arrangement_preference: ['Remote', 'Hybrid', 'Flexible'][Math.floor(Math.random() * 3)],
                 estimated_salary_range: generateSalaryRange(expLevel),
                 education_level: ['Bachelor\'s', 'Master\'s', 'PhD'][Math.floor(Math.random() * 3)],
-                career_focus: 'Professional growth and development in target industry',
-                willing_to_relocate: Math.random() > 0.5
+                career_focus: 'Professional growth and development in target industry'
             };
         }
 
@@ -643,186 +780,488 @@
                 'Cybersecurity': ['Security Analyst', 'Penetration Tester', 'Security Engineer']
             };
             
-            return categories.flatMap(cat => roleMap[cat] || ['Specialist', 'Analyst', 'Manager']);
+            return categories.flatMap(cat => roleMap[cat] || ['Specialist', 'Analyst']);
         }
 
         function generateSalaryRange(level) {
             const ranges = {
                 'entry': '$60,000-$85,000',
                 'mid': '$85,000-$125,000',
-                'senior': '$125,000-$180,000',
-                'executive': '$180,000-$300,000+'
+                'senior': '$125,000-$180,000'
             };
             return ranges[level] || '$70,000-$100,000';
         }
 
-        function generateTenStepAnalysis(profile, marketScore) {
+        function showProfileReviewSection(profile) {
+            extractedProfile = profile;
+            
+            // Populate form fields with extracted data
+            document.getElementById('experience-level').value = profile.experience_level;
+            document.getElementById('current-location').value = profile.current_location;
+            document.getElementById('target-roles').value = profile.target_roles.join(', ');
+            document.getElementById('work-style').value = profile.work_arrangement_preference;
+            document.getElementById('salary-range').value = profile.estimated_salary_range;
+            document.getElementById('education-level').value = profile.education_level;
+            document.getElementById('career-focus').value = profile.career_focus;
+            
+            // Set job categories and industries
+            selectedJobCategories = [...profile.job_categories];
+            selectedIndustries = Array.isArray(profile.industries) ? profile.industries : [profile.industries];
+            updateMultiSelectDisplay('job-categories', selectedJobCategories);
+            updateMultiSelectDisplay('industries', selectedIndustries);
+            
+            // Set skills
+            skillsList = [...profile.key_skills];
+            updateSkillsDisplay();
+            
+            // Show the review section
+            document.getElementById('profile-review-section').style.display = 'block';
+            document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Multi-select dropdown functionality
+        function toggleDropdown(type) {
+            const dropdown = document.getElementById(type + '-dropdown');
+            const isVisible = dropdown.style.display === 'block';
+            
+            // Close all dropdowns
+            document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
+            
+            if (!isVisible) {
+                dropdown.style.display = 'block';
+                updateDropdownSelection(type);
+            }
+        }
+
+        function updateDropdownSelection(type) {
+            const dropdown = document.getElementById(type + '-dropdown');
+            const selected = type === 'job-categories' ? selectedJobCategories : selectedIndustries;
+            
+            dropdown.querySelectorAll('.multi-select-option').forEach(option => {
+                const value = option.getAttribute('data-value');
+                option.classList.toggle('selected', selected.includes(value));
+                
+                option.onclick = () => {
+                    if (selected.includes(value)) {
+                        const index = selected.indexOf(value);
+                        selected.splice(index, 1);
+                    } else {
+                        selected.push(value);
+                    }
+                    updateMultiSelectDisplay(type, selected);
+                    updateDropdownSelection(type);
+                };
+            });
+        }
+
+        function updateMultiSelectDisplay(type, selected) {
+            const input = document.getElementById(type + '-input');
+            input.value = selected.join(', ');
+        }
+
+        // Skills input functionality
+        document.getElementById('skills-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const skill = this.value.trim();
+                if (skill && !skillsList.includes(skill)) {
+                    skillsList.push(skill);
+                    updateSkillsDisplay();
+                    this.value = '';
+                }
+            }
+        });
+
+        function updateSkillsDisplay() {
+            const container = document.getElementById('skills-tags');
+            container.innerHTML = skillsList.map(skill => `
+                <div class="skill-tag">
+                    ${skill}
+                    <span class="skill-remove" onclick="removeSkill('${skill}')">×</span>
+                </div>
+            `).join('');
+        }
+
+        function removeSkill(skill) {
+            const index = skillsList.indexOf(skill);
+            if (index > -1) {
+                skillsList.splice(index, 1);
+                updateSkillsDisplay();
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.multi-select-container')) {
+                document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
+            }
+        });
+
+        function generateDetailedAnalysis() {
+            // Collect form data
+            const userProfile = {
+                experience_level: document.getElementById('experience-level').value,
+                current_location: document.getElementById('current-location').value,
+                job_categories: selectedJobCategories,
+                target_roles: document.getElementById('target-roles').value.split(',').map(r => r.trim()).filter(r => r),
+                key_skills: skillsList,
+                industries: selectedIndustries,
+                work_arrangement_preference: document.getElementById('work-style').value,
+                estimated_salary_range: document.getElementById('salary-range').value,
+                education_level: document.getElementById('education-level').value,
+                career_focus: document.getElementById('career-focus').value
+            };
+
+            // Hide profile review section and show progress
+            document.getElementById('profile-review-section').style.display = 'none';
+            showProgress();
+            
+            // Start detailed analysis
+            startDetailedAnalysis(userProfile);
+        }
+
+        async function startDetailedAnalysis(userProfile) {
+            try {
+                await simulateDetailedAnalysis();
+                const analysisResults = await generateComprehensiveAnalysis(userProfile);
+                showResults(analysisResults, userProfile);
+            } catch (error) {
+                showMessage('Analysis failed. Please try again.', 'error');
+            } finally {
+                hideProgress();
+            }
+        }
+
+        async function simulateDetailedAnalysis() {
+            const steps = [
+                'Analyzing market competitiveness...',
+                'Evaluating target role fit...',
+                'Assessing technical skills...',
+                'Reviewing experience alignment...',
+                'Optimizing resume recommendations...',
+                'Calculating salary insights...',
+                'Creating career roadmap...',
+                'Analyzing job search strategy...',
+                'Identifying potential risks...',
+                'Generating action plan...'
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                updateProgress((i + 1) / steps.length * 100, steps[i]);
+                await new Promise(resolve => setTimeout(resolve, 1200));
+            }
+        }
+
+        async function generateComprehensiveAnalysis(userProfile) {
+            const marketScore = calculateRealisticMarketScore(userProfile);
+            
+            return {
+                marketScore,
+                analysisResults: generateDetailedAnalysisSections(userProfile, marketScore)
+            };
+        }
+
+        function calculateRealisticMarketScore(profile) {
+            let score = 0;
+            let maxScore = 10;
+
+            // Experience Level Assessment (25% of score - 2.5 points max)
+            const experienceScore = calculateExperienceScore(profile.experience_level, profile.target_roles);
+            score += experienceScore * 0.25;
+
+            // Skills Relevance (30% of score - 3 points max)
+            const skillsScore = calculateSkillsScore(profile.key_skills, profile.job_categories);
+            score += skillsScore * 0.3;
+
+            // Education Alignment (15% of score - 1.5 points max)
+            const educationScore = calculateEducationScore(profile.education_level, profile.experience_level);
+            score += educationScore * 0.15;
+
+            // Market Demand (20% of score - 2 points max)
+            const marketDemandScore = calculateMarketDemandScore(profile.job_categories, profile.current_location);
+            score += marketDemandScore * 0.2;
+
+            // Salary Realism (10% of score - 1 point max)
+            const salaryScore = calculateSalaryRealism(profile.estimated_salary_range, profile.experience_level);
+            score += salaryScore * 0.1;
+
+            // Round to one decimal place and ensure it's between 1-10
+            return Math.max(1, Math.min(10, Math.round(score * 10) / 10));
+        }
+
+        function calculateExperienceScore(level, targetRoles) {
+            // Base scores by experience level
+            const baseScores = {
+                'entry': 6,      // Entry level faces more competition
+                'mid': 8,        // Sweet spot for most roles
+                'senior': 7,     // Good but fewer positions available
+                'executive': 6   // Highly competitive, fewer positions
+            };
+
+            let score = baseScores[level] || 6;
+
+            // Bonus for having multiple target roles (shows flexibility)
+            if (targetRoles && targetRoles.length >= 3) {
+                score += 0.5;
+            }
+
+            // Penalty for too many target roles (shows lack of focus)
+            if (targetRoles && targetRoles.length > 6) {
+                score -= 0.5;
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateSkillsScore(skills, jobCategories) {
+            if (!skills || skills.length === 0) return 3;
+
+            let score = 5; // Base score
+
+            // High-demand technical skills
+            const highDemandSkills = [
+                'Python', 'JavaScript', 'React', 'AWS', 'Docker', 'Kubernetes',
+                'Machine Learning', 'Data Analysis', 'SQL', 'Node.js', 'Git',
+                'Project Management', 'Agile', 'Scrum', 'Leadership'
+            ];
+
+            // Emerging/hot skills
+            const emergingSkills = [
+                'AI', 'TensorFlow', 'PyTorch', 'Blockchain', 'GraphQL',
+                'Microservices', 'DevOps', 'Cloud Architecture'
+            ];
+
+            // Calculate skill relevance
+            const highDemandCount = skills.filter(skill => 
+                highDemandSkills.some(hd => hd.toLowerCase().includes(skill.toLowerCase()) || 
+                                           skill.toLowerCase().includes(hd.toLowerCase()))
+            ).length;
+
+            const emergingCount = skills.filter(skill =>
+                emergingSkills.some(es => es.toLowerCase().includes(skill.toLowerCase()) ||
+                                         skill.toLowerCase().includes(es.toLowerCase()))
+            ).length;
+
+            // Bonus for relevant skills
+            score += (highDemandCount * 0.3);
+            score += (emergingCount * 0.5);
+
+            // Bonus for having a good number of skills
+            if (skills.length >= 5 && skills.length <= 10) {
+                score += 1;
+            } else if (skills.length < 3) {
+                score -= 1;
+            } else if (skills.length > 15) {
+                score -= 0.5; // Too many might seem unfocused
+            }
+
+            // Job category specific bonuses
+            if (jobCategories) {
+                if (jobCategories.includes('Software Development') && 
+                    skills.some(s => ['Python', 'JavaScript', 'Java', 'React', 'Angular'].includes(s))) {
+                    score += 0.5;
+                }
+                if (jobCategories.includes('Data & Analytics') && 
+                    skills.some(s => ['Python', 'SQL', 'Machine Learning', 'Statistics'].includes(s))) {
+                    score += 0.5;
+                }
+                if (jobCategories.includes('Cloud & Infrastructure') && 
+                    skills.some(s => ['AWS', 'Azure', 'Docker', 'Kubernetes'].includes(s))) {
+                    score += 0.5;
+                }
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateEducationScore(education, experience) {
+            const educationScores = {
+                'High School': 5,
+                'Associate\'s': 6,
+                'Bachelor\'s': 7,
+                'Master\'s': 8,
+                'PhD': 8.5,
+                'Professional': 7.5
+            };
+
+            let score = educationScores[education] || 6;
+
+            // Education-experience alignment
+            if (education === 'PhD' && experience === 'entry') {
+                score -= 1; // Might be overqualified for entry level
+            }
+            if (education === 'High School' && ['senior', 'executive'].includes(experience)) {
+                score += 1; // Impressive career progression
+            }
+            if (education === 'Master\'s' && ['mid', 'senior'].includes(experience)) {
+                score += 0.5; // Good alignment
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateMarketDemandScore(jobCategories, location) {
+            if (!jobCategories || jobCategories.length === 0) return 5;
+
+            // Market demand by job category (based on general market trends)
+            const demandScores = {
+                'Software Development': 9,
+                'Data & Analytics': 8.5,
+                'Cybersecurity': 9.5,
+                'Cloud & Infrastructure': 9,
+                'Product & Design': 7,
+                'Management & Leadership': 6.5,
+                'Sales & Marketing': 6,
+                'Finance & Business': 6.5,
+                'Healthcare & Life Sciences': 8,
+                'Education & Training': 5
+            };
+
+            // Calculate average demand score for selected categories
+            const avgDemand = jobCategories.reduce((sum, cat) => {
+                return sum + (demandScores[cat] || 5);
+            }, 0) / jobCategories.length;
+
+            let score = avgDemand;
+
+            // Location bonuses (simplified)
+            if (location && location.toLowerCase().includes('san francisco')) {
+                score += 1; // Tech hub
+            } else if (location && (location.toLowerCase().includes('new york') || 
+                                  location.toLowerCase().includes('seattle') ||
+                                  location.toLowerCase().includes('austin'))) {
+                score += 0.5; // Major tech cities
+            } else if (location && location.toLowerCase().includes('remote')) {
+                score += 0.3; // Remote work is in demand
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateSalaryRealism(salaryRange, experienceLevel) {
+            if (!salaryRange || !salaryRange.includes('-')) return 5;
+
+            try {
+                // Extract numbers from salary range
+                const numbers = salaryRange.match(/\d+,?\d*/g);
+                if (!numbers || numbers.length < 2) return 5;
+
+                const minSalary = parseInt(numbers[0].replace(',', ''));
+                const maxSalary = parseInt(numbers[1].replace(',', ''));
+
+                // Realistic salary ranges by experience level
+                const realisticRanges = {
+                    'entry': { min: 40000, max: 80000 },
+                    'mid': { min: 70000, max: 130000 },
+                    'senior': { min: 120000, max: 200000 },
+                    'executive': { min: 180000, max: 400000 }
+                };
+
+                const realistic = realisticRanges[experienceLevel] || realisticRanges['mid'];
+
+                let score = 7; // Base realistic score
+
+                // Check if salary expectations are realistic
+                if (minSalary >= realistic.min * 0.8 && maxSalary <= realistic.max * 1.2) {
+                    score = 9; // Very realistic
+                } else if (minSalary > realistic.max * 1.3) {
+                    score = 3; // Too high expectations
+                } else if (maxSalary < realistic.min * 0.7) {
+                    score = 4; // Undervaluing themselves
+                } else if (minSalary < realistic.min || maxSalary > realistic.max) {
+                    score = 6; // Somewhat off but not terrible
+                }
+
+                // Check range spread (should be reasonable)
+                const spread = maxSalary - minSalary;
+                const avgSalary = (maxSalary + minSalary) / 2;
+                if (spread / avgSalary > 0.5) {
+                    score -= 1; // Range too wide
+                } else if (spread / avgSalary < 0.15) {
+                    score -= 0.5; // Range too narrow
+                }
+
+                return Math.max(1, Math.min(10, score));
+            } catch (error) {
+                return 5; // Default if parsing fails
+            }
+        }
+
+        function generateDetailedAnalysisSections(profile, marketScore) {
             return [
                 {
                     title: "Market Competitiveness Assessment",
                     icon: "📊",
                     score: marketScore,
                     content: {
-                        "Overall Readiness": `${marketScore}/10 for ${profile.target_roles.join(', ')}`,
+                        "Overall Readiness": `${marketScore}/10 for ${profile.target_roles.slice(0, 2).join(' and ')} roles`,
                         "Competitive Analysis": `Strong positioning in ${profile.job_categories.join(' and ')} markets`,
-                        "Salary Alignment": `Current range ${profile.estimated_salary_range} aligns with market standards`,
-                        "Geographic Fit": `${profile.current_location} market shows strong demand for your skillset`
+                        "Salary Alignment": `Target range ${profile.estimated_salary_range} aligns with current market standards`,
+                        "Geographic Advantage": `${profile.current_location} market shows high demand for your skill set`
                     }
                 },
                 {
-                    title: "Target Role Fit Analysis", 
-                    icon: "🎯",
+                    title: "Target Role Fit Analysis",
+                    icon: "🎯", 
                     score: Math.floor(Math.random() * 2) + 8,
                     content: generateRoleFitAnalysis(profile.target_roles)
                 },
                 {
                     title: "Technical & Professional Skills Evaluation",
-                    icon: "🔧", 
+                    icon: "🔧",
                     score: Math.floor(Math.random() * 2) + 7,
                     content: {
-                        "Current Skills": profile.key_skills.join(', '),
+                        "Current Strengths": profile.key_skills.join(', '),
                         "Market Demand": "High demand for your core competencies in target market",
-                        "Emerging Skills": "Consider adding: Cloud Architecture, AI/ML fundamentals, Advanced Analytics",
-                        "Certifications": "AWS Solutions Architect or PMP certification would add significant value"
+                        "Development Areas": "Consider adding: Cloud Architecture, Advanced Analytics, Leadership Skills",
+                        "Certifications": "AWS Solutions Architect or relevant industry certifications would add significant value"
                     }
                 },
                 {
-                    title: "Experience & Achievement Analysis",
+                    title: "Experience & Achievement Analysis", 
                     icon: "📈",
                     score: Math.floor(Math.random() * 2) + 7,
                     content: {
-                        "Career Trajectory": `${profile.years_of_experience} years showing consistent progression`,
-                        "Achievement Quantification": "Strong evidence of business impact with measurable results",
-                        "Leadership Evidence": profile.experience_level === 'senior' ? "Clear leadership and mentoring experience" : "Growing leadership potential",
-                        "Industry Experience": `Solid background in ${profile.industries} sector`
+                        "Career Trajectory": `${profile.experience_level} level showing appropriate progression`,
+                        "Achievement Quantification": "Strong evidence of business impact and measurable results",
+                        "Leadership Evidence": profile.experience_level === 'senior' ? "Clear leadership and mentoring capabilities" : "Growing leadership potential",
+                        "Industry Experience": `Solid background in ${profile.industries.join(' and ')} sectors`
                     }
                 },
                 {
-                    title: "Resume Optimization for Target Roles",
+                    title: "Resume Optimization Recommendations",
                     icon: "📝",
                     score: Math.floor(Math.random() * 2) + 6,
                     content: {
-                        "ATS Compatibility": "Good keyword optimization for target roles",
-                        "Content Structure": "Well-organized reverse-chronological format",
-                        "Missing Elements": "Consider adding quantified achievements and industry-specific metrics",
-                        "Formatting": "Professional layout with consistent styling throughout"
+                        "ATS Compatibility": "Good keyword optimization for your target roles",
+                        "Content Structure": "Professional format with clear progression narrative",
+                        "Enhancement Opportunities": "Add more quantified achievements and industry-specific metrics",
+                        "Formatting": "Consistent styling with strong visual hierarchy"
                     }
-                },
-                {
-                    title: "Salary & Compensation Insights",
-                    icon: "💰",
-                    score: 8,
-                    content: {
-                        "Current Range": profile.estimated_salary_range,
-                        "Market Position": "Competitive positioning for experience level and location", 
-                        "Negotiation Strategy": "Strong foundation for salary negotiations in target range",
-                        "Total Compensation": "Consider benefits, equity, and growth opportunities beyond base salary"
-                    }
-                },
-                {
-                    title: "Career Development Roadmap",
-                    icon: "🛣️",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: generateCareerRoadmap(profile.experience_level)
-                },
-                {
-                    title: "Job Search Strategy for Recommended Roles",
-                    icon: "🔍",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: {
-                        "Best Platforms": "LinkedIn, AngelList, company career pages for target roles",
-                        "Company Types": `${profile.experience_level === 'senior' ? 'Scale-ups and established companies' : 'Growing startups and mid-size companies'}`,
-                        "Application Strategy": "Tailor resume keywords for each specific role application",
-                        "Interview Prep": `Focus on ${profile.key_skills.slice(0, 3).join(', ')} technical competencies`
-                    }
-                },
-                {
-                    title: "Risk Assessment & Mitigation",
-                    icon: "⚠️", 
-                    score: Math.floor(Math.random() * 2) + 6,
-                    content: {
-                        "Potential Concerns": profile.experience_level === 'entry' ? "Limited experience may require junior-level positioning" : "Strong background mitigates most concerns",
-                        "Market Timing": "Current market conditions favorable for your target roles",
-                        "Over/Under Qualification": "Well-matched for target position requirements",
-                        "Industry Trends": `${profile.industries} sector showing continued growth and stability`
-                    }
-                },
-                {
-                    title: "Prioritized Action Plan",
-                    icon: "✅",
-                    score: 9,
-                    content: generateDetailedActionPlan(profile, marketScore)
                 }
             ];
         }
 
         function generateRoleFitAnalysis(targetRoles) {
             return targetRoles.reduce((acc, role, index) => {
-                acc[role] = `${85 + Math.floor(Math.random() * 10)}% fit - ${['Strong technical alignment', 'Experience matches requirements', 'Skills gap minimal'][index % 3]}`;
+                const fitScore = 85 + Math.floor(Math.random() * 10);
+                const reasons = [
+                    'Strong technical alignment with role requirements',
+                    'Experience level matches position expectations', 
+                    'Skills portfolio directly applicable',
+                    'Industry background highly relevant'
+                ];
+                acc[role] = `${fitScore}% fit - ${reasons[index % reasons.length]}`;
                 return acc;
             }, {});
         }
 
-        function generateCareerRoadmap(level) {
-            const roadmaps = {
-                'entry': {
-                    "0-3 months": "Focus on skill development and portfolio building",
-                    "3-12 months": "Target junior roles with mentorship opportunities", 
-                    "1-3 years": "Build experience and expand technical expertise"
-                },
-                'mid': {
-                    "0-3 months": "Update portfolio and strengthen leadership examples",
-                    "3-12 months": "Target senior individual contributor or team lead roles",
-                    "1-3 years": "Prepare for management track or principal engineer path"
-                },
-                'senior': {
-                    "0-3 months": "Highlight strategic impact and team leadership",
-                    "3-12 months": "Target director-level or senior management positions", 
-                    "1-3 years": "Executive leadership or principal architect opportunities"
-                },
-                'executive': {
-                    "0-3 months": "Emphasize organizational transformation and strategic vision",
-                    "3-12 months": "Target C-level or VP positions",
-                    "1-3 years": "Board positions and strategic advisory roles"
-                }
-            };
-            return roadmaps[level] || roadmaps['mid'];
-        }
-
-        function generateDetailedActionPlan(profile, score) {
-            return {
-                "Immediate (Week 1-2)": "Update LinkedIn profile and resume with target role keywords",
-                "Short-term (Month 1)": `Apply to 10-15 positions in ${profile.job_categories.join(' and ')} space`,
-                "Medium-term (3-6 months)": score < 8 ? "Complete relevant certification or skill development" : "Network with industry professionals and hiring managers",
-                "Long-term (6-12 months)": "Build thought leadership through content or speaking engagements"
-            };
-        }
-
-        function generateActionPlan(marketScore) {
-            const priorities = marketScore >= 8 ? 
-                [
-                    { priority: 'High', title: 'Apply to Target Roles', desc: 'Your profile is market-ready - start applying immediately' },
-                    { priority: 'Medium', title: 'Network Strategically', desc: 'Connect with professionals in your target companies' },
-                    { priority: 'Low', title: 'Skill Maintenance', desc: 'Stay current with latest industry trends and tools' }
-                ] :
-                [
-                    { priority: 'High', title: 'Address Skill Gaps', desc: 'Focus on developing missing competencies for target roles' },
-                    { priority: 'High', title: 'Strengthen Resume', desc: 'Add quantifiable achievements and relevant keywords' },
-                    { priority: 'Medium', title: 'Build Portfolio', desc: 'Create compelling examples of your work and impact' },
-                    { priority: 'Medium', title: 'Get Certified', desc: 'Pursue relevant certifications to boost credibility' }
-                ];
-            
-            return priorities;
-        }
-
         function showProgress() {
             document.getElementById('progress-section').style.display = 'block';
-            document.getElementById('upload-area').style.display = 'none';
         }
 
         function hideProgress() {
             document.getElementById('progress-section').style.display = 'none';
-            document.getElementById('upload-area').style.display = 'block';
         }
 
         function updateProgress(percentage, message) {
@@ -830,32 +1269,29 @@
             document.getElementById('progress-text').textContent = message;
         }
 
-        function showResults(analysis) {
-            // Show AI-extracted profile
-            displayExtractedProfile(analysis.extractedProfile);
+        function showResults(analysis, userProfile) {
+            // Show final profile summary
+            displayFinalProfile(userProfile);
             
             // Show market readiness score
             document.getElementById('market-score').textContent = `Market Readiness: ${analysis.marketScore}/10`;
             document.getElementById('score-description').textContent = 
-                `Overall competitiveness for ${analysis.extractedProfile.target_roles.slice(0,2).join(' and ')} roles`;
+                `Overall competitiveness for ${userProfile.target_roles.slice(0,2).join(' and ')} roles`;
             
-            // Generate 10-step analysis sections
+            // Generate analysis sections
             displayAnalysisSections(analysis.analysisResults);
-            
-            // Show action plan
-            displayActionPlan(analysis.actionPlan);
             
             // Show results section
             document.getElementById('results-section').style.display = 'block';
             document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function displayExtractedProfile(profile) {
+        function displayFinalProfile(profile) {
             const profileGrid = document.getElementById('profile-grid');
             profileGrid.innerHTML = `
                 <div class="profile-item">
                     <strong>Experience Level</strong>
-                    <div class="profile-value">${profile.experience_level.charAt(0).toUpperCase() + profile.experience_level.slice(1)} (${profile.years_of_experience} years)</div>
+                    <div class="profile-value">${profile.experience_level.charAt(0).toUpperCase() + profile.experience_level.slice(1)}</div>
                 </div>
                 <div class="profile-item">
                     <strong>Target Job Categories</strong>
@@ -879,7 +1315,7 @@
                 </div>
                 <div class="profile-item">
                     <strong>Education & Industry</strong>
-                    <div class="profile-value">${profile.education_level} • ${profile.industries}</div>
+                    <div class="profile-value">${profile.education_level} • ${profile.industries.join(' • ')}</div>
                 </div>
                 <div class="profile-item">
                     <strong>Career Focus</strong>
@@ -909,68 +1345,16 @@
         function formatSectionContent(content, title) {
             if (title === "Target Role Fit Analysis") {
                 return `
-                    <div class="role-fit-grid">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
                         ${Object.entries(content).map(([role, fit]) => `
-                            <div class="role-fit-card">
-                                <div class="role-title">${role}</div>
-                                <div class="fit-percentage">${fit}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (title === "Technical & Professional Skills Evaluation") {
-                return `
-                    <div class="skills-grid">
-                        <div class="skills-column">
-                            <h4>Current Strengths</h4>
-                            <div class="skill-tags">
-                                ${content["Current Skills"] ? content["Current Skills"].split(', ').map(skill => 
-                                    `<span class="skill-tag">${skill.trim()}</span>`
-                                ).join('') : ''}
-                            </div>
-                            <div class="subsection">
-                                <div class="subsection-title">Market Demand</div>
-                                <p>${content["Market Demand"] || 'Strong demand in current market'}</p>
-                            </div>
-                        </div>
-                        <div class="skills-column">
-                            <h4>Development Areas</h4>
-                            <div class="skill-tags">
-                                ${content["Emerging Skills"] ? content["Emerging Skills"].replace('Consider adding: ', '').split(', ').map(skill => 
-                                    `<span class="skill-tag missing">${skill.trim()}</span>`
-                                ).join('') : ''}
-                            </div>
-                            <div class="subsection">
-                                <div class="subsection-title">Recommended Certifications</div>
-                                <p>${content["Certifications"] || 'Industry-standard certifications recommended'}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (title === "Career Development Roadmap") {
-                return `
-                    <div class="roadmap-timeline">
-                        ${Object.entries(content).map(([period, action]) => `
-                            <div class="timeline-item">
-                                <div class="timeline-period">${period}</div>
-                                <div>${action}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (title === "Prioritized Action Plan") {
-                return `
-                    <div class="roadmap-timeline">
-                        ${Object.entries(content).map(([timeframe, action]) => `
-                            <div class="timeline-item priority-${timeframe.includes('Week') ? 'high' : timeframe.includes('Month 1') ? 'high' : timeframe.includes('3-6') ? 'medium' : 'low'}">
-                                <div class="timeline-period">${timeframe}</div>
-                                <div>${action}</div>
+                            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">${role}</div>
+                                <div style="color: #4CAF50; font-weight: 600;">${fit}</div>
                             </div>
                         `).join('')}
                     </div>
                 `;
             } else {
-                // Default formatting for other sections
                 return `
                     ${Object.entries(content).map(([key, value]) => `
                         <div class="subsection">
@@ -980,17 +1364,6 @@
                     `).join('')}
                 `;
             }
-        }
-
-        function displayActionPlan(actionPlan) {
-            const actionItems = document.getElementById('action-items');
-            actionItems.innerHTML = actionPlan.map(action => `
-                <div class="action-item">
-                    <div class="action-priority priority-${action.priority.toLowerCase()}">${action.priority} Priority</div>
-                    <div class="action-title">${action.title}</div>
-                    <div class="action-description">${action.desc}</div>
-                </div>
-            `).join('');
         }
 
         function showMessage(message, type) {
