@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Compass - AI-Powered Resume Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -28,6 +29,30 @@
             text-align: center;
             margin-bottom: 3rem;
             color: white;
+            position: relative;
+        }
+
+        .reset-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-1px);
         }
 
         .header h1 {
@@ -52,11 +77,15 @@
             font-style: italic;
         }
 
+        .input-options-container {
+            margin-bottom: 2rem;
+        }
+
         .upload-area {
             background: rgba(255,255,255,0.95);
             border-radius: 24px;
             padding: 3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-align: center;
             border: 3px dashed #ddd;
             transition: all 0.3s ease;
@@ -64,6 +93,118 @@
             position: relative;
             backdrop-filter: blur(20px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .divider-container {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            opacity: 0.6;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        .divider-text {
+            margin: 0 2rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .text-input-area {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 3px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .text-input-area:focus-within {
+            border-color: #4CAF50;
+            transform: scale(1.01);
+        }
+
+        .text-input-icon {
+            font-size: 3rem;
+            color: #2196F3;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .text-input-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .text-input-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-input-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .resume-text-area {
+            width: 100%;
+            min-height: 300px;
+            max-height: 500px;
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            resize: vertical;
+            background: white;
+            transition: border-color 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .resume-text-area:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .resume-text-area::placeholder {
+            color: #999;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .analyze-text-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            min-width: 250px;
+        }
+
+        .analyze-text-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        .analyze-text-btn:active {
+            transform: translateY(0);
         }
 
         .upload-area:hover, .upload-area.dragover {
@@ -143,7 +284,6 @@
             color: #333;
         }
 
-        /* New Profile Review Section */
         .profile-review-section {
             display: none;
             background: rgba(255,255,255,0.95);
@@ -423,6 +563,73 @@
             margin-bottom: 0.5rem;
         }
 
+        .role-fit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .role-fit-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .role-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .fit-percentage {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .action-plan {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-plan h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .action-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .action-priority {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
         .error-message, .success-message {
             padding: 1rem;
             border-radius: 8px;
@@ -447,6 +654,11 @@
         .section-3 { border-left-color: #FF9800; }
         .section-4 { border-left-color: #9C27B0; }
         .section-5 { border-left-color: #F44336; }
+        .section-6 { border-left-color: #00BCD4; }
+        .section-7 { border-left-color: #795548; }
+        .section-8 { border-left-color: #607D8B; }
+        .section-9 { border-left-color: #E91E63; }
+        .section-10 { border-left-color: #3F51B5; }
 
         @media (max-width: 768px) {
             .container {
@@ -464,24 +676,74 @@
             .upload-area {
                 padding: 2rem;
             }
+            
+            .action-items {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Career Determination</h1>
+            <button class="reset-btn" id="reset-btn" onclick="resetApplication()" title="Start Over">
+                🔄 Start Over
+            </button>
+            <h1>Career Compass</h1>
             <p>AI-Powered Resume Analysis with Content-Based Job Recommendations</p>
-            <p class="subtitle">Powered by Llama 3.3 70B Courtesy of CrewAI & Python - Intelligent Profile Extraction & Market Analysis</p>
+            <p class="subtitle">Powered by Llama 3.3 70B - Intelligent Profile Extraction & Market Analysis</p>
         </div>
 
-        <!-- Step 1: Upload Area -->
-        <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
-            <div class="upload-icon">📄</div>
-            <div class="upload-text">Upload Your Resume PDF</div>
-            <div class="upload-subtext">AI will automatically extract your profile and recommend optimal career paths</div>
-            <button class="upload-btn">Choose PDF File</button>
-            <input type="file" id="file-input" class="file-input" accept=".pdf" />
+        <!-- Step 1: Input Options -->
+        <div class="input-options-container">
+            <!-- Upload Option -->
+            <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Upload Your Resume PDF</div>
+                <div class="upload-subtext">Drag and drop or click to select your PDF file</div>
+                <button class="upload-btn">Choose PDF File</button>
+                <input type="file" id="file-input" class="file-input" accept=".pdf" />
+            </div>
+
+            <!-- OR Divider -->
+            <div class="divider-container">
+                <div class="divider-line"></div>
+                <div class="divider-text">OR</div>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- Text Input Option -->
+            <div class="text-input-area">
+                <div class="text-input-icon">📝</div>
+                <div class="text-input-header">
+                    <div class="text-input-title">Paste Your Resume Text</div>
+                    <div class="text-input-subtitle">Copy and paste your resume content directly</div>
+                </div>
+                <textarea 
+                    id="resume-text-input" 
+                    class="resume-text-area" 
+                    placeholder="Paste your resume text here...
+
+Example:
+John Doe
+Software Engineer
+john.doe@email.com | (555) 123-4567 | LinkedIn: linkedin.com/in/johndoe
+
+PROFESSIONAL EXPERIENCE
+Software Engineer | ABC Company | 2020-Present
+• Developed web applications using React and Node.js
+• Collaborated with cross-functional teams to deliver projects
+• Improved system performance by 25%
+
+EDUCATION
+Bachelor of Science in Computer Science | University Name | 2020
+
+SKILLS
+JavaScript, React, Node.js, Python, AWS, Git"></textarea>
+                <button class="analyze-text-btn" onclick="analyzeResumeText()">
+                    Analyze Resume Text
+                </button>
+            </div>
         </div>
 
         <!-- Step 2: Progress Section -->
@@ -492,7 +754,7 @@
             </div>
         </div>
 
-        <!-- Step 3: Profile Review Section (NEW) -->
+        <!-- Step 3: Profile Review Section -->
         <div class="profile-review-section" id="profile-review-section">
             <div class="review-header">
                 <h2>Review & Customize Your Profile</h2>
@@ -515,45 +777,27 @@
                     <input type="text" class="form-input" id="current-location" placeholder="e.g., San Francisco, CA">
                 </div>
 
-                <div class="profile-review-section" id="profile-review-section">
-                <form class="profile-form" id="profile-form">
-                    <div class="form-group">
-                        <label class="form-label">Target Job Categories</label>
-                        <div class="multi-select-container">
-                            <input type="text" class="form-input multi-select-input" id="job-categories-input" placeholder="Select job categories..." readonly onclick="toggleDropdown('job-categories')">
-                            <div class="multi-select-dropdown" id="job-categories-dropdown">
-                                <div class="multi-select-option" data-value="Accountant">Accountant</div>
-                                <div class="multi-select-option" data-value="Advocate">Advocate (Legal/Policy)</div>
-                                <div class="multi-select-option" data-value="Agriculture">Agriculture</div>
-                                <div class="multi-select-option" data-value="Apparel">Apparel</div>
-                                <div class="multi-select-option" data-value="Arts">Arts & Culture</div>
-                                <div class="multi-select-option" data-value="Automobile">Automobile</div>
-                                <div class="multi-select-option" data-value="Aviation">Aviation</div>
-                                <div class="multi-select-option" data-value="Banking">Banking</div>
-                                <div class="multi-select-option" data-value="BOP">Business Operations (BOP)</div>
-                                <div class="multi-select-option" data-value="Business-Development">Business Development</div>
-                                <div class="multi-select-option" data-value="Chef">Chef / Culinary</div>
-                                <div class="multi-select-option" data-value="Construction">Construction</div>
-                                <div class="multi-select-option" data-value="Designer">Designer</div>
-                                <div class="multi-select-option" data-value="Digital Media">Digital Media</div>
-                                <div class="multi-select-option" data-value="Engineering">Engineering</div>
-                                <div class="multi-select-option" data-value="Finance">Finance</div>
-                                <div class="multi-select-option" data-value="Fitness">Fitness</div>
-                                <div class="multi-select-option" data-value="Healthcare">Healthcare</div>
-                                <div class="multi-select-option" data-value="HR">Human Resources (HR)</div>
-                                <div class="multi-select-option" data-value="IT">Information Technology (IT)</div>
-                                <div class="multi-select-option" data-value="PR">Public Relations (PR)</div>
-                                <div class="multi-select-option" data-value="Sales">Sales</div>
-                                <div class="multi-select-option" data-value="Teacher">Teacher / Education</div>
-                            </div>
+                <div class="form-group">
+                    <label class="form-label">Target Job Categories</label>
+                    <div class="multi-select-container">
+                        <input type="text" class="form-input multi-select-input" id="job-categories-input" placeholder="Select job categories..." readonly onclick="toggleDropdown('job-categories')">
+                        <div class="multi-select-dropdown" id="job-categories-dropdown">
+                            <div class="multi-select-option" data-value="Software Development">Software Development</div>
+                            <div class="multi-select-option" data-value="Data & Analytics">Data & Analytics</div>
+                            <div class="multi-select-option" data-value="Product & Design">Product & Design</div>
+                            <div class="multi-select-option" data-value="Cloud & Infrastructure">Cloud & Infrastructure</div>
+                            <div class="multi-select-option" data-value="Cybersecurity">Cybersecurity</div>
+                            <div class="multi-select-option" data-value="Management & Leadership">Management & Leadership</div>
+                            <div class="multi-select-option" data-value="Sales & Marketing">Sales & Marketing</div>
+                            <div class="multi-select-option" data-value="Finance & Business">Finance & Business</div>
+                            <div class="multi-select-option" data-value="Healthcare & Life Sciences">Healthcare & Life Sciences</div>
+                            <div class="multi-select-option" data-value="Education & Training">Education & Training</div>
                         </div>
                     </div>
-                    
-                    </form>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Recommended Roles</label>
+                    <label class="form-label">Target Roles</label>
                     <textarea class="form-textarea" id="target-roles" placeholder="e.g., Full Stack Developer, Software Engineer, Technical Lead"></textarea>
                 </div>
 
@@ -640,6 +884,14 @@
             <div class="analysis-sections" id="analysis-sections">
                 <!-- Analysis sections will be dynamically generated -->
             </div>
+
+            <!-- Prioritized Action Plan -->
+            <div class="action-plan" id="action-plan">
+                <h3>🎯 Prioritized Action Plan</h3>
+                <div class="action-items" id="action-items">
+                    <!-- Action items will be inserted here -->
+                </div>
+            </div>
         </div>
 
         <div id="error-message" class="error-message"></div>
@@ -647,6 +899,9 @@
     </div>
 
     <script>
+        // Initialize PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
         let analysisInProgress = false;
         let extractedProfile = {};
         let selectedJobCategories = [];
@@ -682,7 +937,7 @@
             }
         });
 
-        function handleFileUpload(event) {
+        async function handleFileUpload(event) {
             const file = event.target.files[0];
             
             if (!file) return;
@@ -697,170 +952,538 @@
                 return;
             }
             
-            showMessage(`${file.name} uploaded successfully! AI profile extraction starting...`, 'success');
-            startProfileExtraction(file);
+            showMessage(`${file.name} uploaded successfully! Starting PDF analysis...`, 'success');
+            await startProfileExtraction(file);
+        }
+
+        async function analyzeResumeText() {
+            const resumeText = document.getElementById('resume-text-input').value.trim();
+            
+            if (!resumeText) {
+                showMessage('Please paste your resume text before analyzing', 'error');
+                return;
+            }
+
+            if (resumeText.length < 100) {
+                showMessage('Resume text seems too short. Please provide more detailed information.', 'error');
+                return;
+            }
+
+            showMessage('Resume text received! Starting AI analysis...', 'success');
+            await startTextAnalysis(resumeText);
         }
 
         async function startProfileExtraction(file) {
             if (analysisInProgress) return;
             
             analysisInProgress = true;
+            
+            // Hide input options and show progress
+            document.querySelector('.input-options-container').style.display = 'none';
             showProgress();
             
             try {
-                await simulateProfileExtraction(file);
-                const profile = await extractProfileFromFile(file);
+                await simulateProfileExtraction();
+                const extractedText = await extractTextFromPDF(file);
+                const profile = await extractProfileFromText(extractedText);
                 showProfileReviewSection(profile);
+                showResetButton();
             } catch (error) {
-                showMessage('Profile extraction failed. Please try again.', 'error');
+                console.error('PDF processing error:', error);
+                showMessage('PDF processing failed. Please try again or use the text input option.', 'error');
+                document.querySelector('.input-options-container').style.display = 'block';
             } finally {
                 analysisInProgress = false;
                 hideProgress();
             }
         }
 
-        async function simulateProfileExtraction(file) {
-            const steps = [
-                'Processing PDF document...',
-                'Extracting text content with OCR...',
-                'Analyzing candidate background...',
-                'Identifying skills and experience...',
-                'Determining job categories...',
-                'Estimating experience level...',
-                'Extracting education and location...',
-                'Preparing profile for review...'
-            ];
+        async function startTextAnalysis(resumeText) {
+            if (analysisInProgress) return;
             
-            for (let i = 0; i < steps.length; i++) {
-                updateProgress((i + 1) / steps.length * 100, steps[i]);
-                await new Promise(resolve => setTimeout(resolve, 800));
+            analysisInProgress = true;
+            
+            // Hide input options and show progress
+            document.querySelector('.input-options-container').style.display = 'none';
+            showProgress();
+            
+            try {
+                await simulateProfileExtraction();
+                const profile = await extractProfileFromText(resumeText);
+                showProfileReviewSection(profile);
+                showResetButton();
+            } catch (error) {
+                console.error('Text analysis error:', error);
+                showMessage('Text analysis failed. Please try again.', 'error');
+                document.querySelector('.input-options-container').style.display = 'block';
+            } finally {
+                analysisInProgress = false;
+                hideProgress();
             }
         }
 
-        async function extractProfileFromFile(file) {
-            // Simulate AI profile extraction
-            const experienceLevels = ['entry', 'mid', 'senior'];
-            const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA', 'Remote'];
-            const categories = [
-                ['Software Development', 'Data & Analytics'],
-                ['Product & Design', 'Management & Leadership'],
-                ['Cloud & Infrastructure', 'Cybersecurity']
-            ];
-            const skills = [
-                ['Python', 'JavaScript', 'React', 'AWS', 'Docker'],
-                ['Project Management', 'Data Analysis', 'SQL', 'Agile', 'Leadership'],
-                ['Machine Learning', 'Node.js', 'Kubernetes', 'Git', 'API Design']
-            ];
+        async function extractTextFromPDF(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let fullText = '';
 
-            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-            const randomSkills = skills[Math.floor(Math.random() * skills.length)];
-            const expLevel = experienceLevels[Math.floor(Math.random() * experienceLevels.length)];
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n';
+                }
 
-            return {
-                experience_level: expLevel,
-                current_location: locations[Math.floor(Math.random() * locations.length)],
-                job_categories: randomCategory,
-                target_roles: generateTargetRoles(randomCategory),
-                key_skills: randomSkills,
-                industries: ['Technology', 'Finance'][Math.floor(Math.random() * 2)],
-                work_arrangement_preference: ['Remote', 'Hybrid', 'Flexible'][Math.floor(Math.random() * 3)],
-                estimated_salary_range: generateSalaryRange(expLevel),
-                education_level: ['Bachelor\'s', 'Master\'s', 'PhD'][Math.floor(Math.random() * 3)],
-                career_focus: 'Professional growth and development in target industry'
-            };
-        }
-
-        function generateTargetRoles(categories) {
-            const roleMap = {
-                'Software Development': ['Full Stack Developer', 'Senior Software Engineer', 'Frontend Developer'],
-                'Data & Analytics': ['Data Scientist', 'ML Engineer', 'Analytics Manager'],
-                'Product & Design': ['Product Manager', 'UX Designer', 'Product Owner'],
-                'Management & Leadership': ['Engineering Manager', 'Team Lead', 'Technical Director'],
-                'Cloud & Infrastructure': ['Cloud Engineer', 'DevOps Engineer', 'Site Reliability Engineer'],
-                'Cybersecurity': ['Security Analyst', 'Penetration Tester', 'Security Engineer']
-            };
-            
-            return categories.flatMap(cat => roleMap[cat] || ['Specialist', 'Analyst']);
-        }
-
-        function generateSalaryRange(level) {
-            const ranges = {
-                'entry': '$60,000-$85,000',
-                'mid': '$85,000-$125,000',
-                'senior': '$125,000-$180,000'
-            };
-            return ranges[level] || '$70,000-$100,000';
-        }
-
-        function showProfileReviewSection(profile) {
-            extractedProfile = profile;
-            
-            // Populate form fields with extracted data
-            document.getElementById('experience-level').value = profile.experience_level;
-            document.getElementById('current-location').value = profile.current_location;
-            document.getElementById('target-roles').value = profile.target_roles.join(', ');
-            document.getElementById('work-style').value = profile.work_arrangement_preference;
-            document.getElementById('salary-range').value = profile.estimated_salary_range;
-            document.getElementById('education-level').value = profile.education_level;
-            document.getElementById('career-focus').value = profile.career_focus;
-            
-            // Set job categories and industries
-            selectedJobCategories = [...profile.job_categories];
-            selectedIndustries = Array.isArray(profile.industries) ? profile.industries : [profile.industries];
-            updateMultiSelectDisplay('job-categories', selectedJobCategories);
-            updateMultiSelectDisplay('industries', selectedIndustries);
-            
-            // Set skills
-            skillsList = [...profile.key_skills];
-            updateSkillsDisplay();
-            
-            // Show the review section
-            document.getElementById('profile-review-section').style.display = 'block';
-            document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Multi-select dropdown functionality
-        function toggleDropdown(type) {
-            const dropdown = document.getElementById(type + '-dropdown');
-            const isVisible = dropdown.style.display === 'block';
-            
-            // Close all dropdowns
-            document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
-            
-            if (!isVisible) {
-                dropdown.style.display = 'block';
-                updateDropdownSelection(type);
+                return fullText.trim();
+            } catch (error) {
+                throw new Error('Failed to extract text from PDF: ' + error.message);
             }
         }
 
-        function updateDropdownSelection(type) {
-            const dropdown = document.getElementById(type + '-dropdown');
-            const selected = type === 'job-categories' ? selectedJobCategories : selectedIndustries;
+        async function extractProfileFromText(resumeText) {
+            if (!resumeText || resumeText.trim().length === 0) {
+                throw new Error('No text content found');
+            }
+
+            console.log('Analyzing resume text:', resumeText.substring(0, 200) + '...');
+
+            const profile = {
+                experience_level: determineExperienceLevel(resumeText),
+                current_location: extractLocation(resumeText),
+                job_categories: determineJobCategories(resumeText),
+                target_roles: extractRoles(resumeText),
+                key_skills: extractSkills(resumeText),
+                industries: determineIndustries(resumeText),
+                work_arrangement_preference: 'Flexible',
+                estimated_salary_range: '',
+                education_level: extractEducation(resumeText),
+                career_focus: extractCareerFocus(resumeText)
+            };
+
+            // Generate salary range based on experience level
+            profile.estimated_salary_range = generateSalaryRange(profile.experience_level);
+
+            console.log('Extracted profile:', profile);
+            return profile;
+        }
+
+        function determineExperienceLevel(text) {
+            const textLower = text.toLowerCase();
             
-            dropdown.querySelectorAll('.multi-select-option').forEach(option => {
-                const value = option.getAttribute('data-value');
-                option.classList.toggle('selected', selected.includes(value));
-                
-                option.onclick = () => {
-                    if (selected.includes(value)) {
-                        const index = selected.indexOf(value);
-                        selected.splice(index, 1);
-                    } else {
-                        selected.push(value);
+            // Look for years of experience patterns
+            const yearPatterns = [
+                /(\d+)\+?\s*years?\s*(?:of\s*)?(?:experience|exp)/gi,
+                /(\d+)\+?\s*yrs?\s*(?:of\s*)?(?:experience|exp)/gi,
+                /experience:\s*(\d+)\+?\s*years?/gi,
+                /(\d+)\+?\s*years?\s*in/gi
+            ];
+
+            let maxYears = 0;
+            for (const pattern of yearPatterns) {
+                const matches = text.matchAll(pattern);
+                for (const match of matches) {
+                    const years = parseInt(match[1]);
+                    if (years > maxYears) {
+                        maxYears = years;
                     }
-                    updateMultiSelectDisplay(type, selected);
-                    updateDropdownSelection(type);
-                };
+                }
+            }
+
+            // Check job titles and seniority indicators
+            const seniorTerms = ['senior', 'lead', 'principal', 'staff', 'architect'];
+            const managementTerms = ['manager', 'director', 'vp', 'vice president', 'cto', 'ceo', 'head of'];
+            const juniorTerms = ['junior', 'intern', 'entry', 'associate', 'trainee', 'graduate'];
+
+            const hasSeniorTitle = seniorTerms.some(term => textLower.includes(term));
+            const hasManagementTitle = managementTerms.some(term => textLower.includes(term));
+            const hasJuniorTitle = juniorTerms.some(term => textLower.includes(term));
+
+            // Determine experience level
+            if (maxYears >= 15 || hasManagementTitle) return 'executive';
+            if (maxYears >= 8 || hasSeniorTitle) return 'senior';
+            if (maxYears >= 3 && !hasJuniorTitle) return 'mid';
+            if (maxYears <= 2 || hasJuniorTitle) return 'entry';
+            
+            // Default based on content complexity
+            const wordCount = text.split(/\s+/).length;
+            if (wordCount > 800) return 'senior';
+            if (wordCount > 500) return 'mid';
+            return 'entry';
+        }
+
+        function extractLocation(text) {
+            // US states abbreviations
+            const statePattern = /\b[A-Z]{2}\b/g;
+            const cityStatePattern = /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2})\b/g;
+            const majorCities = /\b(?:New York|Los Angeles|Chicago|Houston|Phoenix|Philadelphia|San Antonio|San Diego|Dallas|San Jose|Austin|Jacksonville|Fort Worth|Columbus|San Francisco|Charlotte|Indianapolis|Seattle|Denver|Washington|Boston|Nashville|Baltimore|Portland|Oklahoma City|Las Vegas|Louisville|Milwaukee|Albuquerque|Tucson|Fresno|Sacramento|Mesa|Kansas City|Atlanta|Long Beach|Colorado Springs|Raleigh|Miami|Virginia Beach|Omaha|Oakland|Minneapolis|Tulsa|Arlington|Tampa|New Orleans|Wichita|Cleveland|Bakersfield|Aurora|Anaheim|Honolulu|Santa Ana|Riverside|Corpus Christi|Lexington|Stockton|Henderson|Saint Paul|St\. Paul|Cincinnati|Pittsburgh|Greensboro|Anchorage|Plano|Lincoln|Orlando|Irvine|Newark|Toledo|Durham|Chula Vista|Fort Wayne|Jersey City|St\. Petersburg|Laredo|Madison|Chandler|Buffalo|Lubbock|Scottsdale|Reno|Glendale|Gilbert|Winston Salem|North Las Vegas|Norfolk|Chesapeake|Garland|Irving|Hialeah|Fremont|Boise|Richmond|Baton Rouge|Spokane|Des Moines|Tacoma|San Bernardino|Modesto|Fontana|Santa Clarita|Birmingham|Oxnard|Fayetteville|Moreno Valley|Akron|Huntington Beach|Little Rock|Augusta|Amarillo|Glendale|Mobile|Newport News|Grand Rapids|Montgomery|Shreveport|Knoxville|Worcester|Grand Prairie|Salt Lake City|Huntsville|Clarksville|Fort Lauderdale|Jackson|Chattanooga|Columbus|Cape Coral|Sioux Falls|Peoria|Elk Grove|Providence|Vancouver|Lancaster|Palmdale|Salinas|Hayward|Corona|Paterson|Sunnyvale|Pasadena|Killeen|Torrance|Bridgeport|Escondido|Lakewood|Hollywood|Pomona|Cary|Rockford|Alexandria|Naperville|Bellevue)\b/gi;
+
+            // Check for remote work
+            if (/\b(?:remote|work from home|wfh|distributed|telecommute)\b/i.test(text)) {
+                return 'Remote';
+            }
+
+            // Try city, state pattern first
+            const cityStateMatch = text.match(cityStatePattern);
+            if (cityStateMatch && cityStateMatch.length > 0) {
+                return cityStateMatch[0];
+            }
+
+            // Try major cities
+            const majorCityMatch = text.match(majorCities);
+            if (majorCityMatch && majorCityMatch.length > 0) {
+                // Try to find state for the city
+                const cityIndex = text.indexOf(majorCityMatch[0]);
+                const surroundingText = text.substring(Math.max(0, cityIndex - 50), cityIndex + 100);
+                const nearbyState = surroundingText.match(/\b[A-Z]{2}\b/);
+                if (nearbyState) {
+                    return `${majorCityMatch[0]}, ${nearbyState[0]}`;
+                }
+                return majorCityMatch[0];
+            }
+
+            return 'Not specified';
+        }
+
+        function determineJobCategories(text) {
+            const textLower = text.toLowerCase();
+            const categories = [];
+
+            const categoryKeywords = {
+                'Software Development': [
+                    'software', 'developer', 'programming', 'coding', 'frontend', 'backend', 
+                    'fullstack', 'full stack', 'web development', 'mobile development', 'app development',
+                    'javascript', 'python', 'java', 'c++', 'react', 'angular', 'vue', 'node.js'
+                ],
+                'Data & Analytics': [
+                    'data', 'analytics', 'machine learning', 'ai', 'artificial intelligence', 
+                    'data scientist', 'analysis', 'statistics', 'sql', 'python', 'r programming',
+                    'tableau', 'power bi', 'pandas', 'numpy', 'tensorflow', 'pytorch'
+                ],
+                'Product & Design': [
+                    'product manager', 'ux', 'ui', 'design', 'user experience', 'product owner',
+                    'figma', 'sketch', 'adobe', 'photoshop', 'product management', 'user interface'
+                ],
+                'Cloud & Infrastructure': [
+                    'aws', 'azure', 'google cloud', 'cloud', 'devops', 'kubernetes', 'docker',
+                    'infrastructure', 'sre', 'site reliability', 'terraform', 'ansible'
+                ],
+                'Cybersecurity': [
+                    'security', 'cybersecurity', 'penetration testing', 'information security',
+                    'cyber', 'infosec', 'vulnerability', 'firewall', 'encryption'
+                ],
+                'Management & Leadership': [
+                    'manager', 'director', 'lead', 'leadership', 'team lead', 'supervisor',
+                    'management', 'project manager', 'program manager', 'scrum master'
+                ],
+                'Sales & Marketing': [
+                    'sales', 'marketing', 'business development', 'account manager',
+                    'digital marketing', 'seo', 'social media', 'content marketing'
+                ],
+                'Finance & Business': [
+                    'finance', 'accounting', 'business analyst', 'financial analyst',
+                    'investment', 'banking', 'consulting', 'strategy'
+                ],
+                'Healthcare & Life Sciences': [
+                    'healthcare', 'medical', 'nurse', 'doctor', 'pharmaceutical',
+                    'biotech', 'clinical', 'health', 'medicine'
+                ],
+                'Education & Training': [
+                    'teacher', 'educator', 'training', 'education', 'instructor',
+                    'professor', 'curriculum', 'learning'
+                ]
+            };
+
+            for (const [category, keywords] of Object.entries(categoryKeywords)) {
+                const matchCount = keywords.filter(keyword => textLower.includes(keyword)).length;
+                if (matchCount >= 1) {
+                    categories.push({ category, score: matchCount });
+                }
+            }
+
+            // Sort by relevance and return top 3
+            categories.sort((a, b) => b.score - a.score);
+            const result = categories.slice(0, 3).map(item => item.category);
+
+            return result.length > 0 ? result : ['Software Development']; // Default
+        }
+
+        function extractRoles(text) {
+            const rolePatterns = [
+                // Software roles
+                /\b(?:senior\s+|junior\s+|lead\s+)?(?:software|web|frontend|front-end|backend|back-end|full[- ]?stack|mobile)\s+(?:developer|engineer|programmer)\b/gi,
+                // Data roles
+                /\b(?:senior\s+|junior\s+|lead\s+)?(?:data|machine learning|ml|ai)\s+(?:scientist|engineer|analyst)\b/gi,
+                // Management roles
+                /\b(?:senior\s+|junior\s+)?(?:product|project|program|engineering|technical)\s+manager\b/gi,
+                // Design roles
+                /\b(?:senior\s+|junior\s+|lead\s+)?(?:ux|ui|user experience|user interface)\s+designer\b/gi,
+                // Engineering roles
+                /\b(?:senior\s+|junior\s+|lead\s+)?(?:devops|cloud|security|qa|quality assurance|site reliability)\s+engineer\b/gi,
+                // Leadership roles
+                /\b(?:team|tech|technical)\s+lead\b/gi,
+                // Analysis roles
+                /\b(?:senior\s+|junior\s+)?(?:business|systems|financial|data)\s+analyst\b/gi,
+                // Specific titles
+                /\b(?:architect|consultant|specialist|coordinator|administrator|director)\b/gi
+            ];
+
+            const roles = new Set();
+            
+            rolePatterns.forEach(pattern => {
+                const matches = text.match(pattern);
+                if (matches) {
+                    matches.forEach(match => {
+                        const cleanRole = match.trim().replace(/\s+/g, ' ').toLowerCase()
+                            .split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        if (cleanRole.length > 3) {
+                            roles.add(cleanRole);
+                        }
+                    });
+                }
+            });
+
+            const rolesArray = Array.from(roles);
+            return rolesArray.length > 0 ? rolesArray.slice(0, 5) : ['Software Developer', 'Web Developer'];
+        }
+
+        function extractSkills(text) {
+    const commonSkills = [
+        // Programming Languages
+        'JavaScript', 'Python', 'Java', 'C++', 'C#', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'TypeScript', 'Scala',
+        // Web Technologies
+        'HTML', 'CSS', 'React', 'Angular', 'Vue.js', 'Node.js', 'Express', 'Next.js', 'Redux', 'jQuery', 'Bootstrap',
+        // Databases
+        'SQL', 'MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'Oracle', 'SQLite', 'DynamoDB', 'Cassandra',
+        // Cloud & Infrastructure
+        'AWS', 'Azure', 'Google Cloud', 'GCP', 'Docker', 'Kubernetes', 'Jenkins', 'Git', 'GitHub', 'GitLab', 'Terraform', 'Ansible',
+        // Data & Analytics
+        'Machine Learning', 'Data Analysis', 'Pandas', 'NumPy', 'TensorFlow', 'PyTorch', 'Tableau', 'Power BI', 'Excel', 'R',
+        // Design & Product
+        'Figma', 'Sketch', 'Adobe Creative Suite', 'Photoshop', 'Illustrator', 'UX Design', 'UI Design', 'Wireframing',
+        // Business & Management
+        'Project Management', 'Agile', 'Scrum', 'Jira', 'Confluence', 'Leadership', 'Team Management', 'Strategy',
+        // Other Technical
+        'Linux', 'Unix', 'API', 'REST', 'GraphQL', 'Microservices', 'DevOps', 'CI/CD', 'Testing', 'Debugging'
+    ];
+
+    const foundSkills = [];
+    const textLower = text.toLowerCase();
+
+    // Check for exact matches and similar variations
+    commonSkills.forEach(skill => {
+        const skillLower = skill.toLowerCase();
+        const skillVariations = [
+            skillLower,
+            skillLower.replace(/\s/g, ''),
+            skillLower.replace(/\./g, ''),
+            skillLower.replace(/-/g, ''),
+            skillLower.replace(/-/g, ' ')
+        ];
+
+        const isFound = skillVariations.some(variation => {
+            // Fixed: Proper regex escaping without embedded HTML
+            const regex = new RegExp(`\\b${variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+            return regex.test(textLower);
+        });
+
+        if (isFound && !foundSkills.some(fs => fs.toLowerCase() === skillLower)) {
+            foundSkills.push(skill);
+        }
+    });
+
+    // If few skills found, try to extract from patterns
+    if (foundSkills.length < 3) {
+        const skillSections = text.match(/(?:skills?|technologies?|tools?|languages?)[:\-\s]*([\s\S]*?)(?:\n\n|\n[A-Z]|$)/gi);
+        if (skillSections) {
+            skillSections.forEach(section => {
+                const skills = section.split(/[,\n\|•\-]/).map(s => s.trim()).filter(s => s.length > 2 && s.length < 25);
+                skills.forEach(skill => {
+                    const cleanSkill = skill.replace(/^[^\w]+|[^\w]+$/g, '');
+                    if (cleanSkill && !foundSkills.includes(cleanSkill) && foundSkills.length < 10) {
+                        foundSkills.push(cleanSkill);
+                    }
+                });
             });
         }
+    }
 
-        function updateMultiSelectDisplay(type, selected) {
-            const input = document.getElementById(type + '-input');
-            input.value = selected.join(', ');
+    return foundSkills.length > 0 ? foundSkills.slice(0, 10) : ['JavaScript', 'Python', 'SQL', 'Git', 'Communication'];
+}
+
+function determineIndustries(text) {
+    const textLower = text.toLowerCase();
+    const industries = [];
+
+    const industryKeywords = {
+        'Technology': ['software', 'tech', 'startup', 'saas', 'platform', 'digital', 'app', 'web', 'mobile', 'it', 'computer'],
+        'Finance': ['finance', 'bank', 'investment', 'fintech', 'trading', 'insurance', 'financial', 'accounting', 'consulting'],
+        'Healthcare': ['healthcare', 'medical', 'hospital', 'pharma', 'pharmaceutical', 'biotech', 'health', 'clinical'],
+        'Education': ['education', 'university', 'school', 'learning', 'training', 'academic', 'teaching', 'research'],
+        'Retail': ['retail', 'ecommerce', 'e-commerce', 'commerce', 'shopping', 'consumer', 'marketplace', 'sales'],
+        'Manufacturing': ['manufacturing', 'production', 'industrial', 'factory', 'automotive', 'engineering', 'supply chain'],
+        'Media & Entertainment': ['media', 'entertainment', 'gaming', 'streaming', 'content', 'publishing', 'advertising'],
+        'Government': ['government', 'federal', 'state', 'public sector', 'municipal', 'agency', 'nonprofit', 'ngo']
+    };
+
+    for (const [industry, keywords] of Object.entries(industryKeywords)) {
+        const matchCount = keywords.filter(keyword => textLower.includes(keyword)).length;
+        if (matchCount >= 1) {
+            industries.push({ industry, score: matchCount });
         }
+    }
 
-        // Skills input functionality
-        document.getElementById('skills-input').addEventListener('keypress', function(e) {
+    // Sort by relevance
+    industries.sort((a, b) => b.score - a.score);
+    const result = industries.slice(0, 2).map(item => item.industry);
+
+    return result.length > 0 ? result : ['Technology'];
+}
+
+function extractEducation(text) {
+    const textLower = text.toLowerCase();
+    
+    const educationPatterns = [
+        { pattern: /\b(?:phd|ph\.d\.?|doctorate|doctoral)\b/i, level: 'PhD' },
+        { pattern: /\b(?:master|mba|ms|ma|m\.s\.?|m\.a\.?|masters)\b/i, level: "Master's" },
+        { pattern: /\b(?:bachelor|bs|ba|b\.s\.?|b\.a\.?|bachelors)\b/i, level: "Bachelor's" },
+        { pattern: /\b(?:associate|aa|as|a\.a\.?|a\.s\.?|associates)\b/i, level: "Associate's" },
+        { pattern: /\b(?:certification|certified|certificate)\b/i, level: 'Professional' },
+        { pattern: /\b(?:high school|diploma|ged)\b/i, level: 'High School' }
+    ];
+
+    for (const { pattern, level } of educationPatterns) {
+        if (pattern.test(text)) {
+            return level;
+        }
+    }
+    
+    // Default assumption for professional resume
+    return "Bachelor's";
+}
+
+function extractCareerFocus(text) {
+    const textLower = text.toLowerCase();
+    
+    if (/\b(?:leadership|management|lead|manager|director)\b/i.test(text)) {
+        return 'Leadership and team management in technology organizations';
+    }
+    if (/\b(?:data|analytics|machine learning|ai|scientist)\b/i.test(text)) {
+        return 'Data-driven decision making and analytics excellence';
+    }
+    if (/\b(?:product|user experience|ux|design)\b/i.test(text)) {
+        return 'Product development and user experience optimization';
+    }
+    if (/\b(?:cloud|infrastructure|devops|architecture)\b/i.test(text)) {
+        return 'Cloud infrastructure and scalable system architecture';
+    }
+    if (/\b(?:security|cybersecurity|information security)\b/i.test(text)) {
+        return 'Cybersecurity and information protection';
+    }
+    
+    return 'Professional growth and technical excellence in chosen field';
+}
+
+function generateSalaryRange(experienceLevel) {
+    const ranges = {
+        'entry': '$50,000-$75,000',
+        'mid': '$75,000-$120,000',
+        'senior': '$120,000-$180,000',
+        'executive': '$180,000-$300,000'
+    };
+    return ranges[experienceLevel] || '$70,000-$100,000';
+}
+
+async function simulateProfileExtraction() {
+    const steps = [
+        'Processing document content...',
+        'Extracting text and formatting...',
+        'Analyzing professional background...',
+        'Identifying skills and competencies...',
+        'Determining job categories...',
+        'Estimating experience level...',
+        'Extracting education and location...',
+        'Preparing profile for review...'
+    ];
+    
+    for (let i = 0; i < steps.length; i++) {
+        updateProgress((i + 1) / steps.length * 100, steps[i]);
+        await new Promise(resolve => setTimeout(resolve, 600));
+    }
+}
+
+function showProfileReviewSection(profile) {
+    extractedProfile = profile;
+    
+    // Populate form fields with extracted data
+    document.getElementById('experience-level').value = profile.experience_level;
+    document.getElementById('current-location').value = profile.current_location;
+    document.getElementById('target-roles').value = profile.target_roles.join(', ');
+    document.getElementById('work-style').value = profile.work_arrangement_preference;
+    document.getElementById('salary-range').value = profile.estimated_salary_range;
+    document.getElementById('education-level').value = profile.education_level;
+    document.getElementById('career-focus').value = profile.career_focus;
+    
+    // Set job categories and industries
+    selectedJobCategories = [...profile.job_categories];
+    selectedIndustries = Array.isArray(profile.industries) ? profile.industries : [profile.industries];
+    updateMultiSelectDisplay('job-categories', selectedJobCategories);
+    updateMultiSelectDisplay('industries', selectedIndustries);
+    
+    // Set skills
+    skillsList = [...profile.key_skills];
+    updateSkillsDisplay();
+    
+    // Show the review section
+    document.getElementById('profile-review-section').style.display = 'block';
+    document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Multi-select dropdown functionality
+function toggleDropdown(type) {
+    const dropdown = document.getElementById(type + '-dropdown');
+    const isVisible = dropdown.style.display === 'block';
+    
+    // Close all dropdowns
+    document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
+    
+    if (!isVisible) {
+        dropdown.style.display = 'block';
+        updateDropdownSelection(type);
+    }
+}
+
+function updateDropdownSelection(type) {
+    const dropdown = document.getElementById(type + '-dropdown');
+    const selected = type === 'job-categories' ? selectedJobCategories : selectedIndustries;
+    
+    dropdown.querySelectorAll('.multi-select-option').forEach(option => {
+        const value = option.getAttribute('data-value');
+        option.classList.toggle('selected', selected.includes(value));
+        
+        option.onclick = () => {
+            if (selected.includes(value)) {
+                const index = selected.indexOf(value);
+                selected.splice(index, 1);
+            } else {
+                selected.push(value);
+            }
+            updateMultiSelectDisplay(type, selected);
+            updateDropdownSelection(type);
+        };
+    });
+}
+
+function updateMultiSelectDisplay(type, selected) {
+    const input = document.getElementById(type + '-input');
+    input.value = selected.join(', ');
+}
+
+// Skills input functionality - Fixed: Added proper event listener function
+function initializeSkillsInput() {
+    const skillsInput = document.getElementById('skills-input');
+    if (skillsInput) {
+        skillsInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const skill = this.value.trim();
@@ -871,6 +1494,11 @@
                 }
             }
         });
+    }
+}
+
+// Call this function after the DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeSkillsInput);
 
         function updateSkillsDisplay() {
             const container = document.getElementById('skills-tags');
@@ -948,7 +1576,7 @@
             
             for (let i = 0; i < steps.length; i++) {
                 updateProgress((i + 1) / steps.length * 100, steps[i]);
-                await new Promise(resolve => setTimeout(resolve, 1200));
+                await new Promise(resolve => setTimeout(resolve, 800));
             }
         }
 
@@ -1238,6 +1866,61 @@
                         "Enhancement Opportunities": "Add more quantified achievements and industry-specific metrics",
                         "Formatting": "Consistent styling with strong visual hierarchy"
                     }
+                },
+                {
+                    title: "Job Search Strategy Analysis",
+                    icon: "🔍",
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: {
+                        "Platform Recommendations": "LinkedIn, Indeed, and industry-specific job boards",
+                        "Networking Strategy": "Focus on industry meetups and professional associations",
+                        "Application Approach": "Target 5-10 quality applications per week with customized materials",
+                        "Timeline Expectations": "Expected search duration: 2-4 months for your experience level"
+                    }
+                },
+                {
+                    title: "Salary Negotiation Insights",
+                    icon: "💰",
+                    score: Math.floor(Math.random() * 2) + 6,
+                    content: {
+                        "Market Range Analysis": `Your target range of ${profile.estimated_salary_range} is competitive`,
+                        "Negotiation Position": profile.experience_level === 'senior' ? "Strong leverage with proven track record" : "Moderate leverage, focus on growth potential",
+                        "Total Compensation": "Consider benefits, equity, and professional development opportunities",
+                        "Regional Adjustments": "Account for cost of living variations in target locations"
+                    }
+                },
+                {
+                    title: "Professional Development Roadmap",
+                    icon: "🚀",
+                    score: Math.floor(Math.random() * 2) + 7,
+                    content: {
+                        "Short-term Goals (3-6 months)": "Complete relevant certifications and strengthen portfolio",
+                        "Medium-term Goals (6-12 months)": "Gain experience in emerging technologies and leadership",
+                        "Long-term Vision (1-3 years)": "Position for senior roles and industry recognition",
+                        "Learning Resources": "Online courses, conferences, and mentorship opportunities"
+                    }
+                },
+                {
+                    title: "Risk Assessment & Mitigation",
+                    icon: "⚠️",
+                    score: Math.floor(Math.random() * 2) + 6,
+                    content: {
+                        "Market Risks": "Economic uncertainty affecting hiring in target industries",
+                        "Skill Gaps": "Keep current with rapidly evolving technology landscape",
+                        "Competition Level": "High competition in premium markets requires differentiation",
+                        "Mitigation Strategies": "Diversify skill set, build strong network, maintain flexibility"
+                    }
+                },
+                {
+                    title: "Industry Outlook & Trends",
+                    icon: "📊",
+                    score: Math.floor(Math.random() * 2) + 8,
+                    content: {
+                        "Growth Projections": `${profile.industries.join(' and ')} sectors showing strong growth potential`,
+                        "Emerging Opportunities": "AI/ML integration, cloud migration, and digital transformation",
+                        "Skills in Demand": "Cross-functional collaboration, data literacy, and adaptability",
+                        "Future Preparedness": "Well-positioned for evolving industry landscape"
+                    }
                 }
             ];
         }
@@ -1280,6 +1963,9 @@
             
             // Generate analysis sections
             displayAnalysisSections(analysis.analysisResults);
+            
+            // Generate action plan
+            displayActionPlan(userProfile, analysis.marketScore);
             
             // Show results section
             document.getElementById('results-section').style.display = 'block';
@@ -1345,11 +2031,11 @@
         function formatSectionContent(content, title) {
             if (title === "Target Role Fit Analysis") {
                 return `
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div class="role-fit-grid">
                         ${Object.entries(content).map(([role, fit]) => `
-                            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
-                                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">${role}</div>
-                                <div style="color: #4CAF50; font-weight: 600;">${fit}</div>
+                            <div class="role-fit-card">
+                                <div class="role-title">${role}</div>
+                                <div class="fit-percentage">${fit}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -1366,6 +2052,80 @@
             }
         }
 
+        function displayActionPlan(userProfile, marketScore) {
+            const actionItems = generateActionItems(userProfile, marketScore);
+            const actionItemsContainer = document.getElementById('action-items');
+            
+            actionItemsContainer.innerHTML = actionItems.map(item => `
+                <div class="action-item">
+                    <div class="action-priority">${item.priority}</div>
+                    <div class="action-title">${item.title}</div>
+                    <p>${item.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function generateActionItems(profile, marketScore) {
+            const items = [];
+
+            // Always include resume optimization
+            items.push({
+                priority: 'HIGH',
+                title: 'Optimize Resume for ATS',
+                description: 'Incorporate keywords from target job descriptions and quantify achievements with metrics.'
+            });
+
+            // Skills-based recommendations
+            if (profile.key_skills.length < 5) {
+                items.push({
+                    priority: 'HIGH',
+                    title: 'Expand Core Skill Set',
+                    description: 'Add 3-5 relevant technical skills through online courses or certification programs.'
+                });
+            }
+
+            // Experience level recommendations
+            if (profile.experience_level === 'entry') {
+                items.push({
+                    priority: 'MEDIUM',
+                    title: 'Build Portfolio Projects',
+                    description: 'Create 2-3 showcase projects demonstrating practical application of your skills.'
+                });
+            }
+
+            // Networking recommendation
+            items.push({
+                priority: 'MEDIUM',
+                title: 'Strengthen Professional Network',
+                description: 'Connect with 10-15 professionals in your target industry through LinkedIn and industry events.'
+            });
+
+            // Certification recommendation
+            if (profile.job_categories.includes('Cloud & Infrastructure') || profile.job_categories.includes('Software Development')) {
+                items.push({
+                    priority: 'MEDIUM',
+                    title: 'Pursue Relevant Certifications',
+                    description: 'Consider AWS, Azure, or Google Cloud certifications to boost credibility.'
+                });
+            }
+
+            // Job search strategy
+            items.push({
+                priority: 'HIGH',
+                title: 'Develop Job Search Strategy',
+                description: 'Create a systematic approach targeting 5-10 companies per week with customized applications.'
+            });
+
+            // Salary research
+            items.push({
+                priority: 'LOW',
+                title: 'Research Market Compensation',
+                description: 'Use salary survey data to refine expectations and prepare for negotiations.'
+            });
+
+            return items;
+        }
+
         function showMessage(message, type) {
             const messageDiv = document.getElementById(type + '-message');
             messageDiv.textContent = message;
@@ -1374,6 +2134,54 @@
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, type === 'success' ? 3000 : 5000);
+        }
+
+        function showResetButton() {
+            document.getElementById('reset-btn').style.display = 'block';
+        }
+
+        function resetApplication() {
+            // Reset all variables
+            analysisInProgress = false;
+            extractedProfile = {};
+            selectedJobCategories = [];
+            selectedIndustries = [];
+            skillsList = [];
+
+            // Reset form fields
+            document.getElementById('resume-text-input').value = '';
+            document.getElementById('file-input').value = '';
+            
+            // Reset all form inputs
+            document.getElementById('experience-level').selectedIndex = 0;
+            document.getElementById('current-location').value = '';
+            document.getElementById('job-categories-input').value = '';
+            document.getElementById('target-roles').value = '';
+            document.getElementById('skills-input').value = '';
+            document.getElementById('work-style').selectedIndex = 0;
+            document.getElementById('salary-range').value = '';
+            document.getElementById('education-level').selectedIndex = 2; // Default to Bachelor's
+            document.getElementById('industries-input').value = '';
+            document.getElementById('career-focus').value = '';
+            
+            // Clear skills display
+            document.getElementById('skills-tags').innerHTML = '';
+            
+            // Hide all sections except input
+            document.getElementById('profile-review-section').style.display = 'none';
+            document.getElementById('progress-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'none';
+            document.getElementById('reset-btn').style.display = 'none';
+            
+            // Show input options
+            document.querySelector('.input-options-container').style.display = 'block';
+            
+            // Hide messages
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
