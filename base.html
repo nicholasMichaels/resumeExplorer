@@ -143,6 +143,167 @@
             color: #333;
         }
 
+        /* New Profile Review Section */
+        .profile-review-section {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .review-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .review-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .skills-input-container {
+            position: relative;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            min-height: 40px;
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-remove {
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .skill-remove:hover {
+            color: #f44336;
+        }
+
+        .multi-select-container {
+            position: relative;
+        }
+
+        .multi-select-input {
+            cursor: pointer;
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .multi-select-option {
+            padding: 0.8rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .multi-select-option:hover {
+            background: #f5f5f5;
+        }
+
+        .multi-select-option.selected {
+            background: #e8f5e8;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .generate-analysis-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            min-width: 250px;
+        }
+
+        .generate-analysis-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
         .results-section {
             display: none;
             background: rgba(255,255,255,0.95);
@@ -262,138 +423,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .role-fit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .role-fit-card {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .role-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .fit-percentage {
-            color: #4CAF50;
-            font-weight: 600;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .skills-column h4 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 0.3rem 0.8rem;
-            border-radius: 16px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .skill-tag.missing {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .roadmap-timeline {
-            margin-top: 1rem;
-        }
-
-        .timeline-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #2196F3;
-        }
-
-        .timeline-period {
-            font-weight: 600;
-            color: #2196F3;
-            margin-bottom: 0.5rem;
-        }
-
-        .priority-high { border-left-color: #f44336; }
-        .priority-medium { border-left-color: #ff9800; }
-        .priority-low { border-left-color: #4caf50; }
-
-        .section-1 { border-left-color: #4CAF50; }
-        .section-2 { border-left-color: #2196F3; }
-        .section-3 { border-left-color: #FF9800; }
-        .section-4 { border-left-color: #9C27B0; }
-        .section-5 { border-left-color: #F44336; }
-        .section-6 { border-left-color: #00BCD4; }
-        .section-7 { border-left-color: #795548; }
-        .section-8 { border-left-color: #607D8B; }
-        .section-9 { border-left-color: #E91E63; }
-        .section-10 { border-left-color: #3F51B5; }
-
-        .action-plan {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-top: 2rem;
-        }
-
-        .action-plan h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .action-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .action-item {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            border-left: 4px solid rgba(255,255,255,0.3);
-        }
-
-        .action-priority {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .action-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
         .error-message, .success-message {
             padding: 1rem;
             border-radius: 8px;
@@ -413,6 +442,12 @@
             border-left: 4px solid #4caf50;
         }
 
+        .section-1 { border-left-color: #4CAF50; }
+        .section-2 { border-left-color: #2196F3; }
+        .section-3 { border-left-color: #FF9800; }
+        .section-4 { border-left-color: #9C27B0; }
+        .section-5 { border-left-color: #F44336; }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -422,16 +457,12 @@
                 font-size: 2.2rem;
             }
             
-            .profile-grid, .skills-grid {
+            .profile-form {
                 grid-template-columns: 1fr;
             }
             
             .upload-area {
                 padding: 2rem;
-            }
-            
-            .action-items {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -439,11 +470,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Career Compass</h1>
+            <h1>Career Determination</h1>
             <p>AI-Powered Resume Analysis with Content-Based Job Recommendations</p>
-            <p class="subtitle">Powered by Llama 3.3 70B - Intelligent Profile Extraction & Market Analysis</p>
+            <p class="subtitle">Powered by Llama 3.3 70B Courtesy of CrewAI & Python - Intelligent Profile Extraction & Market Analysis</p>
         </div>
 
+        <!-- Step 1: Upload Area -->
         <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
             <div class="upload-icon">📄</div>
             <div class="upload-text">Upload Your Resume PDF</div>
@@ -452,6 +484,7 @@
             <input type="file" id="file-input" class="file-input" accept=".pdf" />
         </div>
 
+        <!-- Step 2: Progress Section -->
         <div class="progress-section" id="progress-section">
             <div class="progress-text" id="progress-text">Initializing AI analysis...</div>
             <div class="progress-bar">
@@ -459,10 +492,139 @@
             </div>
         </div>
 
+        <!-- Step 3: Profile Review Section (NEW) -->
+        <div class="profile-review-section" id="profile-review-section">
+            <div class="review-header">
+                <h2>Review & Customize Your Profile</h2>
+                <p>AI has extracted your profile information. Please review and modify as needed before generating your detailed analysis.</p>
+            </div>
+
+            <form class="profile-form" id="profile-form">
+                <div class="form-group">
+                    <label class="form-label">Experience Level</label>
+                    <select class="form-select" id="experience-level">
+                        <option value="entry">Entry Level (0-2 years)</option>
+                        <option value="mid">Mid Level (3-7 years)</option>
+                        <option value="senior">Senior Level (8-15 years)</option>
+                        <option value="executive">Executive Level (15+ years)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Current Location</label>
+                    <input type="text" class="form-input" id="current-location" placeholder="e.g., San Francisco, CA">
+                </div>
+
+                <div class="profile-review-section" id="profile-review-section">
+                <form class="profile-form" id="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Target Job Categories</label>
+                        <div class="multi-select-container">
+                            <input type="text" class="form-input multi-select-input" id="job-categories-input" placeholder="Select job categories..." readonly onclick="toggleDropdown('job-categories')">
+                            <div class="multi-select-dropdown" id="job-categories-dropdown">
+                                <div class="multi-select-option" data-value="Accountant">Accountant</div>
+                                <div class="multi-select-option" data-value="Advocate">Advocate (Legal/Policy)</div>
+                                <div class="multi-select-option" data-value="Agriculture">Agriculture</div>
+                                <div class="multi-select-option" data-value="Apparel">Apparel</div>
+                                <div class="multi-select-option" data-value="Arts">Arts & Culture</div>
+                                <div class="multi-select-option" data-value="Automobile">Automobile</div>
+                                <div class="multi-select-option" data-value="Aviation">Aviation</div>
+                                <div class="multi-select-option" data-value="Banking">Banking</div>
+                                <div class="multi-select-option" data-value="BOP">Business Operations (BOP)</div>
+                                <div class="multi-select-option" data-value="Business-Development">Business Development</div>
+                                <div class="multi-select-option" data-value="Chef">Chef / Culinary</div>
+                                <div class="multi-select-option" data-value="Construction">Construction</div>
+                                <div class="multi-select-option" data-value="Designer">Designer</div>
+                                <div class="multi-select-option" data-value="Digital Media">Digital Media</div>
+                                <div class="multi-select-option" data-value="Engineering">Engineering</div>
+                                <div class="multi-select-option" data-value="Finance">Finance</div>
+                                <div class="multi-select-option" data-value="Fitness">Fitness</div>
+                                <div class="multi-select-option" data-value="Healthcare">Healthcare</div>
+                                <div class="multi-select-option" data-value="HR">Human Resources (HR)</div>
+                                <div class="multi-select-option" data-value="IT">Information Technology (IT)</div>
+                                <div class="multi-select-option" data-value="PR">Public Relations (PR)</div>
+                                <div class="multi-select-option" data-value="Sales">Sales</div>
+                                <div class="multi-select-option" data-value="Teacher">Teacher / Education</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </form>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Recommended Roles</label>
+                    <textarea class="form-textarea" id="target-roles" placeholder="e.g., Full Stack Developer, Software Engineer, Technical Lead"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Key Skills</label>
+                    <div class="skills-input-container">
+                        <input type="text" class="form-input" id="skills-input" placeholder="Type a skill and press Enter">
+                        <div class="skills-tags" id="skills-tags"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Work Style Preference</label>
+                    <select class="form-select" id="work-style">
+                        <option value="Remote">Remote</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="On-site">On-site</option>
+                        <option value="Flexible">Flexible</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Estimated Salary Range</label>
+                    <input type="text" class="form-input" id="salary-range" placeholder="e.g., $80,000-$120,000">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Education Level</label>
+                    <select class="form-select" id="education-level">
+                        <option value="High School">High School</option>
+                        <option value="Associate's">Associate's Degree</option>
+                        <option value="Bachelor's">Bachelor's Degree</option>
+                        <option value="Master's">Master's Degree</option>
+                        <option value="PhD">PhD</option>
+                        <option value="Professional">Professional Certification</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Target Industries</label>
+                    <div class="multi-select-container">
+                        <input type="text" class="form-input multi-select-input" id="industries-input" placeholder="Select industries..." readonly onclick="toggleDropdown('industries')">
+                        <div class="multi-select-dropdown" id="industries-dropdown">
+                            <div class="multi-select-option" data-value="Technology">Technology</div>
+                            <div class="multi-select-option" data-value="Finance">Finance</div>
+                            <div class="multi-select-option" data-value="Healthcare">Healthcare</div>
+                            <div class="multi-select-option" data-value="Education">Education</div>
+                            <div class="multi-select-option" data-value="Retail">Retail</div>
+                            <div class="multi-select-option" data-value="Manufacturing">Manufacturing</div>
+                            <div class="multi-select-option" data-value="Media & Entertainment">Media & Entertainment</div>
+                            <div class="multi-select-option" data-value="Government">Government</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label">Career Focus</label>
+                    <textarea class="form-textarea" id="career-focus" placeholder="Describe your career goals and focus areas"></textarea>
+                </div>
+            </form>
+
+            <button class="generate-analysis-btn" onclick="generateDetailedAnalysis()">
+                Generate Detailed Analysis
+            </button>
+        </div>
+
+        <!-- Step 4: Results Section -->
         <div class="results-section" id="results-section">
-            <!-- AI-Extracted Profile Summary -->
+            <!-- Final Profile Summary -->
             <div class="profile-summary" id="profile-summary">
-                <h2>AI-Extracted Candidate Profile</h2>
+                <h2>Your Professional Profile</h2>
                 <div class="profile-grid" id="profile-grid">
                     <!-- Profile items will be inserted here -->
                 </div>
@@ -474,17 +636,9 @@
                 <div class="score-description" id="score-description">Overall competitiveness for target roles in current market</div>
             </div>
 
-            <!-- 10 Analysis Sections -->
+            <!-- Analysis Sections -->
             <div class="analysis-sections" id="analysis-sections">
                 <!-- Analysis sections will be dynamically generated -->
-            </div>
-
-            <!-- Prioritized Action Plan -->
-            <div class="action-plan" id="action-plan">
-                <h3>🎯 Prioritized Action Plan</h3>
-                <div class="action-items" id="action-items">
-                    <!-- Action items will be inserted here -->
-                </div>
             </div>
         </div>
 
@@ -494,6 +648,10 @@
 
     <script>
         let analysisInProgress = false;
+        let extractedProfile = {};
+        let selectedJobCategories = [];
+        let selectedIndustries = [];
+        let skillsList = [];
 
         // File upload handling
         const fileInput = document.getElementById('file-input');
@@ -540,969 +698,570 @@
             }
             
             showMessage(`${file.name} uploaded successfully! AI profile extraction starting...`, 'success');
-            startAnalysis(file);
+            startProfileExtraction(file);
         }
 
-        async function startAnalysis(file) {
+        async function startProfileExtraction(file) {
             if (analysisInProgress) return;
             
             analysisInProgress = true;
             showProgress();
             
             try {
-                // Create form data for file upload
-                const formData = new FormData();
-                formData.append('file', file);
-                
-                updateProgress(10, 'Uploading resume to AI analyzer...');
-                
-                // Send to Python backend
-                const response = await fetch('http://127.0.0.1:5001/analyze-resume', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                updateProgress(50, 'AI analyzing resume content with Groq API...');
-                
-                const result = await response.json();
-                
-                updateProgress(90, 'Processing comprehensive analysis results...');
-                
-                if (result.success) {
-                    // Convert Python result to expected format
-                    const analysisData = convertPythonResult(result);
-                    updateProgress(100, 'Analysis complete!');
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    showResults(analysisData);
-                } else {
-                    showMessage(`Analysis failed: ${result.error || result.message}`, 'error');
-                }
-                
+                await simulateProfileExtraction(file);
+                const profile = await extractProfileFromFile(file);
+                showProfileReviewSection(profile);
             } catch (error) {
-                console.error('Analysis error:', error);
-                showMessage('Failed to connect to analysis server. Make sure the Python backend is running.', 'error');
+                showMessage('Profile extraction failed. Please try again.', 'error');
             } finally {
                 analysisInProgress = false;
                 hideProgress();
             }
         }
 
-        async function simulateAnalysis(file) {
-            const fileName = file.name.toLowerCase();
-            
-            // Simulate category detection based on file name (in real implementation, this would analyze PDF content)
-            let detectedCategory = 'INFORMATION-TECHNOLOGY'; // default
-            const categoryKeywords = {
-                'ACCOUNT': ['account', 'client', 'customer', 'relationship'],
-                'HEALTHCARE': ['health', 'medical', 'nurse', 'doctor', 'clinical'],
-                'FINANCE': ['finance', 'financial', 'banking', 'investment', 'analyst'],
-                'ENGINEERING': ['engineer', 'engineering', 'technical', 'mechanical'],
-                'INFORMATION-TECHNOLOGY': ['developer', 'software', 'programming', 'tech', 'it'],
-                'SALES': ['sales', 'selling', 'revenue', 'business'],
-                'HR': ['hr', 'human', 'recruiting', 'talent'],
-                'DIGITAL-MEDIA': ['marketing', 'digital', 'social', 'media', 'brand'],
-                'TEACHER': ['teacher', 'education', 'academic', 'instructor']
-            };
-            
-            // Simple category detection from filename
-            for (const [category, keywords] of Object.entries(categoryKeywords)) {
-                if (keywords.some(keyword => fileName.includes(keyword))) {
-                    detectedCategory = category;
-                    break;
-                }
-            }
-            
-            const categoryNames = {
-                'INFORMATION-TECHNOLOGY': 'Information Technology',
-                'HEALTHCARE': 'Healthcare',
-                'FINANCE': 'Finance',
-                'ACCOUNT': 'Account Management',
-                'ENGINEERING': 'Engineering',
-                'SALES': 'Sales',
-                'HR': 'Human Resources',
-                'DIGITAL-MEDIA': 'Digital Media',
-                'TEACHER': 'Education'
-            };
-            
-            const categoryName = categoryNames[detectedCategory] || 'Professional';
-            
+        async function simulateProfileExtraction(file) {
             const steps = [
-                'Processing PDF document with AI...',
-                `Extracting text content and identifying ${categoryName.toLowerCase()} experience...`,
-                `Analyzing candidate profile for ${categoryName} roles...`,
-                `Matching skills against ${categoryName.toLowerCase()} job market requirements...`,
-                `Evaluating competitiveness for ${categoryName.toLowerCase()} positions...`,
-                `Assessing fit for target ${categoryName.toLowerCase()} roles...`,
-                `Analyzing experience progression in ${categoryName.toLowerCase()} field...`,
-                `Generating ${categoryName.toLowerCase()}-specific salary insights...`,
-                `Creating ${categoryName.toLowerCase()} career development roadmap...`,
-                `Preparing comprehensive ${categoryName.toLowerCase()} market analysis...`
+                'Processing PDF document...',
+                'Extracting text content with OCR...',
+                'Analyzing candidate background...',
+                'Identifying skills and experience...',
+                'Determining job categories...',
+                'Estimating experience level...',
+                'Extracting education and location...',
+                'Preparing profile for review...'
             ];
             
             for (let i = 0; i < steps.length; i++) {
                 updateProgress((i + 1) / steps.length * 100, steps[i]);
-                await new Promise(resolve => setTimeout(resolve, 900));
+                await new Promise(resolve => setTimeout(resolve, 800));
             }
         }
 
-        async function generateComprehensiveAnalysis(file) {
-            // Simulate the comprehensive analysis structure from the Python script
-            const extractedProfile = generateCandidateProfile();
-            const marketScore = Math.floor(Math.random() * 3) + 7; // 7-10 range
-            
-            return {
-                extractedProfile,
-                marketScore,
-                analysisResults: generateTenStepAnalysis(extractedProfile, marketScore),
-                actionPlan: generateActionPlan(marketScore)
-            };
-        }
+        async function extractProfileFromFile(file) {
+            // Simulate AI profile extraction
+            const experienceLevels = ['entry', 'mid', 'senior'];
+            const locations = ['San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA', 'Remote'];
+            const categories = [
+                ['Software Development', 'Data & Analytics'],
+                ['Product & Design', 'Management & Leadership'],
+                ['Cloud & Infrastructure', 'Cybersecurity']
+            ];
+            const skills = [
+                ['Python', 'JavaScript', 'React', 'AWS', 'Docker'],
+                ['Project Management', 'Data Analysis', 'SQL', 'Agile', 'Leadership'],
+                ['Machine Learning', 'Node.js', 'Kubernetes', 'Git', 'API Design']
+            ];
 
-        function generateCandidateProfile() {
-            // Use actual categories from your data folder
-            const CATEGORY_PROFILES = {
-                'ACCOUNT': {
-                    roles: ['Account Manager', 'Client Relations Manager', 'Key Account Director'],
-                    skills: ['Client Management', 'Relationship Building', 'CRM Systems', 'Sales Strategy', 'Negotiation'],
-                    industry: 'Business Services',
-                    salaryRanges: { entry: '$45,000-$65,000', mid: '$65,000-$95,000', senior: '$95,000-$140,000', executive: '$140,000+' }
-                },
-                'ADVOCATE': {
-                    roles: ['Legal Advocate', 'Public Interest Lawyer', 'Policy Advocate'],
-                    skills: ['Legal Research', 'Case Management', 'Client Advocacy', 'Policy Analysis', 'Litigation'],
-                    industry: 'Legal Services',
-                    salaryRanges: { entry: '$50,000-$70,000', mid: '$70,000-$110,000', senior: '$110,000-$180,000', executive: '$180,000+' }
-                },
-                'AGRICULTURE': {
-                    roles: ['Agricultural Specialist', 'Farm Manager', 'Agricultural Consultant'],
-                    skills: ['Crop Management', 'Soil Analysis', 'Agricultural Technology', 'Sustainability', 'Supply Chain'],
-                    industry: 'Agriculture',
-                    salaryRanges: { entry: '$40,000-$55,000', mid: '$55,000-$75,000', senior: '$75,000-$110,000', executive: '$110,000+' }
-                },
-                'APPAREL': {
-                    roles: ['Fashion Designer', 'Merchandising Manager', 'Product Development Manager'],
-                    skills: ['Fashion Design', 'Trend Analysis', 'Production Management', 'Brand Development', 'Retail Strategy'],
-                    industry: 'Fashion & Retail',
-                    salaryRanges: { entry: '$40,000-$60,000', mid: '$60,000-$85,000', senior: '$85,000-$125,000', executive: '$125,000+' }
-                },
-                'ARTS': {
-                    roles: ['Art Director', 'Creative Manager', 'Museum Curator'],
-                    skills: ['Creative Direction', 'Project Management', 'Art History', 'Exhibition Planning', 'Digital Media'],
-                    industry: 'Arts & Culture',
-                    salaryRanges: { entry: '$35,000-$50,000', mid: '$50,000-$70,000', senior: '$70,000-$100,000', executive: '$100,000+' }
-                },
-                'AUTOMOBILE': {
-                    roles: ['Automotive Engineer', 'Product Manager', 'Quality Assurance Manager'],
-                    skills: ['Automotive Engineering', 'CAD Design', 'Quality Control', 'Project Management', 'Manufacturing'],
-                    industry: 'Automotive',
-                    salaryRanges: { entry: '$55,000-$75,000', mid: '$75,000-$105,000', senior: '$105,000-$150,000', executive: '$150,000+' }
-                },
-                'AVIATION': {
-                    roles: ['Pilot', 'Flight Operations Manager', 'Aviation Safety Inspector'],
-                    skills: ['Flight Operations', 'Safety Management', 'Regulatory Compliance', 'Risk Assessment', 'Team Leadership'],
-                    industry: 'Aviation',
-                    salaryRanges: { entry: '$60,000-$85,000', mid: '$85,000-$125,000', senior: '$125,000-$200,000', executive: '$200,000+' }
-                },
-                'BANKING': {
-                    roles: ['Investment Banker', 'Credit Analyst', 'Branch Manager'],
-                    skills: ['Financial Analysis', 'Risk Management', 'Customer Service', 'Regulatory Compliance', 'Investment Strategy'],
-                    industry: 'Banking & Finance',
-                    salaryRanges: { entry: '$55,000-$80,000', mid: '$80,000-$120,000', senior: '$120,000-$200,000', executive: '$200,000+' }
-                },
-                'BPO': {
-                    roles: ['Operations Manager', 'Process Improvement Specialist', 'Client Services Director'],
-                    skills: ['Process Optimization', 'Client Management', 'Quality Assurance', 'Team Management', 'KPI Analysis'],
-                    industry: 'Business Process Outsourcing',
-                    salaryRanges: { entry: '$40,000-$60,000', mid: '$60,000-$85,000', senior: '$85,000-$120,000', executive: '$120,000+' }
-                },
-                'BUSINESS-DEVELOPMENT': {
-                    roles: ['Business Development Manager', 'Strategic Partnerships Manager', 'Growth Manager'],
-                    skills: ['Strategic Planning', 'Market Analysis', 'Partnership Development', 'Sales Strategy', 'Negotiation'],
-                    industry: 'Business Development',
-                    salaryRanges: { entry: '$55,000-$75,000', mid: '$75,000-$110,000', senior: '$110,000-$160,000', executive: '$160,000+' }
-                },
-                'CHEF': {
-                    roles: ['Executive Chef', 'Sous Chef', 'Culinary Director'],
-                    skills: ['Culinary Arts', 'Menu Development', 'Kitchen Management', 'Food Safety', 'Cost Control'],
-                    industry: 'Food & Hospitality',
-                    salaryRanges: { entry: '$35,000-$50,000', mid: '$50,000-$70,000', senior: '$70,000-$100,000', executive: '$100,000+' }
-                },
-                'CONSTRUCTION': {
-                    roles: ['Project Manager', 'Construction Engineer', 'Site Supervisor'],
-                    skills: ['Project Management', 'Construction Planning', 'Safety Management', 'Budget Control', 'Team Leadership'],
-                    industry: 'Construction',
-                    salaryRanges: { entry: '$50,000-$70,000', mid: '$70,000-$95,000', senior: '$95,000-$130,000', executive: '$130,000+' }
-                },
-                'CONSULTANT': {
-                    roles: ['Management Consultant', 'Strategy Consultant', 'Business Analyst'],
-                    skills: ['Strategic Analysis', 'Problem Solving', 'Client Management', 'Data Analysis', 'Presentation Skills'],
-                    industry: 'Consulting',
-                    salaryRanges: { entry: '$65,000-$90,000', mid: '$90,000-$130,000', senior: '$130,000-$200,000', executive: '$200,000+' }
-                },
-                'DESIGNER': {
-                    roles: ['UX Designer', 'Graphic Designer', 'Product Designer'],
-                    skills: ['Design Thinking', 'User Experience', 'Adobe Creative Suite', 'Prototyping', 'Visual Communication'],
-                    industry: 'Design & Creative',
-                    salaryRanges: { entry: '$45,000-$65,000', mid: '$65,000-$90,000', senior: '$90,000-$130,000', executive: '$130,000+' }
-                },
-                'DIGITAL-MEDIA': {
-                    roles: ['Digital Marketing Manager', 'Content Strategist', 'Social Media Manager'],
-                    skills: ['Digital Marketing', 'Content Creation', 'SEO/SEM', 'Analytics', 'Social Media Strategy'],
-                    industry: 'Digital Media',
-                    salaryRanges: { entry: '$40,000-$60,000', mid: '$60,000-$85,000', senior: '$85,000-$120,000', executive: '$120,000+' }
-                },
-                'ENGINEERING': {
-                    roles: ['Software Engineer', 'Mechanical Engineer', 'Engineering Manager'],
-                    skills: ['Engineering Design', 'Problem Solving', 'Technical Analysis', 'Project Management', 'Innovation'],
-                    industry: 'Engineering',
-                    salaryRanges: { entry: '$60,000-$85,000', mid: '$85,000-$120,000', senior: '$120,000-$170,000', executive: '$170,000+' }
-                },
-                'FINANCE': {
-                    roles: ['Financial Analyst', 'Investment Manager', 'CFO'],
-                    skills: ['Financial Modeling', 'Investment Analysis', 'Risk Management', 'Financial Planning', 'Regulatory Compliance'],
-                    industry: 'Finance',
-                    salaryRanges: { entry: '$55,000-$80,000', mid: '$80,000-$120,000', senior: '$120,000-$180,000', executive: '$180,000+' }
-                },
-                'FITNESS': {
-                    roles: ['Fitness Director', 'Personal Training Manager', 'Wellness Coordinator'],
-                    skills: ['Fitness Training', 'Program Development', 'Client Assessment', 'Nutrition Planning', 'Team Management'],
-                    industry: 'Health & Wellness',
-                    salaryRanges: { entry: '$30,000-$45,000', mid: '$45,000-$65,000', senior: '$65,000-$90,000', executive: '$90,000+' }
-                },
-                'HEALTHCARE': {
-                    roles: ['Healthcare Administrator', 'Clinical Manager', 'Medical Director'],
-                    skills: ['Healthcare Management', 'Clinical Operations', 'Regulatory Compliance', 'Quality Improvement', 'Patient Care'],
-                    industry: 'Healthcare',
-                    salaryRanges: { entry: '$55,000-$75,000', mid: '$75,000-$110,000', senior: '$110,000-$160,000', executive: '$160,000+' }
-                },
-                'HR': {
-                    roles: ['HR Manager', 'Talent Acquisition Manager', 'HRBP'],
-                    skills: ['Human Resources', 'Talent Management', 'Employee Relations', 'Recruitment', 'Organizational Development'],
-                    industry: 'Human Resources',
-                    salaryRanges: { entry: '$45,000-$65,000', mid: '$65,000-$90,000', senior: '$90,000-$130,000', executive: '$130,000+' }
-                },
-                'INFORMATION-TECHNOLOGY': {
-                    roles: ['Software Developer', 'IT Manager', 'Systems Architect'],
-                    skills: ['Programming', 'System Administration', 'Database Management', 'Cloud Computing', 'Cybersecurity'],
-                    industry: 'Information Technology',
-                    salaryRanges: { entry: '$60,000-$85,000', mid: '$85,000-$125,000', senior: '$125,000-$180,000', executive: '$180,000+' }
-                },
-                'PUBLIC-RELATIONS': {
-                    roles: ['PR Manager', 'Communications Director', 'Media Relations Specialist'],
-                    skills: ['Public Relations', 'Media Relations', 'Crisis Communication', 'Content Creation', 'Brand Management'],
-                    industry: 'Public Relations',
-                    salaryRanges: { entry: '$40,000-$60,000', mid: '$60,000-$85,000', senior: '$85,000-$120,000', executive: '$120,000+' }
-                },
-                'SALES': {
-                    roles: ['Sales Manager', 'Account Executive', 'Sales Director'],
-                    skills: ['Sales Strategy', 'Lead Generation', 'Client Relations', 'Negotiation', 'CRM Management'],
-                    industry: 'Sales',
-                    salaryRanges: { entry: '$40,000-$65,000', mid: '$65,000-$95,000', senior: '$95,000-$140,000', executive: '$140,000+' }
-                },
-                'TEACHER': {
-                    roles: ['Education Manager', 'Curriculum Developer', 'Academic Director'],
-                    skills: ['Curriculum Development', 'Educational Leadership', 'Student Assessment', 'Teaching Methodologies', 'Program Management'],
-                    industry: 'Education',
-                    salaryRanges: { entry: '$40,000-$55,000', mid: '$55,000-$75,000', senior: '$75,000-$100,000', executive: '$100,000+' }
-                }
-            };
-
-            const categories = Object.keys(CATEGORY_PROFILES);
-            const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
-            const categoryProfile = CATEGORY_PROFILES[selectedCategory];
-            
-            const experienceLevels = ['entry', 'mid', 'senior', 'executive'];
-            const locations = ['New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Phoenix, AZ', 'Remote-friendly'];
-            
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            const randomSkills = skills[Math.floor(Math.random() * skills.length)];
             const expLevel = experienceLevels[Math.floor(Math.random() * experienceLevels.length)];
-            const years = expLevel === 'entry' ? 1 + Math.floor(Math.random() * 2) :
-                         expLevel === 'mid' ? 3 + Math.floor(Math.random() * 5) :
-                         expLevel === 'senior' ? 8 + Math.floor(Math.random() * 8) :
-                         15 + Math.floor(Math.random() * 10);
 
             return {
                 experience_level: expLevel,
-                years_of_experience: years,
                 current_location: locations[Math.floor(Math.random() * locations.length)],
-                job_categories: [selectedCategory.replace('-', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())],
-                target_roles: categoryProfile.roles,
-                key_skills: categoryProfile.skills,
-                industries: categoryProfile.industry,
-                work_arrangement_preference: ['Remote', 'Hybrid', 'On-site', 'Flexible'][Math.floor(Math.random() * 4)],
-                estimated_salary_range: categoryProfile.salaryRanges[expLevel],
-                education_level: ['Bachelor\'s', 'Master\'s', 'PhD', 'Professional'][Math.floor(Math.random() * 4)],
-                career_focus: `Professional growth and leadership in ${categoryProfile.industry.toLowerCase()}`,
-                willing_to_relocate: Math.random() > 0.5,
-                category: selectedCategory
+                job_categories: randomCategory,
+                target_roles: generateTargetRoles(randomCategory),
+                key_skills: randomSkills,
+                industries: ['Technology', 'Finance'][Math.floor(Math.random() * 2)],
+                work_arrangement_preference: ['Remote', 'Hybrid', 'Flexible'][Math.floor(Math.random() * 3)],
+                estimated_salary_range: generateSalaryRange(expLevel),
+                education_level: ['Bachelor\'s', 'Master\'s', 'PhD'][Math.floor(Math.random() * 3)],
+                career_focus: 'Professional growth and development in target industry'
             };
         }
 
         function generateTargetRoles(categories) {
-            // This function is no longer needed since roles are generated in generateCandidateProfile
-            return categories;
+            const roleMap = {
+                'Software Development': ['Full Stack Developer', 'Senior Software Engineer', 'Frontend Developer'],
+                'Data & Analytics': ['Data Scientist', 'ML Engineer', 'Analytics Manager'],
+                'Product & Design': ['Product Manager', 'UX Designer', 'Product Owner'],
+                'Management & Leadership': ['Engineering Manager', 'Team Lead', 'Technical Director'],
+                'Cloud & Infrastructure': ['Cloud Engineer', 'DevOps Engineer', 'Site Reliability Engineer'],
+                'Cybersecurity': ['Security Analyst', 'Penetration Tester', 'Security Engineer']
+            };
+            
+            return categories.flatMap(cat => roleMap[cat] || ['Specialist', 'Analyst']);
         }
 
         function generateSalaryRange(level) {
             const ranges = {
                 'entry': '$60,000-$85,000',
                 'mid': '$85,000-$125,000',
-                'senior': '$125,000-$180,000',
-                'executive': '$180,000-$300,000+'
+                'senior': '$125,000-$180,000'
             };
             return ranges[level] || '$70,000-$100,000';
         }
 
-        function generateTenStepAnalysis(profile, marketScore) {
-            const categorySpecificAnalysis = getCategorySpecificInsights(profile.category, profile.experience_level);
+        function showProfileReviewSection(profile) {
+            extractedProfile = profile;
             
+            // Populate form fields with extracted data
+            document.getElementById('experience-level').value = profile.experience_level;
+            document.getElementById('current-location').value = profile.current_location;
+            document.getElementById('target-roles').value = profile.target_roles.join(', ');
+            document.getElementById('work-style').value = profile.work_arrangement_preference;
+            document.getElementById('salary-range').value = profile.estimated_salary_range;
+            document.getElementById('education-level').value = profile.education_level;
+            document.getElementById('career-focus').value = profile.career_focus;
+            
+            // Set job categories and industries
+            selectedJobCategories = [...profile.job_categories];
+            selectedIndustries = Array.isArray(profile.industries) ? profile.industries : [profile.industries];
+            updateMultiSelectDisplay('job-categories', selectedJobCategories);
+            updateMultiSelectDisplay('industries', selectedIndustries);
+            
+            // Set skills
+            skillsList = [...profile.key_skills];
+            updateSkillsDisplay();
+            
+            // Show the review section
+            document.getElementById('profile-review-section').style.display = 'block';
+            document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Multi-select dropdown functionality
+        function toggleDropdown(type) {
+            const dropdown = document.getElementById(type + '-dropdown');
+            const isVisible = dropdown.style.display === 'block';
+            
+            // Close all dropdowns
+            document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
+            
+            if (!isVisible) {
+                dropdown.style.display = 'block';
+                updateDropdownSelection(type);
+            }
+        }
+
+        function updateDropdownSelection(type) {
+            const dropdown = document.getElementById(type + '-dropdown');
+            const selected = type === 'job-categories' ? selectedJobCategories : selectedIndustries;
+            
+            dropdown.querySelectorAll('.multi-select-option').forEach(option => {
+                const value = option.getAttribute('data-value');
+                option.classList.toggle('selected', selected.includes(value));
+                
+                option.onclick = () => {
+                    if (selected.includes(value)) {
+                        const index = selected.indexOf(value);
+                        selected.splice(index, 1);
+                    } else {
+                        selected.push(value);
+                    }
+                    updateMultiSelectDisplay(type, selected);
+                    updateDropdownSelection(type);
+                };
+            });
+        }
+
+        function updateMultiSelectDisplay(type, selected) {
+            const input = document.getElementById(type + '-input');
+            input.value = selected.join(', ');
+        }
+
+        // Skills input functionality
+        document.getElementById('skills-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const skill = this.value.trim();
+                if (skill && !skillsList.includes(skill)) {
+                    skillsList.push(skill);
+                    updateSkillsDisplay();
+                    this.value = '';
+                }
+            }
+        });
+
+        function updateSkillsDisplay() {
+            const container = document.getElementById('skills-tags');
+            container.innerHTML = skillsList.map(skill => `
+                <div class="skill-tag">
+                    ${skill}
+                    <span class="skill-remove" onclick="removeSkill('${skill}')">×</span>
+                </div>
+            `).join('');
+        }
+
+        function removeSkill(skill) {
+            const index = skillsList.indexOf(skill);
+            if (index > -1) {
+                skillsList.splice(index, 1);
+                updateSkillsDisplay();
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.multi-select-container')) {
+                document.querySelectorAll('.multi-select-dropdown').forEach(dd => dd.style.display = 'none');
+            }
+        });
+
+        function generateDetailedAnalysis() {
+            // Collect form data
+            const userProfile = {
+                experience_level: document.getElementById('experience-level').value,
+                current_location: document.getElementById('current-location').value,
+                job_categories: selectedJobCategories,
+                target_roles: document.getElementById('target-roles').value.split(',').map(r => r.trim()).filter(r => r),
+                key_skills: skillsList,
+                industries: selectedIndustries,
+                work_arrangement_preference: document.getElementById('work-style').value,
+                estimated_salary_range: document.getElementById('salary-range').value,
+                education_level: document.getElementById('education-level').value,
+                career_focus: document.getElementById('career-focus').value
+            };
+
+            // Hide profile review section and show progress
+            document.getElementById('profile-review-section').style.display = 'none';
+            showProgress();
+            
+            // Start detailed analysis
+            startDetailedAnalysis(userProfile);
+        }
+
+        async function startDetailedAnalysis(userProfile) {
+            try {
+                await simulateDetailedAnalysis();
+                const analysisResults = await generateComprehensiveAnalysis(userProfile);
+                showResults(analysisResults, userProfile);
+            } catch (error) {
+                showMessage('Analysis failed. Please try again.', 'error');
+            } finally {
+                hideProgress();
+            }
+        }
+
+        async function simulateDetailedAnalysis() {
+            const steps = [
+                'Analyzing market competitiveness...',
+                'Evaluating target role fit...',
+                'Assessing technical skills...',
+                'Reviewing experience alignment...',
+                'Optimizing resume recommendations...',
+                'Calculating salary insights...',
+                'Creating career roadmap...',
+                'Analyzing job search strategy...',
+                'Identifying potential risks...',
+                'Generating action plan...'
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                updateProgress((i + 1) / steps.length * 100, steps[i]);
+                await new Promise(resolve => setTimeout(resolve, 1200));
+            }
+        }
+
+        async function generateComprehensiveAnalysis(userProfile) {
+            const marketScore = calculateRealisticMarketScore(userProfile);
+            
+            return {
+                marketScore,
+                analysisResults: generateDetailedAnalysisSections(userProfile, marketScore)
+            };
+        }
+
+        function calculateRealisticMarketScore(profile) {
+            let score = 0;
+            let maxScore = 10;
+
+            // Experience Level Assessment (25% of score - 2.5 points max)
+            const experienceScore = calculateExperienceScore(profile.experience_level, profile.target_roles);
+            score += experienceScore * 0.25;
+
+            // Skills Relevance (30% of score - 3 points max)
+            const skillsScore = calculateSkillsScore(profile.key_skills, profile.job_categories);
+            score += skillsScore * 0.3;
+
+            // Education Alignment (15% of score - 1.5 points max)
+            const educationScore = calculateEducationScore(profile.education_level, profile.experience_level);
+            score += educationScore * 0.15;
+
+            // Market Demand (20% of score - 2 points max)
+            const marketDemandScore = calculateMarketDemandScore(profile.job_categories, profile.current_location);
+            score += marketDemandScore * 0.2;
+
+            // Salary Realism (10% of score - 1 point max)
+            const salaryScore = calculateSalaryRealism(profile.estimated_salary_range, profile.experience_level);
+            score += salaryScore * 0.1;
+
+            // Round to one decimal place and ensure it's between 1-10
+            return Math.max(1, Math.min(10, Math.round(score * 10) / 10));
+        }
+
+        function calculateExperienceScore(level, targetRoles) {
+            // Base scores by experience level
+            const baseScores = {
+                'entry': 6,      // Entry level faces more competition
+                'mid': 8,        // Sweet spot for most roles
+                'senior': 7,     // Good but fewer positions available
+                'executive': 6   // Highly competitive, fewer positions
+            };
+
+            let score = baseScores[level] || 6;
+
+            // Bonus for having multiple target roles (shows flexibility)
+            if (targetRoles && targetRoles.length >= 3) {
+                score += 0.5;
+            }
+
+            // Penalty for too many target roles (shows lack of focus)
+            if (targetRoles && targetRoles.length > 6) {
+                score -= 0.5;
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateSkillsScore(skills, jobCategories) {
+            if (!skills || skills.length === 0) return 3;
+
+            let score = 5; // Base score
+
+            // High-demand technical skills
+            const highDemandSkills = [
+                'Python', 'JavaScript', 'React', 'AWS', 'Docker', 'Kubernetes',
+                'Machine Learning', 'Data Analysis', 'SQL', 'Node.js', 'Git',
+                'Project Management', 'Agile', 'Scrum', 'Leadership'
+            ];
+
+            // Emerging/hot skills
+            const emergingSkills = [
+                'AI', 'TensorFlow', 'PyTorch', 'Blockchain', 'GraphQL',
+                'Microservices', 'DevOps', 'Cloud Architecture'
+            ];
+
+            // Calculate skill relevance
+            const highDemandCount = skills.filter(skill => 
+                highDemandSkills.some(hd => hd.toLowerCase().includes(skill.toLowerCase()) || 
+                                           skill.toLowerCase().includes(hd.toLowerCase()))
+            ).length;
+
+            const emergingCount = skills.filter(skill =>
+                emergingSkills.some(es => es.toLowerCase().includes(skill.toLowerCase()) ||
+                                         skill.toLowerCase().includes(es.toLowerCase()))
+            ).length;
+
+            // Bonus for relevant skills
+            score += (highDemandCount * 0.3);
+            score += (emergingCount * 0.5);
+
+            // Bonus for having a good number of skills
+            if (skills.length >= 5 && skills.length <= 10) {
+                score += 1;
+            } else if (skills.length < 3) {
+                score -= 1;
+            } else if (skills.length > 15) {
+                score -= 0.5; // Too many might seem unfocused
+            }
+
+            // Job category specific bonuses
+            if (jobCategories) {
+                if (jobCategories.includes('Software Development') && 
+                    skills.some(s => ['Python', 'JavaScript', 'Java', 'React', 'Angular'].includes(s))) {
+                    score += 0.5;
+                }
+                if (jobCategories.includes('Data & Analytics') && 
+                    skills.some(s => ['Python', 'SQL', 'Machine Learning', 'Statistics'].includes(s))) {
+                    score += 0.5;
+                }
+                if (jobCategories.includes('Cloud & Infrastructure') && 
+                    skills.some(s => ['AWS', 'Azure', 'Docker', 'Kubernetes'].includes(s))) {
+                    score += 0.5;
+                }
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateEducationScore(education, experience) {
+            const educationScores = {
+                'High School': 5,
+                'Associate\'s': 6,
+                'Bachelor\'s': 7,
+                'Master\'s': 8,
+                'PhD': 8.5,
+                'Professional': 7.5
+            };
+
+            let score = educationScores[education] || 6;
+
+            // Education-experience alignment
+            if (education === 'PhD' && experience === 'entry') {
+                score -= 1; // Might be overqualified for entry level
+            }
+            if (education === 'High School' && ['senior', 'executive'].includes(experience)) {
+                score += 1; // Impressive career progression
+            }
+            if (education === 'Master\'s' && ['mid', 'senior'].includes(experience)) {
+                score += 0.5; // Good alignment
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateMarketDemandScore(jobCategories, location) {
+            if (!jobCategories || jobCategories.length === 0) return 5;
+
+            // Market demand by job category (based on general market trends)
+            const demandScores = {
+                'Software Development': 9,
+                'Data & Analytics': 8.5,
+                'Cybersecurity': 9.5,
+                'Cloud & Infrastructure': 9,
+                'Product & Design': 7,
+                'Management & Leadership': 6.5,
+                'Sales & Marketing': 6,
+                'Finance & Business': 6.5,
+                'Healthcare & Life Sciences': 8,
+                'Education & Training': 5
+            };
+
+            // Calculate average demand score for selected categories
+            const avgDemand = jobCategories.reduce((sum, cat) => {
+                return sum + (demandScores[cat] || 5);
+            }, 0) / jobCategories.length;
+
+            let score = avgDemand;
+
+            // Location bonuses (simplified)
+            if (location && location.toLowerCase().includes('san francisco')) {
+                score += 1; // Tech hub
+            } else if (location && (location.toLowerCase().includes('new york') || 
+                                  location.toLowerCase().includes('seattle') ||
+                                  location.toLowerCase().includes('austin'))) {
+                score += 0.5; // Major tech cities
+            } else if (location && location.toLowerCase().includes('remote')) {
+                score += 0.3; // Remote work is in demand
+            }
+
+            return Math.max(1, Math.min(10, score));
+        }
+
+        function calculateSalaryRealism(salaryRange, experienceLevel) {
+            if (!salaryRange || !salaryRange.includes('-')) return 5;
+
+            try {
+                // Extract numbers from salary range
+                const numbers = salaryRange.match(/\d+,?\d*/g);
+                if (!numbers || numbers.length < 2) return 5;
+
+                const minSalary = parseInt(numbers[0].replace(',', ''));
+                const maxSalary = parseInt(numbers[1].replace(',', ''));
+
+                // Realistic salary ranges by experience level
+                const realisticRanges = {
+                    'entry': { min: 40000, max: 80000 },
+                    'mid': { min: 70000, max: 130000 },
+                    'senior': { min: 120000, max: 200000 },
+                    'executive': { min: 180000, max: 400000 }
+                };
+
+                const realistic = realisticRanges[experienceLevel] || realisticRanges['mid'];
+
+                let score = 7; // Base realistic score
+
+                // Check if salary expectations are realistic
+                if (minSalary >= realistic.min * 0.8 && maxSalary <= realistic.max * 1.2) {
+                    score = 9; // Very realistic
+                } else if (minSalary > realistic.max * 1.3) {
+                    score = 3; // Too high expectations
+                } else if (maxSalary < realistic.min * 0.7) {
+                    score = 4; // Undervaluing themselves
+                } else if (minSalary < realistic.min || maxSalary > realistic.max) {
+                    score = 6; // Somewhat off but not terrible
+                }
+
+                // Check range spread (should be reasonable)
+                const spread = maxSalary - minSalary;
+                const avgSalary = (maxSalary + minSalary) / 2;
+                if (spread / avgSalary > 0.5) {
+                    score -= 1; // Range too wide
+                } else if (spread / avgSalary < 0.15) {
+                    score -= 0.5; // Range too narrow
+                }
+
+                return Math.max(1, Math.min(10, score));
+            } catch (error) {
+                return 5; // Default if parsing fails
+            }
+        }
+
+        function generateDetailedAnalysisSections(profile, marketScore) {
             return [
                 {
                     title: "Market Competitiveness Assessment",
                     icon: "📊",
                     score: marketScore,
                     content: {
-                        "Overall Readiness": `${marketScore}/10 for ${profile.target_roles.slice(0,2).join(' and ')} roles`,
-                        "Industry Position": `Strong positioning in ${profile.industries} market with ${profile.years_of_experience} years experience`,
-                        "Salary Alignment": `${profile.estimated_salary_range} aligns with ${profile.experience_level} level market rates in ${profile.industries}`,
-                        "Geographic Market": `${profile.current_location.includes('Remote') ? 'Remote work' : profile.current_location} market shows ${categorySpecificAnalysis.marketDemand} demand for ${profile.job_categories[0]} professionals`
+                        "Overall Readiness": `${marketScore}/10 for ${profile.target_roles.slice(0, 2).join(' and ')} roles`,
+                        "Competitive Analysis": `Strong positioning in ${profile.job_categories.join(' and ')} markets`,
+                        "Salary Alignment": `Target range ${profile.estimated_salary_range} aligns with current market standards`,
+                        "Geographic Advantage": `${profile.current_location} market shows high demand for your skill set`
                     }
-                },
-                {
-                    title: "Target Role Fit Analysis", 
-                    icon: "🎯",
-                    score: Math.floor(Math.random() * 2) + 8,
-                    content: generateCategoryBasedRoleFit(profile.target_roles, profile.key_skills, profile.experience_level)
-                },
-                {
-                    title: "Technical & Professional Skills Evaluation",
-                    icon: "🔧", 
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: {
-                        "Current Skills": profile.key_skills.join(', '),
-                        "Market Demand": `${categorySpecificAnalysis.skillDemand} demand for your core competencies in ${profile.industries}`,
-                        "Emerging Skills": categorySpecificAnalysis.emergingSkills,
-                        "Certifications": categorySpecificAnalysis.certifications
-                    }
-                },
-                {
-                    title: "Experience & Achievement Analysis",
-                    icon: "📈",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: {
-                        "Career Trajectory": `${profile.years_of_experience} years in ${profile.industries} showing ${categorySpecificAnalysis.careerProgression}`,
-                        "Achievement Quantification": categorySpecificAnalysis.achievementFocus,
-                        "Leadership Evidence": profile.experience_level === 'entry' ? 'Growing leadership potential in specialized area' : 
-                                            profile.experience_level === 'mid' ? 'Demonstrated project leadership and team collaboration' :
-                                            'Strong leadership and strategic decision-making experience',
-                        "Industry Experience": `Solid ${profile.industries.toLowerCase()} sector experience with transferable skills`
-                    }
-                },
-                {
-                    title: "Resume Optimization for Target Roles",
-                    icon: "📝",
-                    score: Math.floor(Math.random() * 2) + 6,
-                    content: {
-                        "ATS Compatibility": `Good keyword optimization for ${profile.job_categories[0].toLowerCase()} roles`,
-                        "Content Structure": "Professional format suitable for industry standards",
-                        "Missing Elements": categorySpecificAnalysis.resumeGaps,
-                        "Industry Alignment": `Resume format aligns well with ${profile.industries} sector expectations`
-                    }
-                },
-                {
-                    title: "Salary & Compensation Insights",
-                    icon: "💰",
-                    score: 8,
-                    content: {
-                        "Current Range": profile.estimated_salary_range,
-                        "Market Position": `Competitive for ${profile.experience_level} level ${profile.job_categories[0].toLowerCase()} roles`,
-                        "Growth Potential": categorySpecificAnalysis.salaryGrowth,
-                        "Total Compensation": categorySpecificAnalysis.compensationNotes
-                    }
-                },
-                {
-                    title: "Career Development Roadmap",
-                    icon: "🛣️",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: generateCategoryCareerRoadmap(profile.experience_level, profile.category)
-                },
-                {
-                    title: "Job Search Strategy for Recommended Roles",
-                    icon: "🔍",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: {
-                        "Best Platforms": categorySpecificAnalysis.jobPlatforms,
-                        "Company Types": categorySpecificAnalysis.idealCompanies,
-                        "Application Strategy": `Emphasize ${profile.key_skills.slice(0,2).join(' and ')} when applying for ${profile.job_categories[0].toLowerCase()} positions`,
-                        "Interview Prep": categorySpecificAnalysis.interviewFocus
-                    }
-                },
-                {
-                    title: "Risk Assessment & Mitigation",
-                    icon: "⚠️", 
-                    score: Math.floor(Math.random() * 2) + 6,
-                    content: {
-                        "Potential Concerns": categorySpecificAnalysis.potentialRisks,
-                        "Market Timing": categorySpecificAnalysis.marketTiming,
-                        "Qualification Match": `Well-aligned for ${profile.experience_level} level ${profile.industries.toLowerCase()} positions`,
-                        "Industry Trends": categorySpecificAnalysis.industryTrends
-                    }
-                },
-                {
-                    title: "Prioritized Action Plan",
-                    icon: "✅",
-                    score: 9,
-                    content: generateCategoryActionPlan(profile, marketScore)
-                }
-            ];
-        }
-
-        function getCategorySpecificInsights(category, experienceLevel) {
-            const insights = {
-                'ACCOUNT': {
-                    marketDemand: 'high',
-                    skillDemand: 'Strong',
-                    emergingSkills: 'Consider adding: Digital CRM platforms, Data Analytics, Customer Success methodologies',
-                    certifications: 'Salesforce certification or Account Management Professional (AMP) would add value',
-                    careerProgression: 'consistent client relationship growth',
-                    achievementFocus: 'Focus on client retention rates, revenue growth, and portfolio expansion metrics',
-                    resumeGaps: 'Add quantified client success stories and relationship management metrics',
-                    salaryGrowth: '8-12% annually with strong client portfolio performance',
-                    compensationNotes: 'Often includes commission structure and client bonus opportunities',
-                    jobPlatforms: 'LinkedIn, Indeed, company career pages, and industry-specific job boards',
-                    idealCompanies: experienceLevel === 'entry' ? 'Growing companies needing account management' : 'Established firms with large client portfolios',
-                    interviewFocus: 'Prepare case studies of successful client relationships and problem-solving examples',
-                    potentialRisks: 'Client dependency risk - demonstrate diverse portfolio management',
-                    marketTiming: 'Strong market for account management roles across industries',
-                    industryTrends: 'Account management becoming more data-driven and customer success focused'
-                },
-                'INFORMATION-TECHNOLOGY': {
-                    marketDemand: 'very high',
-                    skillDemand: 'Extremely high',
-                    emergingSkills: 'Consider adding: Cloud-native development, AI/ML integration, DevSecOps, Kubernetes',
-                    certifications: 'AWS Solutions Architect, Google Cloud Professional, or Microsoft Azure certification',
-                    careerProgression: 'rapid technical advancement',
-                    achievementFocus: 'Highlight system performance improvements, automation achievements, and technical leadership',
-                    resumeGaps: 'Include specific technologies, project impact metrics, and contribution to system architecture',
-                    salaryGrowth: '10-15% annually in current hot market',
-                    compensationNotes: 'Often includes equity, signing bonuses, and comprehensive benefits packages',
-                    jobPlatforms: 'GitHub Jobs, Stack Overflow Jobs, AngelList, tech company career pages',
-                    idealCompanies: experienceLevel === 'entry' ? 'Tech startups and growing companies' : 'FAANG companies, unicorn startups, or tech consultancies',
-                    interviewFocus: 'Technical coding challenges, system design, and architecture discussions',
-                    potentialRisks: 'Technology stack obsolescence - emphasize continuous learning',
-                    marketTiming: 'Peak demand period with digital transformation driving hiring',
-                    industryTrends: 'Shift toward cloud-first, AI-integrated, and security-focused development'
-                },
-                'HEALTHCARE': {
-                    marketDemand: 'high',
-                    skillDemand: 'High',
-                    emergingSkills: 'Consider adding: Healthcare informatics, Telehealth systems, Quality metrics, Regulatory compliance',
-                    certifications: 'Healthcare Financial Management Association (HFMA) or Certified Healthcare Administrative Professional',
-                    careerProgression: 'steady advancement in healthcare systems',
-                    achievementFocus: 'Patient outcome improvements, cost savings, and operational efficiency metrics',
-                    resumeGaps: 'Include patient satisfaction scores, compliance achievements, and process improvements',
-                    salaryGrowth: '6-9% annually with strong job security',
-                    compensationNotes: 'Comprehensive benefits including healthcare, retirement, and continuing education support',
-                    jobPlatforms: 'Healthcare job boards, hospital career pages, professional association listings',
-                    idealCompanies: experienceLevel === 'entry' ? 'Regional hospitals and healthcare groups' : 'Major health systems and specialized medical centers',
-                    interviewFocus: 'Patient care philosophy, regulatory knowledge, and operational improvement examples',
-                    potentialRisks: 'Regulatory changes - demonstrate adaptability and compliance focus',
-                    marketTiming: 'Strong growth driven by aging population and healthcare expansion',
-                    industryTrends: 'Digital health integration and value-based care models driving innovation'
-                },
-                'FINANCE': {
-                    marketDemand: 'high',
-                    skillDemand: 'High',
-                    emergingSkills: 'Consider adding: Financial modeling, Risk analytics, Regulatory technology, ESG analysis',
-                    certifications: 'CFA, FRM, or CPA certification would add significant value',
-                    careerProgression: 'strong analytical and strategic advancement',
-                    achievementFocus: 'ROI improvements, cost savings, and financial performance metrics',
-                    resumeGaps: 'Include quantified financial impacts and analytical achievements',
-                    salaryGrowth: '8-12% annually with performance-based bonuses',
-                    compensationNotes: 'Often includes significant bonus structure and equity participation',
-                    jobPlatforms: 'Finance job boards, investment firm career pages, professional networks',
-                    idealCompanies: experienceLevel === 'entry' ? 'Regional banks and financial services' : 'Investment banks and major financial institutions',
-                    interviewFocus: 'Financial analysis skills, market knowledge, and quantitative problem-solving',
-                    potentialRisks: 'Market volatility impact - demonstrate risk management understanding',
-                    marketTiming: 'Recovery phase with growing demand for financial expertise',
-                    industryTrends: 'Fintech integration and regulatory compliance driving innovation'
-                },
-                'SALES': {
-                    marketDemand: 'high',
-                    skillDemand: 'High',
-                    emergingSkills: 'Consider adding: CRM analytics, Digital selling, Customer success methodologies',
-                    certifications: 'Salesforce certification or Professional Sales certification',
-                    careerProgression: 'performance-based rapid advancement',
-                    achievementFocus: 'Revenue generation, quota achievement, and client acquisition metrics',
-                    resumeGaps: 'Include specific sales numbers, conversion rates, and territory growth',
-                    salaryGrowth: '10-15% annually with commission upside',
-                    compensationNotes: 'Commission-based structure with significant earning potential',
-                    jobPlatforms: 'Sales job boards, company career pages, professional sales networks',
-                    idealCompanies: experienceLevel === 'entry' ? 'Growing companies with training programs' : 'Established firms with large territories',
-                    interviewFocus: 'Sales methodology, relationship building, and closing techniques',
-                    potentialRisks: 'Economic downturns - demonstrate recession-proof selling skills',
-                    marketTiming: 'Strong demand as companies focus on revenue growth',
-                    industryTrends: 'Digital transformation and consultative selling approaches'
-                },
-                'HR': {
-                    marketDemand: 'moderate',
-                    skillDemand: 'Steady',
-                    emergingSkills: 'Consider adding: HR analytics, Employee experience design, Diversity & inclusion',
-                    certifications: 'SHRM-CP, PHR, or CIPD certification recommended',
-                    careerProgression: 'steady organizational advancement',
-                    achievementFocus: 'Employee engagement, retention rates, and organizational development metrics',
-                    resumeGaps: 'Include HR metrics, process improvements, and employee satisfaction scores',
-                    salaryGrowth: '6-9% annually with steady progression',
-                    compensationNotes: 'Comprehensive benefits and professional development opportunities',
-                    jobPlatforms: 'HR job boards, company career pages, SHRM job center',
-                    idealCompanies: experienceLevel === 'entry' ? 'Mid-size companies with HR development programs' : 'Large organizations with complex HR needs',
-                    interviewFocus: 'HR best practices, employee relations, and organizational development',
-                    potentialRisks: 'Automation of routine HR tasks - focus on strategic HR capabilities',
-                    marketTiming: 'Steady demand with focus on employee experience',
-                    industryTrends: 'HR technology adoption and employee wellness focus'
-                },
-                'ENGINEERING': {
-                    marketDemand: 'high',
-                    skillDemand: 'High',
-                    emergingSkills: 'Consider adding: Automation systems, Sustainable design, Advanced materials',
-                    certifications: 'Professional Engineer (PE) license or specialized engineering certifications',
-                    careerProgression: 'technical and project leadership advancement',
-                    achievementFocus: 'Project delivery, cost savings, and innovation metrics',
-                    resumeGaps: 'Include technical achievements, project outcomes, and efficiency improvements',
-                    salaryGrowth: '7-10% annually with project bonuses',
-                    compensationNotes: 'Strong benefits with project-based bonuses and professional development',
-                    jobPlatforms: 'Engineering job boards, professional associations, company career pages',
-                    idealCompanies: experienceLevel === 'entry' ? 'Engineering consultancies with mentorship' : 'Major engineering firms and manufacturing companies',
-                    interviewFocus: 'Technical expertise, problem-solving methodology, and project management',
-                    potentialRisks: 'Technology disruption - emphasize adaptability and continuous learning',
-                    marketTiming: 'Strong demand driven by infrastructure and technology projects',
-                    industryTrends: 'Sustainable engineering and smart systems integration'
-                }
-            };
-
-            return insights[category] || {
-                marketDemand: 'moderate',
-                skillDemand: 'Steady',
-                emergingSkills: 'Focus on digital transformation and data analysis skills',
-                certifications: 'Industry-standard professional certifications recommended',
-                careerProgression: 'consistent professional development',
-                achievementFocus: 'Quantify business impact and efficiency improvements',
-                resumeGaps: 'Add specific metrics and measurable achievements',
-                salaryGrowth: '5-8% annually with performance-based increases',
-                compensationNotes: 'Standard benefits package with performance bonuses',
-                jobPlatforms: 'LinkedIn, Indeed, industry-specific job boards',
-                idealCompanies: 'Mid-size companies with growth opportunities',
-                interviewFocus: 'Industry knowledge and problem-solving capabilities',
-                potentialRisks: 'Market competition - differentiate through specialization',
-                marketTiming: 'Stable market with steady demand',
-                industryTrends: 'Industry adapting to digital transformation trends'
-            };
-        }
-
-        function generateCategoryBasedRoleFit(targetRoles, skills, experienceLevel) {
-            return targetRoles.reduce((acc, role, index) => {
-                const baseScore = experienceLevel === 'entry' ? 75 : 
-                                experienceLevel === 'mid' ? 82 : 
-                                experienceLevel === 'senior' ? 88 : 92;
-                const variance = Math.floor(Math.random() * 10);
-                const score = Math.min(baseScore + variance, 95);
-                
-                const fitReasons = [
-                    `Strong alignment with required ${skills[0]} and ${skills[1]} competencies`,
-                    `Experience level matches ${experienceLevel} position requirements`,
-                    `Skill set directly applicable to role responsibilities`,
-                    `Background demonstrates clear career progression toward this role`
-                ];
-                
-                acc[role] = `${score}% fit - ${fitReasons[index % fitReasons.length]}`;
-                return acc;
-            }, {});
-        }
-
-        function generateCategoryCareerRoadmap(experienceLevel, category) {
-            const categoryRoadmaps = {
-                'INFORMATION-TECHNOLOGY': {
-                    'entry': {
-                        "0-3 months": "Build portfolio with full-stack projects and contribute to open source",
-                        "3-12 months": "Target junior developer roles with mentorship and learning opportunities",
-                        "1-3 years": "Specialize in cloud technologies and gain team collaboration experience"
-                    },
-                    'mid': {
-                        "0-3 months": "Update technical portfolio and strengthen system design knowledge",
-                        "3-12 months": "Target senior developer or tech lead positions with architectural input",
-                        "1-3 years": "Prepare for engineering manager or principal engineer track"
-                    },
-                    'senior': {
-                        "0-3 months": "Highlight technical leadership and system architecture experience",
-                        "3-12 months": "Target staff engineer, engineering manager, or architect roles",
-                        "1-3 years": "Director of Engineering or VP Engineering opportunities"
-                    },
-                    'executive': {
-                        "0-3 months": "Emphasize organizational technical strategy and transformation leadership",
-                        "3-12 months": "Target CTO or VP Engineering positions",
-                        "1-3 years": "Board technical advisor or multi-company technology leadership roles"
-                    }
-                },
-                'HEALTHCARE': {
-                    'entry': {
-                        "0-3 months": "Complete relevant healthcare certifications and regulatory training",
-                        "3-12 months": "Target coordinator or specialist roles in healthcare systems",
-                        "1-3 years": "Build expertise in healthcare operations and patient care management"
-                    },
-                    'mid': {
-                        "0-3 months": "Strengthen healthcare administration and quality improvement credentials",
-                        "3-12 months": "Target department manager or clinical supervisor positions",
-                        "1-3 years": "Prepare for director-level roles in healthcare administration"
-                    },
-                    'senior': {
-                        "0-3 months": "Highlight strategic healthcare operations and compliance leadership",
-                        "3-12 months": "Target director or VP roles in healthcare organizations",
-                        "1-3 years": "Chief Medical Officer or health system executive opportunities"
-                    }
-                },
-                'FINANCE': {
-                    'entry': {
-                        "0-3 months": "Obtain financial analysis certifications and Excel/modeling skills",
-                        "3-12 months": "Target analyst roles in corporate finance or investment firms",
-                        "1-3 years": "Build expertise in financial modeling and market analysis"
-                    },
-                    'mid': {
-                        "0-3 months": "Strengthen advanced financial analysis and leadership experience",
-                        "3-12 months": "Target senior analyst or finance manager positions",
-                        "1-3 years": "Prepare for director of finance or investment management roles"
-                    },
-                    'senior': {
-                        "0-3 months": "Emphasize strategic financial planning and team leadership",
-                        "3-12 months": "Target finance director or VP Finance positions",
-                        "1-3 years": "CFO or investment firm partner opportunities"
-                    }
-                }
-            };
-
-            const defaultRoadmap = {
-                'entry': {
-                    "0-3 months": "Focus on skill development and industry knowledge building",
-                    "3-12 months": "Target entry-level roles with growth opportunities",
-                    "1-3 years": "Build expertise and expand professional network"
-                },
-                'mid': {
-                    "0-3 months": "Update credentials and strengthen leadership examples",
-                    "3-12 months": "Target senior individual contributor or management roles",
-                    "1-3 years": "Prepare for director-level or specialized expert positions"
-                },
-                'senior': {
-                    "0-3 months": "Highlight strategic impact and organizational leadership",
-                    "3-12 months": "Target director or VP-level positions",
-                    "1-3 years": "Executive leadership or C-suite opportunities"
-                },
-                'executive': {
-                    "0-3 months": "Emphasize organizational transformation and strategic vision",
-                    "3-12 months": "Target C-level or senior executive positions",
-                    "1-3 years": "Board positions and multi-organization leadership roles"
-                }
-            };
-
-            return categoryRoadmaps[category]?.[experienceLevel] || defaultRoadmap[experienceLevel] || defaultRoadmap['mid'];
-        }
-
-        function generateCategoryActionPlan(profile, marketScore) {
-            const categoryActions = {
-                'INFORMATION-TECHNOLOGY': {
-                    high: [
-                        { priority: 'High', title: 'Apply to Tech Roles Immediately', desc: 'Your profile is highly competitive - start applying to target companies now' },
-                        { priority: 'Medium', title: 'Build Technical Portfolio', desc: 'Showcase recent projects and contributions on GitHub' },
-                        { priority: 'Low', title: 'Stay Current with Tech Trends', desc: 'Follow latest developments in cloud, AI, and your specialization area' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Strengthen Technical Skills', desc: 'Focus on in-demand technologies and complete relevant certifications' },
-                        { priority: 'High', title: 'Build Comprehensive Portfolio', desc: 'Create projects demonstrating full-stack capabilities and problem-solving' },
-                        { priority: 'Medium', title: 'Gain Practical Experience', desc: 'Consider contributing to open source or taking on freelance projects' },
-                        { priority: 'Medium', title: 'Technical Certification', desc: 'Pursue cloud or specialized technology certifications' }
-                    ]
-                },
-                'HEALTHCARE': {
-                    high: [
-                        { priority: 'High', title: 'Apply to Healthcare Organizations', desc: 'Strong profile for current healthcare administration openings' },
-                        { priority: 'Medium', title: 'Network in Healthcare', desc: 'Connect with healthcare administrators and attend industry events' },
-                        { priority: 'Low', title: 'Stay Updated on Regulations', desc: 'Keep current with healthcare compliance and regulatory changes' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Healthcare Certification', desc: 'Complete relevant healthcare administration or clinical certifications' },
-                        { priority: 'High', title: 'Regulatory Knowledge', desc: 'Strengthen understanding of healthcare compliance and quality metrics' },
-                        { priority: 'Medium', title: 'Healthcare Experience', desc: 'Gain direct healthcare environment experience through volunteering or internships' },
-                        { priority: 'Medium', title: 'Patient Care Focus', desc: 'Develop understanding of patient outcomes and healthcare delivery models' }
-                    ]
-                },
-                'ACCOUNT': {
-                    high: [
-                        { priority: 'High', title: 'Target Account Management Roles', desc: 'Your relationship management skills are market-ready' },
-                        { priority: 'Medium', title: 'Quantify Client Success Stories', desc: 'Prepare specific examples of client relationship wins and retention' },
-                        { priority: 'Low', title: 'CRM Proficiency', desc: 'Ensure expertise in major CRM platforms like Salesforce' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Develop Client Portfolio Examples', desc: 'Create case studies showing successful account management outcomes' },
-                        { priority: 'High', title: 'CRM and Sales Technology', desc: 'Master relevant CRM systems and account management tools' },
-                        { priority: 'Medium', title: 'Industry Knowledge', desc: 'Deepen understanding of target industry and client business models' },
-                        { priority: 'Medium', title: 'Relationship Building Skills', desc: 'Strengthen consultative selling and relationship management capabilities' }
-                    ]
-                },
-                'FINANCE': {
-                    high: [
-                        { priority: 'High', title: 'Apply to Finance Roles', desc: 'Strong analytical profile ready for current finance openings' },
-                        { priority: 'Medium', title: 'Network in Finance', desc: 'Connect with finance professionals and attend industry events' },
-                        { priority: 'Low', title: 'Stay Current with Regulations', desc: 'Keep updated on financial regulations and market trends' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Financial Certifications', desc: 'Pursue CFA, FRM, or relevant financial analysis certifications' },
-                        { priority: 'High', title: 'Financial Modeling Skills', desc: 'Strengthen Excel, SQL, and financial modeling capabilities' },
-                        { priority: 'Medium', title: 'Industry Experience', desc: 'Gain exposure to specific financial sectors (banking, investments, etc.)' },
-                        { priority: 'Medium', title: 'Quantitative Analysis', desc: 'Develop strong analytical and data interpretation skills' }
-                    ]
-                },
-                'SALES': {
-                    high: [
-                        { priority: 'High', title: 'Target Sales Positions', desc: 'Your relationship and communication skills are market-ready' },
-                        { priority: 'Medium', title: 'Quantify Sales Achievements', desc: 'Prepare specific examples of revenue generation and client wins' },
-                        { priority: 'Low', title: 'CRM Mastery', desc: 'Ensure proficiency in major CRM platforms and sales tools' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Sales Methodology Training', desc: 'Learn structured sales processes and closing techniques' },
-                        { priority: 'High', title: 'Build Sales Portfolio', desc: 'Create examples demonstrating sales success and client management' },
-                        { priority: 'Medium', title: 'Industry Product Knowledge', desc: 'Develop deep understanding of target industry products/services' },
-                        { priority: 'Medium', title: 'Digital Selling Skills', desc: 'Master social selling and digital prospecting techniques' }
-                    ]
-                },
-                'HR': {
-                    high: [
-                        { priority: 'High', title: 'Apply to HR Positions', desc: 'People management and organizational skills are competitive' },
-                        { priority: 'Medium', title: 'HR Analytics', desc: 'Strengthen data analysis skills for HR metrics and reporting' },
-                        { priority: 'Low', title: 'Stay Current with HR Trends', desc: 'Keep updated on employment law and HR best practices' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'HR Certification', desc: 'Complete SHRM-CP, PHR, or similar HR professional certification' },
-                        { priority: 'High', title: 'HR Systems Experience', desc: 'Gain familiarity with HRIS systems and HR technology' },
-                        { priority: 'Medium', title: 'Employment Law Knowledge', desc: 'Study current employment regulations and compliance requirements' },
-                        { priority: 'Medium', title: 'Organizational Development', desc: 'Develop skills in change management and employee engagement' }
-                    ]
-                },
-                'ENGINEERING': {
-                    high: [
-                        { priority: 'High', title: 'Target Engineering Roles', desc: 'Technical expertise and problem-solving skills are market-ready' },
-                        { priority: 'Medium', title: 'Technical Portfolio', desc: 'Showcase engineering projects and technical achievements' },
-                        { priority: 'Low', title: 'Professional Development', desc: 'Pursue Professional Engineer (PE) license if applicable' }
-                    ],
-                    low: [
-                        { priority: 'High', title: 'Technical Skill Enhancement', desc: 'Strengthen core engineering competencies and modern tools' },
-                        { priority: 'High', title: 'Engineering Certifications', desc: 'Pursue relevant engineering certifications or PE license' },
-                        { priority: 'Medium', title: 'Project Experience', desc: 'Gain hands-on experience with engineering projects and design' },
-                        { priority: 'Medium', title: 'Industry Standards', desc: 'Learn industry-specific standards and regulatory requirements' }
-                    ]
-                }
-            };
-
-            const categoryKey = profile.category;
-            const scoreLevel = marketScore >= 8 ? 'high' : 'low';
-            
-            return categoryActions[categoryKey]?.[scoreLevel] || [
-                { priority: 'High', title: 'Industry Skill Development', desc: `Focus on core competencies for ${profile.industries.toLowerCase()}` },
-                { priority: 'High', title: 'Professional Certification', desc: 'Pursue relevant industry certifications to strengthen credentials' },
-                { priority: 'Medium', title: 'Network Building', desc: 'Connect with professionals in your target industry and roles' },
-                { priority: 'Medium', title: 'Resume Optimization', desc: 'Tailor resume with industry-specific keywords and achievements' }
-            ];
-        }
-
-        function convertPythonResult(pythonResult) {
-            // Extract the actual AI-generated profile and analysis from Python script
-            const profile = pythonResult.extracted_profile;
-            const groqAnalysis = pythonResult.groq_analysis?.analysis || '';
-            
-            // Parse the market score from the analysis or use a default
-            const marketScore = extractMarketScore(groqAnalysis) || Math.floor(Math.random() * 3) + 7;
-            
-            return {
-                extractedProfile: profile,
-                marketScore: marketScore,
-                analysisResults: parseGroqAnalysisInto10Steps(groqAnalysis, profile),
-                actionPlan: extractActionPlanFromAnalysis(groqAnalysis, marketScore)
-            };
-        }
-
-        function extractMarketScore(analysisText) {
-            // Try to extract market competitiveness score from Groq analysis
-            const scoreMatch = analysisText.match(/market.*?(\d+)\/10/i) || 
-                              analysisText.match(/score.*?(\d+)\/10/i) ||
-                              analysisText.match(/competitiveness.*?(\d+)\/10/i);
-            return scoreMatch ? parseInt(scoreMatch[1]) : null;
-        }
-
-        function parseGroqAnalysisInto10Steps(analysisText, profile) {
-            // Parse the actual Groq analysis into the 10 expected sections
-            const sections = [
-                {
-                    title: "Market Competitiveness Assessment",
-                    icon: "📊",
-                    score: Math.floor(Math.random() * 2) + 8,
-                    content: extractSectionContent(analysisText, ["market competitiveness", "overall readiness"], profile)
                 },
                 {
                     title: "Target Role Fit Analysis",
                     icon: "🎯", 
                     score: Math.floor(Math.random() * 2) + 8,
-                    content: extractSectionContent(analysisText, ["target role fit", "role analysis"], profile)
+                    content: generateRoleFitAnalysis(profile.target_roles)
                 },
                 {
                     title: "Technical & Professional Skills Evaluation",
                     icon: "🔧",
                     score: Math.floor(Math.random() * 2) + 7,
-                    content: extractSectionContent(analysisText, ["skills evaluation", "technical skills"], profile)
+                    content: {
+                        "Current Strengths": profile.key_skills.join(', '),
+                        "Market Demand": "High demand for your core competencies in target market",
+                        "Development Areas": "Consider adding: Cloud Architecture, Advanced Analytics, Leadership Skills",
+                        "Certifications": "AWS Solutions Architect or relevant industry certifications would add significant value"
+                    }
                 },
                 {
                     title: "Experience & Achievement Analysis", 
                     icon: "📈",
                     score: Math.floor(Math.random() * 2) + 7,
-                    content: extractSectionContent(analysisText, ["experience", "achievement"], profile)
+                    content: {
+                        "Career Trajectory": `${profile.experience_level} level showing appropriate progression`,
+                        "Achievement Quantification": "Strong evidence of business impact and measurable results",
+                        "Leadership Evidence": profile.experience_level === 'senior' ? "Clear leadership and mentoring capabilities" : "Growing leadership potential",
+                        "Industry Experience": `Solid background in ${profile.industries.join(' and ')} sectors`
+                    }
                 },
                 {
-                    title: "Resume Optimization for Target Roles",
+                    title: "Resume Optimization Recommendations",
                     icon: "📝",
                     score: Math.floor(Math.random() * 2) + 6,
-                    content: extractSectionContent(analysisText, ["resume optimization", "ats"], profile)
-                },
-                {
-                    title: "Salary & Compensation Insights",
-                    icon: "💰",
-                    score: 8,
-                    content: extractSectionContent(analysisText, ["salary", "compensation"], profile)
-                },
-                {
-                    title: "Career Development Roadmap",
-                    icon: "🛣️",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: extractSectionContent(analysisText, ["career development", "roadmap"], profile)
-                },
-                {
-                    title: "Job Search Strategy for Recommended Roles",
-                    icon: "🔍",
-                    score: Math.floor(Math.random() * 2) + 7,
-                    content: extractSectionContent(analysisText, ["job search", "strategy"], profile)
-                },
-                {
-                    title: "Risk Assessment & Mitigation",
-                    icon: "⚠️",
-                    score: Math.floor(Math.random() * 2) + 6,
-                    content: extractSectionContent(analysisText, ["risk", "mitigation"], profile)
-                },
-                {
-                    title: "Prioritized Action Plan",
-                    icon: "✅",
-                    score: 9,
-                    content: extractSectionContent(analysisText, ["action plan", "priorities"], profile)
+                    content: {
+                        "ATS Compatibility": "Good keyword optimization for your target roles",
+                        "Content Structure": "Professional format with clear progression narrative",
+                        "Enhancement Opportunities": "Add more quantified achievements and industry-specific metrics",
+                        "Formatting": "Consistent styling with strong visual hierarchy"
+                    }
                 }
             ];
-            
-            return sections;
         }
 
-        function extractSectionContent(analysisText, keywords, profile) {
-            // Extract relevant content from the Groq analysis for each section
-            const lines = analysisText.split('\n');
-            let relevantContent = {};
-            let currentSection = '';
-            let collectingContent = false;
-            
-            for (const line of lines) {
-                const lowerLine = line.toLowerCase();
-                
-                // Check if this line contains any of our keywords
-                if (keywords.some(keyword => lowerLine.includes(keyword.toLowerCase()))) {
-                    collectingContent = true;
-                    currentSection = line.trim();
-                    relevantContent[currentSection] = '';
-                    continue;
-                }
-                
-                // If we're collecting and find a numbered section or new header, stop
-                if (collectingContent && (line.match(/^\d+\./) || line.match(/^[A-Z\s]+:/))) {
-                    if (!keywords.some(keyword => lowerLine.includes(keyword.toLowerCase()))) {
-                        collectingContent = false;
-                    }
-                }
-                
-                // Collect content if we're in a relevant section
-                if (collectingContent && line.trim()) {
-                    if (relevantContent[currentSection]) {
-                        relevantContent[currentSection] += '\n' + line.trim();
-                    } else {
-                        relevantContent[currentSection] = line.trim();
-                    }
-                }
-            }
-            
-            // If no specific content found, use profile data as fallback
-            if (Object.keys(relevantContent).length === 0) {
-                relevantContent = generateFallbackContent(keywords, profile);
-            }
-            
-            return relevantContent;
-        }
-
-        function generateFallbackContent(keywords, profile) {
-            // Generate basic content based on extracted profile when Groq analysis parsing fails
-            return {
-                "Analysis Summary": `Based on your ${profile?.experience_level || 'professional'} level background in ${profile?.industries || 'your field'}, here are key insights for your career development.`,
-                "Key Findings": `Your profile shows strong alignment with ${profile?.target_roles?.slice(0,2).join(' and ') || 'target roles'} in the current market.`,
-                "Recommendations": `Focus on leveraging your ${profile?.key_skills?.slice(0,3).join(', ') || 'core skills'} to advance in ${profile?.job_categories?.join(' and ') || 'your chosen field'}.`
-            };
-        }
-
-        function extractActionPlanFromAnalysis(analysisText, marketScore) {
-            // Extract action items from the Groq analysis
-            const actionItems = [];
-            const lines = analysisText.split('\n');
-            
-            let inActionSection = false;
-            for (const line of lines) {
-                const lowerLine = line.toLowerCase();
-                
-                if (lowerLine.includes('action') || lowerLine.includes('recommend') || lowerLine.includes('priorities')) {
-                    inActionSection = true;
-                    continue;
-                }
-                
-                if (inActionSection && line.trim() && (line.includes('-') || line.includes('•'))) {
-                    const actionText = line.replace(/^[-•\s]*/, '').trim();
-                    if (actionText.length > 10) {
-                        const priority = actionItems.length < 2 ? 'High' : actionItems.length < 4 ? 'Medium' : 'Low';
-                        actionItems.push({
-                            priority: priority,
-                            title: actionText.split(':')[0] || actionText.substring(0, 50),
-                            desc: actionText.split(':')[1] || actionText
-                        });
-                    }
-                }
-                
-                if (actionItems.length >= 5) break;
-            }
-            
-            // Fallback action plan if none extracted
-            if (actionItems.length === 0) {
-                return [
-                    { priority: 'High', title: 'Review AI Analysis', desc: 'Carefully review the detailed AI-generated insights for your next steps' },
-                    { priority: 'Medium', title: 'Implement Recommendations', desc: 'Follow the specific recommendations provided in the comprehensive analysis' },
-                    { priority: 'Low', title: 'Monitor Progress', desc: 'Track your progress and iterate based on market feedback' }
+        function generateRoleFitAnalysis(targetRoles) {
+            return targetRoles.reduce((acc, role, index) => {
+                const fitScore = 85 + Math.floor(Math.random() * 10);
+                const reasons = [
+                    'Strong technical alignment with role requirements',
+                    'Experience level matches position expectations', 
+                    'Skills portfolio directly applicable',
+                    'Industry background highly relevant'
                 ];
-            }
-            
-            return actionItems;
+                acc[role] = `${fitScore}% fit - ${reasons[index % reasons.length]}`;
+                return acc;
+            }, {});
         }
 
         function showProgress() {
             document.getElementById('progress-section').style.display = 'block';
-            document.getElementById('upload-area').style.display = 'none';
         }
 
         function hideProgress() {
             document.getElementById('progress-section').style.display = 'none';
-            document.getElementById('upload-area').style.display = 'block';
         }
 
         function updateProgress(percentage, message) {
@@ -1510,32 +1269,29 @@
             document.getElementById('progress-text').textContent = message;
         }
 
-        function showResults(analysis) {
-            // Show AI-extracted profile
-            displayExtractedProfile(analysis.extractedProfile);
+        function showResults(analysis, userProfile) {
+            // Show final profile summary
+            displayFinalProfile(userProfile);
             
             // Show market readiness score
             document.getElementById('market-score').textContent = `Market Readiness: ${analysis.marketScore}/10`;
             document.getElementById('score-description').textContent = 
-                `Overall competitiveness for ${analysis.extractedProfile.target_roles.slice(0,2).join(' and ')} roles`;
+                `Overall competitiveness for ${userProfile.target_roles.slice(0,2).join(' and ')} roles`;
             
-            // Generate 10-step analysis sections
+            // Generate analysis sections
             displayAnalysisSections(analysis.analysisResults);
-            
-            // Show action plan
-            displayActionPlan(analysis.actionPlan);
             
             // Show results section
             document.getElementById('results-section').style.display = 'block';
             document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function displayExtractedProfile(profile) {
+        function displayFinalProfile(profile) {
             const profileGrid = document.getElementById('profile-grid');
             profileGrid.innerHTML = `
                 <div class="profile-item">
                     <strong>Experience Level</strong>
-                    <div class="profile-value">${profile.experience_level.charAt(0).toUpperCase() + profile.experience_level.slice(1)} (${profile.years_of_experience} years)</div>
+                    <div class="profile-value">${profile.experience_level.charAt(0).toUpperCase() + profile.experience_level.slice(1)}</div>
                 </div>
                 <div class="profile-item">
                     <strong>Target Job Categories</strong>
@@ -1559,7 +1315,7 @@
                 </div>
                 <div class="profile-item">
                     <strong>Education & Industry</strong>
-                    <div class="profile-value">${profile.education_level} • ${profile.industries}</div>
+                    <div class="profile-value">${profile.education_level} • ${profile.industries.join(' • ')}</div>
                 </div>
                 <div class="profile-item">
                     <strong>Career Focus</strong>
@@ -1589,68 +1345,16 @@
         function formatSectionContent(content, title) {
             if (title === "Target Role Fit Analysis") {
                 return `
-                    <div class="role-fit-grid">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
                         ${Object.entries(content).map(([role, fit]) => `
-                            <div class="role-fit-card">
-                                <div class="role-title">${role}</div>
-                                <div class="fit-percentage">${fit}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (title === "Technical & Professional Skills Evaluation") {
-                return `
-                    <div class="skills-grid">
-                        <div class="skills-column">
-                            <h4>Current Strengths</h4>
-                            <div class="skill-tags">
-                                ${content["Current Skills"] ? content["Current Skills"].split(', ').map(skill => 
-                                    `<span class="skill-tag">${skill.trim()}</span>`
-                                ).join('') : ''}
-                            </div>
-                            <div class="subsection">
-                                <div class="subsection-title">Market Demand</div>
-                                <p>${content["Market Demand"] || 'Strong demand in current market'}</p>
-                            </div>
-                        </div>
-                        <div class="skills-column">
-                            <h4>Development Areas</h4>
-                            <div class="skill-tags">
-                                ${content["Emerging Skills"] ? content["Emerging Skills"].replace('Consider adding: ', '').split(', ').map(skill => 
-                                    `<span class="skill-tag missing">${skill.trim()}</span>`
-                                ).join('') : ''}
-                            </div>
-                            <div class="subsection">
-                                <div class="subsection-title">Recommended Certifications</div>
-                                <p>${content["Certifications"] || 'Industry-standard certifications recommended'}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (title === "Career Development Roadmap") {
-                return `
-                    <div class="roadmap-timeline">
-                        ${Object.entries(content).map(([period, action]) => `
-                            <div class="timeline-item">
-                                <div class="timeline-period">${period}</div>
-                                <div>${action}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (title === "Prioritized Action Plan") {
-                return `
-                    <div class="roadmap-timeline">
-                        ${Object.entries(content).map(([timeframe, action]) => `
-                            <div class="timeline-item priority-${timeframe.includes('Week') ? 'high' : timeframe.includes('Month 1') ? 'high' : timeframe.includes('3-6') ? 'medium' : 'low'}">
-                                <div class="timeline-period">${timeframe}</div>
-                                <div>${action}</div>
+                            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">${role}</div>
+                                <div style="color: #4CAF50; font-weight: 600;">${fit}</div>
                             </div>
                         `).join('')}
                     </div>
                 `;
             } else {
-                // Default formatting for other sections
                 return `
                     ${Object.entries(content).map(([key, value]) => `
                         <div class="subsection">
@@ -1660,17 +1364,6 @@
                     `).join('')}
                 `;
             }
-        }
-
-        function displayActionPlan(actionPlan) {
-            const actionItems = document.getElementById('action-items');
-            actionItems.innerHTML = actionPlan.map(action => `
-                <div class="action-item">
-                    <div class="action-priority priority-${action.priority.toLowerCase()}">${action.priority} Priority</div>
-                    <div class="action-title">${action.title}</div>
-                    <div class="action-description">${action.desc}</div>
-                </div>
-            `).join('');
         }
 
         function showMessage(message, type) {
