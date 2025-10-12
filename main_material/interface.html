@@ -329,11 +329,29 @@
             color: #333;
             transition: all 0.3s ease;
             border-left: 4px solid #4CAF50;
+            position: relative;
         }
 
         .job-listing:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .job-listing.saved {
+            border-left-color: #2196F3;
+            background: linear-gradient(to right, #e3f2fd 0%, white 10%);
+        }
+        
+        .platform-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .job-header {
@@ -442,6 +460,72 @@
             border-left: 4px solid #f44336;
             display: none;
         }
+
+        .ai-insights-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .weakness-item {
+            background: rgba(255,255,255,0.15);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            border-left: 3px solid #fff;
+        }
+
+        .help-tooltip {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #2196F3;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 0.3rem;
+        }
+
+        .profile-field-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-field-label {
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-input, .profile-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .profile-input:focus, .profile-select:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .field-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -494,143 +578,108 @@ SOFTWARE ENGINEER
 
         <div class="profile-review-section" id="profile-review-section" style="display: none;">
             <div style="background: rgba(255,255,255,0.95); border-radius: 24px; padding: 3rem; margin-bottom: 2rem;">
-                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem;">Review Your Extracted Profile</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 2rem;">AI has analyzed your resume. Please review and adjust before finding job matches.</p>
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem;">📋 Review Your Extracted Profile</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 2rem;">AI has analyzed your resume. Please review and adjust the information below before we search for matching jobs.</p>
                 
-                <div id="career-suggestions" style="background: #e8f4fd; border-left: 4px solid #2196F3; padding: 1.5rem; margin-bottom: 2rem; border-radius: 8px; display: none;">
-                    <h3 style="color: #1565c0; margin-bottom: 1rem; font-size: 1.2rem;">Resume Improvement Suggestions</h3>
-                    <div id="suggestions-content" style="color: #424242; line-height: 1.6;"></div>
+                <div id="ai-analysis-display" style="display: none;"></div>
+                
+                <div style="background: #fff9e6; border-left: 4px solid #ffc107; padding: 1.5rem; margin-bottom: 2rem; border-radius: 8px;">
+                    <h3 style="color: #f57c00; margin-bottom: 1rem; font-size: 1.2rem;">💡 Why Review This?</h3>
+                    <p style="color: #666; line-height: 1.6; margin-bottom: 0.5rem;">The AI has extracted information from your resume, but you can adjust these details to:</p>
+                    <ul style="color: #666; margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Correct any misinterpreted information</li>
+                        <li>Add additional skills or roles you're targeting</li>
+                        <li>Refine your location or salary expectations</li>
+                        <li>Improve your job search accuracy</li>
+                    </ul>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div>
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Your Name</label>
-                        <input type="text" id="profile-name" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group">
+                        <label class="profile-field-label">
+                            Your Name
+                            <span class="help-tooltip" title="Your full name as it appears on your resume">?</span>
+                        </label>
+                        <input type="text" id="profile-name" class="profile-input" placeholder="John Doe">
                     </div>
                     
-                    <div>
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Location</label>
-                        <input type="text" id="profile-location" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group">
+                        <label class="profile-field-label">
+                            Location
+                            <span class="help-tooltip" title="City and state where you want to work">?</span>
+                        </label>
+                        <input type="text" id="profile-location" class="profile-input" placeholder="San Francisco, CA">
+                        <div class="field-hint">Include "Remote" if you're open to remote work</div>
                     </div>
                     
-                    <div>
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Experience Level</label>
-                        <select id="profile-experience" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group">
+                        <label class="profile-field-label">
+                            Experience Level
+                            <span class="help-tooltip" title="Select the level that best matches your experience">?</span>
+                        </label>
+                        <select id="profile-experience" class="profile-select">
                             <option value="entry">Entry Level (0-2 years)</option>
                             <option value="mid">Mid Level (3-7 years)</option>
                             <option value="senior">Senior Level (8+ years)</option>
                         </select>
                     </div>
                     
-                    <div>
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Target Salary Range</label>
-                        <input type="text" id="profile-salary" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group">
+                        <label class="profile-field-label">
+                            Target Salary Range
+                            <span class="help-tooltip" title="Your expected salary range">?</span>
+                        </label>
+                        <input type="text" id="profile-salary" class="profile-input" placeholder="$70,000 - $90,000">
+                        <div class="field-hint">Be realistic based on your experience and location</div>
                     </div>
                     
-                    <div style="grid-column: 1 / -1;">
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Career Field</label>
-                        <select id="profile-career-field" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group" style="grid-column: 1 / -1;">
+                        <label class="profile-field-label">
+                            Career Field
+                            <span class="help-tooltip" title="Your primary industry or career field">?</span>
+                        </label>
+                        <select id="profile-career-field" class="profile-select">
                             <option value="">Select Career Field</option>
                             <option value="Accountant">Accountant</option>
                             <option value="Advocate">Advocate</option>
-                            <option value="Agriculture">Agriculture</option>
-                            <option value="Apparel">Apparel</option>
-                            <option value="Arts">Arts</option>
-                            <option value="Automobile">Automobile</option>
-                            <option value="Aviation">Aviation</option>
-                            <option value="Banking">Banking</option>
-                            <option value="BOP">Business Operations (BOP)</option>
-                            <option value="Business-Development">Business Development</option>
-                            <option value="Chef">Chef</option>
-                            <option value="Construction">Construction</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Digital-Media">Digital Media</option>
-                            <option value="Engineering">Engineering</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Fitness">Fitness</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="HR">Human Resources</option>
                             <option value="IT">Information Technology</option>
-                            <option value="PR">Public Relations</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
                             <option value="Sales">Sales</option>
-                            <option value="Teacher">Teacher</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Education">Education</option>
+                            <option value="HR">Human Resources</option>
                         </select>
                     </div>
                     
-                    <div style="grid-column: 1 / -1;">
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Target Roles (comma-separated)</label>
-                        <input type="text" id="profile-roles" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group" style="grid-column: 1 / -1;">
+                        <label class="profile-field-label">
+                            Target Roles
+                            <span class="help-tooltip" title="Job titles you're interested in, separated by commas">?</span>
+                        </label>
+                        <input type="text" id="profile-roles" class="profile-input" placeholder="Software Engineer, Full Stack Developer, Backend Engineer">
+                        <div class="field-hint">List 2-4 job titles you're targeting (e.g., "Data Analyst, Business Analyst")</div>
                     </div>
                     
-                    <div style="grid-column: 1 / -1;">
-                        <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 0.5rem;">Skills (comma-separated)</label>
-                        <input type="text" id="profile-skills" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div class="profile-field-group" style="grid-column: 1 / -1;">
+                        <label class="profile-field-label">
+                            Skills
+                            <span class="help-tooltip" title="Your key technical and professional skills">?</span>
+                        </label>
+                        <input type="text" id="profile-skills" class="profile-input" placeholder="Python, JavaScript, React, SQL, Project Management">
+                        <div class="field-hint">Add or remove skills to match your target roles (comma-separated)</div>
                     </div>
                 </div>
                 
-                <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px;">
-                    Find Job Matches
+                <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px; transition: all 0.3s ease;">
+                    🔍 Find Matching Jobs
                 </button>
+                <p style="text-align: center; color: #999; margin-top: 1rem; font-size: 0.9rem;">We'll search across multiple job platforms for you</p>
             </div>
         </div>
 
-        <div class="results-section" id="results-section">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
-                <h2 style="text-align: center; margin-bottom: 1.5rem;">Resume Analysis Summary</h2>
-                <div id="profile-display" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;"></div>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <div id="market-score" style="display: inline-block; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 1.5rem 3rem; border-radius: 50px; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">
-                    Market Readiness: --/10
-                </div>
-                <div id="score-description" style="color: #666; font-size: 1rem;">
-                    Overall competitiveness for target roles
-                </div>
-            </div>
-
-            <div id="analysis-sections" style="display: grid; gap: 2rem; margin-bottom: 3rem;"></div>
-
-            <div class="personalized-tips">
-                <h3>Personalized Insights</h3>
-                <div id="tips-content"></div>
-            </div>
-
-            <div class="filter-section">
-                <h3 style="margin-bottom: 1rem;">Filter Jobs</h3>
-                <div class="filter-row">
-                    <div class="filter-item">
-                        <label class="filter-label">Location</label>
-                        <select class="filter-select" id="location-filter">
-                            <option value="">All Locations</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label">Job Type</label>
-                        <select class="filter-select" id="type-filter">
-                            <option value="">All Types</option>
-                            <option value="Full-time">Full-time</option>
-                            <option value="Remote">Remote</option>
-                            <option value="Contract">Contract</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label">Experience</label>
-                        <select class="filter-select" id="experience-filter">
-                            <option value="">All Levels</option>
-                            <option value="entry">Entry</option>
-                            <option value="mid">Mid</option>
-                            <option value="senior">Senior</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="job-matches-section">
-                <h2>Top Job Matches</h2>
-                <div id="job-listings-container"></div>
-            </div>
-        </div>
+        <div class="results-section" id="results-section"></div>
 
         <div id="error-message" class="error-message"></div>
     </div>
@@ -642,90 +691,48 @@ SOFTWARE ENGINEER
         let allJobs = [];
         let savedJobs = new Set();
 
-        // BUTTON EVENT LISTENERS
         document.getElementById('upload-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            console.log('Upload button clicked');
             document.getElementById('file-input').click();
         });
 
-        document.getElementById('analyze-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Analyze button clicked');
-            analyzeResumeText();
+        document.getElementById('analyze-btn').addEventListener('click', analyzeResumeText);
+        document.getElementById('file-input').addEventListener('change', handleFileUpload);
+        document.getElementById('confirm-profile-btn').addEventListener('click', confirmProfileAndFindJobs);
+        document.getElementById('reset-btn').addEventListener('click', resetApplication);
+        
+        const confirmBtn = document.getElementById('confirm-profile-btn');
+        confirmBtn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)';
+        });
+        confirmBtn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
         });
 
-        document.getElementById('file-input').addEventListener('change', function(e) {
-            console.log('File input changed');
-            handleFileUpload(e);
-        });
-
-        // Drag and drop
         const uploadArea = document.getElementById('upload-area');
-        uploadArea.addEventListener('dragover', function(e) {
+        uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.add('dragover');
         });
-
-        uploadArea.addEventListener('dragleave', function(e) {
+        uploadArea.addEventListener('dragleave', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.remove('dragover');
         });
-
-        uploadArea.addEventListener('drop', function(e) {
+        uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             uploadArea.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
             if (files.length > 0 && files[0].type === 'application/pdf') {
                 document.getElementById('file-input').files = files;
                 handleFileUpload({ target: { files: files } });
-            } else {
-                showError('Please drop a PDF file');
-            }
-        });
-
-        // Filter event listeners
-        document.getElementById('location-filter').addEventListener('change', filterJobs);
-        document.getElementById('type-filter').addEventListener('change', filterJobs);
-        document.getElementById('experience-filter').addEventListener('change', filterJobs);
-
-        document.getElementById('confirm-profile-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            confirmProfileAndFindJobs();
-        });
-
-        document.getElementById('reset-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            resetApplication();
-        });
-
-        // Event listener for career field changes
-        document.getElementById('profile-career-field').addEventListener('change', function() {
-            const selectedField = this.value;
-            if (selectedField) {
-                displayCareerSuggestions(selectedField);
-            } else {
-                document.getElementById('career-suggestions').style.display = 'none';
             }
         });
 
         async function handleFileUpload(event) {
             const file = event.target.files[0];
-            
-            console.log('Processing file:', file);
-            
-            if (!file) {
-                console.log('No file selected');
-                return;
-            }
-            
-            if (file.type !== 'application/pdf') {
+            if (!file || file.type !== 'application/pdf') {
                 showError('Please upload a PDF file');
                 return;
             }
@@ -742,7 +749,7 @@ SOFTWARE ENGINEER
                 }
                 
                 updateProgress(50, 'Analyzing resume...');
-                userProfile = await analyzeResume(resumeText);
+                userProfile = analyzeResumeAdvanced(resumeText);
                 
                 showProfileReview();
             } catch (error) {
@@ -767,7 +774,7 @@ SOFTWARE ENGINEER
             
             try {
                 updateProgress(30, 'Analyzing resume...');
-                userProfile = await analyzeResume(resumeText);
+                userProfile = analyzeResumeAdvanced(resumeText);
                 
                 showProfileReview();
             } catch (error) {
@@ -776,6 +783,139 @@ SOFTWARE ENGINEER
                 document.querySelector('.input-options-container').style.display = 'block';
             } finally {
                 hideProgress();
+            }
+        }
+
+        function analyzeResumeAdvanced(resumeText) {
+            try {
+                const textLower = resumeText.toLowerCase();
+                
+                const name = extractName(resumeText);
+                const location = extractLocation(resumeText);
+                const skills = extractSkills(resumeText);
+                const experience = determineExperienceLevel(resumeText);
+                const roles = extractRoles(resumeText);
+                const careerField = detectCareerField(resumeText);
+                const salary = estimateSalary(resumeText);
+                
+                const strengths = [];
+                if (skills.length >= 5) strengths.push('Good variety of skills listed');
+                if (/\d+%|\d+ years?|managed \d+|increased|improved/i.test(resumeText)) {
+                    strengths.push('Includes quantifiable achievements');
+                }
+                if (textLower.includes('led') || textLower.includes('managed')) {
+                    strengths.push('Demonstrates leadership experience');
+                }
+                if (resumeText.length > 500) {
+                    strengths.push('Comprehensive resume content');
+                }
+                
+                const weaknesses = [];
+                
+                if (!/\d+%/.test(resumeText)) {
+                    weaknesses.push({
+                        issue: 'No quantifiable achievements with percentages',
+                        impact: 'Employers cannot measure your actual impact',
+                        fix: 'Add metrics: "Increased sales by 25%" or "Reduced costs by $50K annually"'
+                    });
+                }
+                
+                if (skills.length < 5) {
+                    weaknesses.push({
+                        issue: 'Limited skills section',
+                        impact: 'May not pass ATS keyword filters',
+                        fix: 'List 8-12 relevant technical and soft skills specific to your target role'
+                    });
+                }
+                
+                if (!/led|managed|coordinated|directed|oversaw/i.test(resumeText)) {
+                    weaknesses.push({
+                        issue: 'Weak action verbs',
+                        impact: 'Resume appears passive and less impressive',
+                        fix: 'Start bullet points with strong verbs: Led, Managed, Developed, Achieved, Drove'
+                    });
+                }
+                
+                if (!textLower.includes('project') && !textLower.includes('initiative')) {
+                    weaknesses.push({
+                        issue: 'No project or initiative mentions',
+                        impact: 'Difficult to assess your practical experience',
+                        fix: 'Describe 2-3 key projects with outcomes and technologies used'
+                    });
+                }
+                
+                if (resumeText.length < 300) {
+                    weaknesses.push({
+                        issue: 'Resume is too brief',
+                        impact: 'Insufficient information for employers to evaluate you',
+                        fix: 'Expand with detailed responsibilities, achievements, and skills for each role'
+                    });
+                }
+                
+                let atsScore = 5;
+                if (skills.length >= 8) atsScore += 2;
+                if (/\d+%/.test(resumeText)) atsScore += 1;
+                if (resumeText.length > 400) atsScore += 1;
+                if (/led|managed|developed/i.test(resumeText)) atsScore += 1;
+                atsScore = Math.min(10, atsScore);
+                
+                const missingElements = [];
+                if (!textLower.includes('@') && !textLower.includes('email')) {
+                    missingElements.push('Email address');
+                }
+                if (!textLower.includes('phone') && !/\(\d{3}\)/.test(resumeText)) {
+                    missingElements.push('Phone number');
+                }
+                if (!textLower.includes('linkedin')) {
+                    missingElements.push('LinkedIn profile URL');
+                }
+                if (!textLower.includes('education') && !textLower.includes('university')) {
+                    missingElements.push('Education section');
+                }
+                
+                const improvementPriority = [];
+                if (weaknesses.length > 0) {
+                    improvementPriority.push('Add quantifiable metrics to all achievements');
+                }
+                if (skills.length < 8) {
+                    improvementPriority.push('Expand skills section with role-specific keywords');
+                }
+                if (missingElements.length > 0) {
+                    improvementPriority.push('Add missing contact information and LinkedIn profile');
+                }
+                improvementPriority.push('Use stronger action verbs at the start of each bullet point');
+                improvementPriority.push('Tailor resume for each job application with relevant keywords');
+                
+                return {
+                    name,
+                    location,
+                    skills,
+                    experience,
+                    roles,
+                    careerField,
+                    salary,
+                    strengths,
+                    weaknesses,
+                    missingElements,
+                    atsScore,
+                    improvementPriority
+                };
+            } catch (error) {
+                console.error('Analysis error:', error);
+                return {
+                    name: extractName(resumeText) || 'Candidate',
+                    location: 'Not Specified',
+                    skills: [],
+                    experience: 'mid',
+                    roles: ['Professional'],
+                    careerField: 'General',
+                    salary: '$50,000 - $100,000',
+                    strengths: [],
+                    weaknesses: [],
+                    missingElements: [],
+                    atsScore: 5,
+                    improvementPriority: []
+                };
             }
         }
 
@@ -788,14 +928,95 @@ SOFTWARE ENGINEER
             document.getElementById('profile-roles').value = userProfile.roles.join(', ');
             document.getElementById('profile-skills').value = userProfile.skills.join(', ');
             
-            // Show career-specific suggestions
-            if (userProfile.careerField) {
-                displayCareerSuggestions(userProfile.careerField);
+            if (userProfile.weaknesses && userProfile.weaknesses.length > 0) {
+                displayAIAnalysis();
             }
             
             showResetButton();
             document.getElementById('profile-review-section').style.display = 'block';
             document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayAIAnalysis() {
+            const analysisHTML = `
+                <div class="ai-insights-box" style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">🤖 AI Resume Analysis Results</h3>
+                    
+                    ${userProfile.atsScore ? `
+                        <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center;">
+                            <div style="font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem;">
+                                ${userProfile.atsScore}/10
+                            </div>
+                            <div style="font-size: 1.2rem; opacity: 0.95; margin-bottom: 0.5rem;">ATS Compatibility Score</div>
+                            <div style="opacity: 0.9; font-size: 0.95rem;">
+                                ${userProfile.atsScore >= 8 ? '✅ Excellent - Your resume should pass automated screening' :
+                                  userProfile.atsScore >= 6 ? '⚠️ Good - Some improvements needed' :
+                                  userProfile.atsScore >= 4 ? '⚠️ Fair - Significant improvements needed' :
+                                  '❌ Poor - High risk of automated rejection'}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${userProfile.strengths && userProfile.strengths.length > 0 ? `
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="margin-bottom: 0.8rem; font-size: 1.2rem;">✅ What's Working Well</h4>
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 8px;">
+                                <ul style="margin-left: 1.5rem; line-height: 2;">
+                                    ${userProfile.strengths.map(s => `<li style="margin-bottom: 0.5rem;">${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${userProfile.weaknesses && userProfile.weaknesses.length > 0 ? `
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="margin-bottom: 0.8rem; font-size: 1.2rem;">⚠️ Critical Issues to Address</h4>
+                            <p style="opacity: 0.9; margin-bottom: 1rem; font-size: 0.95rem;">These problems could prevent you from getting interviews. Fix them before applying:</p>
+                            ${userProfile.weaknesses.map((w, i) => `
+                                <div class="weakness-item" style="margin-bottom: 1rem; border-left-color: ${i === 0 ? '#ff6b6b' : i === 1 ? '#ffa500' : '#fff'};">
+                                    <div style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.05rem;">
+                                        ${i + 1}. ${w.issue}
+                                    </div>
+                                    <div style="opacity: 0.95; margin-bottom: 0.5rem;">
+                                        <strong>Impact:</strong> ${w.impact}
+                                    </div>
+                                    <div style="opacity: 0.95; background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 6px;">
+                                        <strong>✅ Solution:</strong> ${w.fix}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${userProfile.missingElements && userProfile.missingElements.length > 0 ? `
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="margin-bottom: 0.8rem; font-size: 1.2rem;">📋 Missing From Your Resume</h4>
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 8px;">
+                                <ul style="margin-left: 1.5rem; line-height: 2;">
+                                    ${userProfile.missingElements.map(m => `<li style="margin-bottom: 0.5rem;">${m}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${userProfile.improvementPriority && userProfile.improvementPriority.length > 0 ? `
+                        <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="margin-bottom: 1rem; font-size: 1.2rem;">🎯 Your Action Plan (Priority Order)</h4>
+                            <p style="opacity: 0.9; margin-bottom: 1rem; font-size: 0.95rem;">Do these in order for maximum impact:</p>
+                            <ol style="margin-left: 1.5rem; line-height: 2.2;">
+                                ${userProfile.improvementPriority.map((p, i) => `
+                                    <li style="margin-bottom: 0.5rem;">
+                                        <strong style="font-size: ${i === 0 ? '1.1rem' : '1rem'};">${p}</strong>
+                                    </li>
+                                `).join('')}
+                            </ol>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('ai-analysis-display').innerHTML = analysisHTML;
+            document.getElementById('ai-analysis-display').style.display = 'block';
         }
 
         async function confirmProfileAndFindJobs() {
@@ -814,7 +1035,7 @@ SOFTWARE ENGINEER
                 updateProgress(50, 'Finding jobs...');
                 await fetchJobMatches();
                 
-                updateProgress(80, 'Analyzing strengths...');
+                updateProgress(80, 'Analyzing matches...');
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
                 updateProgress(100, 'Complete!');
@@ -829,79 +1050,77 @@ SOFTWARE ENGINEER
         async function extractTextFromPDF(file) {
             try {
                 const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
                 let fullText = '';
 
                 for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                     const page = await pdf.getPage(pageNum);
                     const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    const pageText = textContent.items.map(item => {
+                        return item.str || '';
+                    }).join(' ');
                     fullText += pageText + '\n';
                 }
 
-                return fullText.trim();
+                const cleanedText = fullText.trim();
+                
+                if (cleanedText.length < 50) {
+                    throw new Error('PDF appears to be empty or text could not be extracted. Please try pasting your resume text instead.');
+                }
+
+                return cleanedText;
             } catch (error) {
+                console.error('PDF extraction error:', error);
                 throw new Error('PDF reading failed: ' + error.message);
             }
         }
 
-        async function analyzeResume(resumeText) {
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            const careerField = detectCareerField(resumeText);
-            
-            return {
-                name: extractName(resumeText),
-                skills: extractSkills(resumeText),
-                experience: determineExperienceLevel(resumeText),
-                roles: extractRoles(resumeText),
-                location: extractLocation(resumeText),
-                salary: estimateSalary(resumeText),
-                careerField: careerField
-            };
-        }
-
         function extractName(text) {
             const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-            
             for (let i = 0; i < Math.min(5, lines.length); i++) {
                 const line = lines[i];
-                
-                if (line.includes('@') || line.match(/\d{3}/) || line.toLowerCase().includes('linkedin')) {
-                    continue;
-                }
-                
+                if (line.includes('@') || line.match(/\d{3}/)) continue;
                 const words = line.split(/\s+/);
                 if (words.length >= 2 && words.length <= 4 && 
-                    words.every(w => /^[A-Z][a-z]+/.test(w)) &&
-                    !line.match(/\d/)) {
+                    words.every(w => /^[A-Z][a-z]+/.test(w))) {
                     return line;
                 }
             }
-            
             return 'Candidate';
         }
 
         function extractLocation(text) {
-            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-            const searchText = lines.slice(1).join('\n');
-            
-            const match = searchText.match(/([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2})\b/);
-            if (match && !match[0].includes('@')) {
-                return match[0];
-            }
-            
-            if (/\b(remote|wfh)\b/i.test(text)) {
-                return 'Remote';
-            }
-            
+            const match = text.match(/([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2})\b/);
+            if (match) return match[0];
+            if (/\b(remote|wfh)\b/i.test(text)) return 'Remote';
             return 'Not Specified';
         }
 
         function extractSkills(text) {
-            const skills = ['Python', 'JavaScript', 'Java', 'React', 'Node.js', 'SQL', 
-                           'Excel', 'AWS', 'Docker', 'Git', 'Leadership', 'Communication'];
-            return skills.filter(skill => new RegExp(`\\b${skill}\\b`, 'i').test(text));
+            const commonSkills = [
+                'Python', 'JavaScript', 'Java', 'C\\+\\+', 'C#', 'Ruby', 'PHP', 'Swift', 'Kotlin',
+                'React', 'Angular', 'Vue', 'Node\\.js', 'Express', 'Django', 'Flask',
+                'SQL', 'MySQL', 'PostgreSQL', 'MongoDB', 'Redis',
+                'AWS', 'Azure', 'Google Cloud', 'Docker', 'Kubernetes',
+                'Git', 'GitHub', 'GitLab', 'CI/CD', 'Jenkins',
+                'Excel', 'PowerPoint', 'Word', 'Tableau', 'Power BI',
+                'Leadership', 'Communication', 'Project Management', 'Agile', 'Scrum',
+                'Problem Solving', 'Team Collaboration', 'Critical Thinking',
+                'HTML', 'CSS', 'TypeScript', 'REST API', 'GraphQL',
+                'Machine Learning', 'Data Analysis', 'Statistics'
+            ];
+            
+            const foundSkills = [];
+            commonSkills.forEach(skill => {
+                const regex = new RegExp('\\b' + skill + '\\b', 'i');
+                if (regex.test(text)) {
+                    const cleanSkill = skill.replace(/\\\\/g, '').replace(/\\\./g, '.').replace(/\\\+/g, '+');
+                    foundSkills.push(cleanSkill);
+                }
+            });
+            
+            return foundSkills;
         }
 
         function determineExperienceLevel(text) {
@@ -912,55 +1131,43 @@ SOFTWARE ENGINEER
                 if (years <= 7) return 'mid';
                 return 'senior';
             }
+            if (/senior|lead|principal|director/i.test(text)) return 'senior';
+            if (/junior|entry|graduate|intern/i.test(text)) return 'entry';
             return 'mid';
         }
 
         function extractRoles(text) {
-            const roles = ['Software Engineer', 'Developer', 'Data Analyst', 'Project Manager'];
-            const found = roles.filter(role => new RegExp(`\\b${role}\\b`, 'i').test(text));
-            return found.length > 0 ? found : ['Software Developer'];
+            const roles = [
+                'Software Engineer', 'Software Developer', 'Full Stack Developer', 'Frontend Developer', 'Backend Developer',
+                'Data Analyst', 'Data Scientist', 'Business Analyst', 
+                'Project Manager', 'Product Manager',
+                'DevOps Engineer', 'Cloud Engineer', 'Systems Administrator',
+                'UX Designer', 'UI Designer', 'Graphic Designer',
+                'Marketing Manager', 'Digital Marketing Specialist',
+                'Sales Representative', 'Account Manager',
+                'Financial Analyst', 'Accountant',
+                'HR Manager', 'Recruiter'
+            ];
+            const found = roles.filter(role => new RegExp('\\b' + role + '\\b', 'i').test(text));
+            return found.length > 0 ? found.slice(0, 3) : ['Software Developer'];
         }
 
         function detectCareerField(text) {
-            const careerKeywords = {
-                'Accountant': ['accountant', 'accounting', 'cpa', 'audit', 'bookkeeping', 'tax preparation'],
-                'Advocate': ['lawyer', 'attorney', 'legal', 'litigation', 'law firm', 'bar association'],
-                'Agriculture': ['agriculture', 'farming', 'agronomy', 'crop', 'livestock', 'agricultural'],
-                'Apparel': ['fashion', 'apparel', 'textile', 'garment', 'clothing', 'fashion design'],
-                'Arts': ['artist', 'painter', 'sculptor', 'gallery', 'fine arts', 'creative arts'],
-                'Automobile': ['automotive', 'mechanic', 'car', 'vehicle', 'auto repair'],
-                'Aviation': ['aviation', 'pilot', 'aircraft', 'airline', 'flight', 'aerospace'],
-                'Banking': ['bank', 'banking', 'teller', 'loan officer', 'financial institution'],
-                'BOP': ['business operations', 'operations manager', 'bop', 'process improvement'],
-                'Business-Development': ['business development', 'bd', 'partnerships', 'strategic growth'],
-                'Chef': ['chef', 'cook', 'culinary', 'kitchen', 'restaurant', 'food preparation'],
-                'Construction': ['construction', 'builder', 'contractor', 'civil engineering', 'site manager'],
-                'Designer': ['designer', 'graphic design', 'ux', 'ui', 'product design', 'creative director'],
-                'Digital-Media': ['digital media', 'content creator', 'social media', 'multimedia'],
-                'Engineering': ['engineer', 'engineering', 'mechanical', 'electrical', 'civil', 'technical'],
-                'Finance': ['finance', 'financial analyst', 'investment', 'portfolio', 'cfa'],
-                'Fitness': ['fitness', 'trainer', 'gym', 'health coach', 'personal training'],
-                'Healthcare': ['healthcare', 'nurse', 'doctor', 'medical', 'hospital', 'clinical'],
-                'HR': ['human resources', 'hr', 'recruiter', 'talent acquisition', 'employee relations'],
-                'IT': ['software', 'developer', 'programmer', 'it', 'technology', 'computer science'],
-                'PR': ['public relations', 'pr', 'communications', 'media relations'],
-                'Sales': ['sales', 'account executive', 'business development', 'sales manager'],
-                'Teacher': ['teacher', 'educator', 'professor', 'instructor', 'education']
+            const keywords = {
+                'IT': ['software', 'developer', 'programmer', 'engineer', 'coding', 'programming'],
+                'Healthcare': ['nurse', 'doctor', 'medical', 'healthcare', 'clinical', 'patient'],
+                'Finance': ['finance', 'accounting', 'analyst', 'investment', 'banking'],
+                'Sales': ['sales', 'business development', 'account', 'revenue'],
+                'Marketing': ['marketing', 'advertising', 'campaign', 'brand', 'seo', 'content'],
+                'Engineering': ['mechanical', 'electrical', 'civil', 'chemical', 'structural'],
+                'Education': ['teacher', 'professor', 'educator', 'instructor', 'academic'],
+                'HR': ['human resources', 'hr', 'recruitment', 'talent acquisition']
             };
-            
             const textLower = text.toLowerCase();
-            let maxMatches = 0;
-            let detectedField = '';
-            
-            for (const [field, keywords] of Object.entries(careerKeywords)) {
-                const matches = keywords.filter(keyword => textLower.includes(keyword)).length;
-                if (matches > maxMatches) {
-                    maxMatches = matches;
-                    detectedField = field;
-                }
+            for (const [field, words] of Object.entries(keywords)) {
+                if (words.some(w => textLower.includes(w))) return field;
             }
-            
-            return detectedField || 'IT';
+            return 'IT';
         }
 
         function estimateSalary(text) {
@@ -983,196 +1190,274 @@ SOFTWARE ENGINEER
             const roles = profile.roles.length > 0 ? profile.roles : ['Software Developer'];
             
             roles.forEach((role, idx) => {
-                for (let i = 0; i < 4; i++) {
+                const encodedRole = encodeURIComponent(role);
+                const encodedLocation = encodeURIComponent(profile.location);
+                
+                const jobBoards = [
+                    { 
+                        name: 'Indeed', 
+                        url: `https://www.indeed.com/jobs?q=${encodedRole}&l=${encodedLocation}`,
+                        description: 'Search millions of jobs on Indeed'
+                    },
+                    { 
+                        name: 'LinkedIn', 
+                        url: `https://www.linkedin.com/jobs/search/?keywords=${encodedRole}&location=${encodedLocation}`,
+                        description: 'Professional network with verified companies'
+                    },
+                    { 
+                        name: 'Glassdoor', 
+                        url: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${encodedRole}&locT=C&locId=1147401`,
+                        description: 'Jobs with company reviews and salary insights'
+                    },
+                    { 
+                        name: 'ZipRecruiter', 
+                        url: `https://www.ziprecruiter.com/jobs-search?search=${encodedRole}&location=${encodedLocation}`,
+                        description: 'AI-powered job matching platform'
+                    },
+                    { 
+                        name: 'Monster', 
+                        url: `https://www.monster.com/jobs/search?q=${encodedRole}&where=${encodedLocation}`,
+                        description: 'Extensive job database with career resources'
+                    }
+                ];
+                
+                jobBoards.forEach((board, i) => {
+                    const matchScore = 95 - (idx * 3) - (i * 2);
                     jobs.push({
                         id: jobs.length + 1,
-                        title: `${i % 2 === 0 ? 'Senior' : ''} ${role}`.trim(),
-                        company: ['TechCorp', 'InnovateLabs', 'DataSystems', 'CloudWorks'][i],
-                        location: i % 3 === 0 ? profile.location : 'Remote',
-                        type: ['Full-time', 'Remote', 'Full-time', 'Contract'][i % 4],
-                        salary: profile.salary,
-                        matchScore: 95 - (idx * 5) - (i * 3),
-                        description: `Join our team as a ${role}. Work on exciting projects with cutting-edge technology.`,
-                        skills: profile.skills.slice(0, 5),
-                        posted: `${i + 1} days ago`,
-                        applicants: 10 + Math.floor(Math.random() * 40),
-                        url: `https://www.indeed.com/jobs?q=${encodeURIComponent(role)}&l=${encodeURIComponent(profile.location)}`,
+                        title: role,
+                        platform: board.name,
+                        location: profile.location,
+                        matchScore: matchScore,
+                        description: board.description,
+                        url: board.url,
+                        skills: profile.skills.slice(0, 6),
                         experience: profile.experience
                     });
-                }
+                });
             });
 
             return jobs.sort((a, b) => b.matchScore - a.matchScore);
         }
 
         function displayResults() {
-            // Display profile summary
-            document.getElementById('profile-display').innerHTML = `
-                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
-                    <strong style="opacity: 0.8; font-size: 0.9rem;">Name</strong>
-                    <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.name}</div>
+            const resultsHTML = `
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                    <h2 style="text-align: center; margin-bottom: 1.5rem;">Resume Analysis Summary</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <strong style="opacity: 0.8; font-size: 0.9rem;">Name</strong>
+                            <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.name}</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <strong style="opacity: 0.8; font-size: 0.9rem;">Location</strong>
+                            <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.location}</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <strong style="opacity: 0.8; font-size: 0.9rem;">Experience</strong>
+                            <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.experience.charAt(0).toUpperCase() + userProfile.experience.slice(1)} Level</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <strong style="opacity: 0.8; font-size: 0.9rem;">Target Salary</strong>
+                            <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.salary}</div>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
-                    <strong style="opacity: 0.8; font-size: 0.9rem;">Location</strong>
-                    <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.location}</div>
+
+                ${userProfile.weaknesses && userProfile.weaknesses.length > 0 ? `
+                    <div class="ai-insights-box" style="margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem;">🎯 Before You Apply - Fix These Issues</h3>
+                        <p style="opacity: 0.9; margin-bottom: 1.5rem;">These issues could prevent you from getting interviews. Address them to improve your chances:</p>
+                        
+                        ${userProfile.improvementPriority && userProfile.improvementPriority.length > 0 ? `
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                                <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">📋 Action Plan (Do These First):</h4>
+                                <ol style="margin-left: 1.5rem; line-height: 2;">
+                                    ${userProfile.improvementPriority.slice(0, 3).map((p, i) => `
+                                        <li style="margin-bottom: 0.5rem;">
+                                            <strong style="color: ${i === 0 ? '#fff' : 'rgba(255,255,255,0.9)'};">${p}</strong>
+                                        </li>
+                                    `).join('')}
+                                </ol>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="margin-top: 1rem;">
+                            <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">⚠️ Critical Issues:</h4>
+                            ${userProfile.weaknesses.slice(0, 5).map((w, i) => `
+                                <div style="background: rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid ${i === 0 ? '#ff6b6b' : '#ffa500'};">
+                                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.05rem;">
+                                        ${i + 1}. ${w.issue}
+                                    </div>
+                                    <div style="opacity: 0.95; margin-bottom: 0.5rem; padding-left: 1rem;">
+                                        <strong>Why it matters:</strong> ${w.impact}
+                                    </div>
+                                    <div style="opacity: 0.95; padding-left: 1rem; background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem;">
+                                        <strong>✅ How to fix:</strong> ${w.fix}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${userProfile.missingElements && userProfile.missingElements.length > 0 ? `
+                            <div style="margin-top: 1.5rem; background: rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 8px;">
+                                <h4 style="margin-bottom: 0.8rem;">📋 Missing From Your Resume:</h4>
+                                <ul style="margin-left: 1.5rem; line-height: 2;">
+                                    ${userProfile.missingElements.map(m => `<li>${m}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                ` : ''}
+
+                <div class="personalized-tips">
+                    <h3>📊 Resume Analysis Summary</h3>
+                    <div id="tips-content">
+                        ${userProfile.atsScore ? `
+                            <div class="tip-item" style="font-size: 1.05rem; font-weight: 600; color: ${userProfile.atsScore >= 7 ? '#2e7d32' : userProfile.atsScore >= 5 ? '#f57c00' : '#c62828'};">
+                                ATS Compatibility: ${userProfile.atsScore}/10 ${userProfile.atsScore >= 7 ? '✅ Good' : userProfile.atsScore >= 5 ? '⚠️ Needs Work' : '❌ Poor - High Rejection Risk'}
+                            </div>
+                        ` : ''}
+                        <div class="tip-item">Extracted ${userProfile.skills.length} skills from your resume</div>
+                        <div class="tip-item">${allJobs.filter(j => j.matchScore >= 90).length} job search platforms ready with 90%+ match</div>
+                        <div class="tip-item">Experience level: ${userProfile.experience.charAt(0).toUpperCase() + userProfile.experience.slice(1)} (${
+                            userProfile.experience === 'entry' ? '0-2 years' : 
+                            userProfile.experience === 'mid' ? '3-7 years' : '8+ years'
+                        })</div>
+                        <div class="tip-item">Targeting ${userProfile.roles.length} different role(s) in ${userProfile.careerField || 'multiple fields'}</div>
+                    </div>
+                    ${userProfile.atsScore && userProfile.atsScore < 7 ? `
+                        <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.3); border-radius: 8px;">
+                            <strong style="color: #c62828;">⚠️ Warning:</strong> Your ATS score is low. Many companies use automated systems that may reject your resume before a human sees it. Fix the issues above to improve your chances.
+                        </div>
+                    ` : ''}
                 </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
-                    <strong style="opacity: 0.8; font-size: 0.9rem;">Experience</strong>
-                    <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.experience.charAt(0).toUpperCase() + userProfile.experience.slice(1)} Level</div>
+
+                <div class="filter-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3>Filter Job Searches</h3>
+                        <div id="saved-counter" style="background: #2196F3; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; display: none;">
+                            📌 <span id="saved-count">0</span> Saved
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-item">
+                            <label class="filter-label">Job Platform</label>
+                            <select class="filter-select" id="platform-filter">
+                                <option value="">All Platforms</option>
+                                <option value="Indeed">Indeed</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Glassdoor">Glassdoor</option>
+                                <option value="ZipRecruiter">ZipRecruiter</option>
+                                <option value="Monster">Monster</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label class="filter-label">Target Role</label>
+                            <select class="filter-select" id="role-filter">
+                                <option value="">All Roles</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label class="filter-label">Experience Level</label>
+                            <select class="filter-select" id="experience-filter">
+                                <option value="">All Levels</option>
+                                <option value="entry">Entry</option>
+                                <option value="mid">Mid</option>
+                                <option value="senior">Senior</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
-                    <strong style="opacity: 0.8; font-size: 0.9rem;">Target Salary</strong>
-                    <div style="font-size: 1.1rem; font-weight: 600;">${userProfile.salary}</div>
+
+                <div class="job-matches-section">
+                    <h2>🎯 Your Personalized Job Search Links</h2>
+                    <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <p style="text-align: center; opacity: 0.95; margin-bottom: 1rem; font-size: 1.05rem;">
+                            We've created direct search links to the top job platforms, pre-filled with your information
+                        </p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">📍</div>
+                                <div style="font-size: 0.9rem;">Location: ${userProfile.location}</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">💼</div>
+                                <div style="font-size: 0.9rem;">${userProfile.roles.length} Role Type(s)</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🌐</div>
+                                <div style="font-size: 0.9rem;">${[...new Set(allJobs.map(j => j.platform))].length} Platforms</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🎯</div>
+                                <div style="font-size: 0.9rem;">${allJobs.length} Search Links</div>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: 1rem; font-size: 0.95rem; opacity: 0.9;">
+                            💡 Tip: Click multiple platforms to maximize your job search coverage
+                        </p>
+                    </div>
+                    <div id="job-listings-container"></div>
                 </div>
             `;
 
-            // Calculate and display market score
-            const marketScore = calculateMarketScore(userProfile);
-            document.getElementById('market-score').textContent = `Market Readiness: ${marketScore}/10`;
-            
-            let scoreDesc = '';
-            if (marketScore >= 8) scoreDesc = 'Excellent - Highly competitive for target roles';
-            else if (marketScore >= 6) scoreDesc = 'Good - Strong candidate with room for improvement';
-            else scoreDesc = 'Developing - Focus on skill building and experience';
-            
-            document.getElementById('score-description').textContent = scoreDesc;
+            document.getElementById('results-section').innerHTML = resultsHTML;
 
-            // Display analysis sections with scores
-            const analysisSections = generateAnalysisSections(userProfile, marketScore);
-            document.getElementById('analysis-sections').innerHTML = analysisSections.map((section, idx) => `
-                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-left: 4px solid ${getColorForIndex(idx)};">
-                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
-                        <div style="font-size: 2rem; margin-right: 1rem;">${section.icon}</div>
-                        <div style="flex: 1;">
-                            <div style="font-size: 1.4rem; font-weight: 700; color: #2c3e50;">${section.title}</div>
-                        </div>
-                        <div style="background: #e8f5e8; color: #2e7d32; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600;">
-                            ${section.score}/10
-                        </div>
-                    </div>
-                    <div style="color: #555; line-height: 1.6;">${section.content}</div>
-                </div>
-            `).join('');
-            
-            const tips = [
-                `Hello ${userProfile.name}! Found ${userProfile.skills.length} relevant skills`,
-                `${allJobs.filter(j => j.matchScore >= 90).length} excellent job matches (90%+)`,
-                `Your ${userProfile.experience} level experience aligns well with available positions`,
-                `Salary range ${userProfile.salary} is competitive for ${userProfile.location}`
-            ];
-            
-            document.getElementById('tips-content').innerHTML = tips.map(tip => 
-                `<div class="tip-item">${tip}</div>`
-            ).join('');
-
-            const locations = [...new Set(allJobs.map(j => j.location))];
-            const locationFilter = document.getElementById('location-filter');
-            locationFilter.innerHTML = '<option value="">All Locations</option>';
-            locations.forEach(loc => {
-                locationFilter.innerHTML += `<option value="${loc}">${loc}</option>`;
+            const roles = [...new Set(allJobs.map(j => j.title))];
+            const roleFilter = document.getElementById('role-filter');
+            roleFilter.innerHTML = '<option value="">All Roles</option>';
+            roles.forEach(role => {
+                roleFilter.innerHTML += `<option value="${role}">${role}</option>`;
             });
+
+            document.getElementById('platform-filter').addEventListener('change', filterJobs);
+            document.getElementById('role-filter').addEventListener('change', filterJobs);
+            document.getElementById('experience-filter').addEventListener('change', filterJobs);
 
             displayJobs(allJobs);
             document.getElementById('results-section').style.display = 'block';
             document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function calculateMarketScore(profile) {
-            let score = 5; // Base score
-            
-            // Skills bonus
-            if (profile.skills.length >= 8) score += 2;
-            else if (profile.skills.length >= 5) score += 1;
-            else if (profile.skills.length < 3) score -= 1;
-            
-            // Experience level bonus
-            if (profile.experience === 'mid' || profile.experience === 'senior') score += 1.5;
-            else if (profile.experience === 'entry') score += 0.5;
-            
-            // Location bonus
-            if (profile.location !== 'Not Specified' && profile.location !== 'Location Not Specified') score += 0.5;
-            
-            // Roles clarity
-            if (profile.roles.length >= 2 && profile.roles.length <= 5) score += 1;
-            
-            return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
-        }
-
-        function generateAnalysisSections(profile, marketScore) {
-            return [
-                {
-                    icon: '🎯',
-                    title: 'Target Role Fit',
-                    score: Math.min(10, marketScore + 1),
-                    content: `Your profile aligns well with ${profile.roles[0]} positions. With ${profile.skills.length} relevant skills and ${profile.experience} level experience, you're a competitive candidate. Focus on highlighting your accomplishments and quantifiable results in applications.`
-                },
-                {
-                    icon: '⚡',
-                    title: 'Skills Assessment',
-                    score: Math.min(10, profile.skills.length >= 6 ? 8 : 6),
-                    content: `Key skills identified: ${profile.skills.slice(0, 5).join(', ')}. These are valuable in the current market. Consider adding complementary skills like cloud technologies or agile methodologies to strengthen your profile further.`
-                },
-                {
-                    icon: '💼',
-                    title: 'Experience Level',
-                    score: profile.experience === 'mid' ? 8 : profile.experience === 'senior' ? 9 : 7,
-                    content: `Your ${profile.experience} level experience positions you well for ${profile.roles[0]} roles. ${profile.experience === 'senior' ? 'Emphasize leadership and strategic contributions.' : profile.experience === 'entry' ? 'Focus on projects, education, and eagerness to learn.' : 'Highlight your proven track record and growing expertise.'}`
-                },
-                {
-                    icon: '💰',
-                    title: 'Salary Expectations',
-                    score: 8,
-                    content: `Target range of ${profile.salary} is realistic for ${profile.experience} level ${profile.roles[0]} positions in ${profile.location}. This aligns well with current market rates and gives you good negotiation positioning.`
-                },
-                {
-                    icon: '🚀',
-                    title: 'Career Growth Potential',
-                    score: Math.min(10, marketScore + 0.5),
-                    content: `Strong potential for advancement in your field. Focus on continuous learning, networking, and taking on challenging projects. Consider pursuing relevant certifications to accelerate your career trajectory.`
-                }
-            ];
-        }
-
-        function getColorForIndex(idx) {
-            const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#F44336', '#00BCD4'];
-            return colors[idx % colors.length];
-        }
-
         function displayJobs(jobs) {
             const container = document.getElementById('job-listings-container');
             
             if (jobs.length === 0) {
-                container.innerHTML = '<p style="text-align:center;color:white;">No jobs found</p>';
+                container.innerHTML = '<p style="text-align:center;color:white;">No jobs found matching your filters</p>';
                 return;
             }
 
             container.innerHTML = jobs.map(job => `
-                <div class="job-listing">
+                <div class="job-listing ${savedJobs.has(job.id) ? 'saved' : ''}" id="job-${job.id}">
+                    <div class="platform-badge">${job.platform}</div>
                     <div class="job-header">
                         <div>
                             <div class="job-title">${job.title}</div>
-                            <div class="job-company">${job.company}</div>
+                            <div class="job-company" style="margin-top: 0.3rem;">Search on ${job.platform}</div>
                         </div>
                         <div class="job-match-score">${job.matchScore}% Match</div>
                     </div>
                     
-                    <div class="job-details">
+                    <div class="job-details" style="margin-top: 1rem;">
                         <div class="job-detail-item">📍 ${job.location}</div>
-                        <div class="job-detail-item">💼 ${job.type}</div>
-                        <div class="job-detail-item">💰 ${job.salary}</div>
-                        <div class="job-detail-item">⏰ ${job.posted}</div>
+                        <div class="job-detail-item">💼 ${job.experience.charAt(0).toUpperCase() + job.experience.slice(1)} Level</div>
+                        <div class="job-detail-item">🎯 ${job.matchScore >= 90 ? 'Excellent Match' : job.matchScore >= 80 ? 'Good Match' : 'Moderate Match'}</div>
                     </div>
 
-                    <div class="job-description">${job.description}</div>
+                    <div class="job-description" style="margin-top: 1rem;">${job.description}</div>
 
-                    <div class="job-skills">
+                    <div class="job-skills" style="margin-top: 1rem;">
+                        <strong style="display: block; margin-bottom: 0.5rem; color: #666; font-size: 0.9rem;">Your matching skills:</strong>
                         ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
                     </div>
 
-                    <div class="job-actions">
-                        <a href="${job.url}" target="_blank" class="apply-btn">Apply Now</a>
-                        <button class="save-btn" onclick="saveJob(${job.id})">
-                            ${savedJobs.has(job.id) ? 'Saved' : 'Save Job'}
+                    <div class="job-actions" style="margin-top: 1.5rem;">
+                        <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="apply-btn" style="text-decoration: none;">
+                            🔍 Search on ${job.platform} →
+                        </a>
+                        <button class="save-btn" onclick="saveJob(${job.id})" aria-label="${savedJobs.has(job.id) ? 'Unsave job' : 'Save job'}">
+                            ${savedJobs.has(job.id) ? '✓ Saved' : '💾 Save'}
                         </button>
                     </div>
                 </div>
@@ -1180,13 +1465,13 @@ SOFTWARE ENGINEER
         }
 
         function filterJobs() {
-            const loc = document.getElementById('location-filter').value;
-            const type = document.getElementById('type-filter').value;
+            const platform = document.getElementById('platform-filter').value;
+            const role = document.getElementById('role-filter').value;
             const exp = document.getElementById('experience-filter').value;
 
             const filtered = allJobs.filter(job => {
-                return (!loc || job.location === loc) &&
-                       (!type || job.type === type) &&
+                return (!platform || job.platform === platform) &&
+                       (!role || job.title === role) &&
                        (!exp || job.experience === exp);
             });
 
@@ -1199,7 +1484,34 @@ SOFTWARE ENGINEER
             } else {
                 savedJobs.add(jobId);
             }
-            filterJobs();
+            
+            const jobCard = document.getElementById(`job-${jobId}`);
+            if (jobCard) {
+                if (savedJobs.has(jobId)) {
+                    jobCard.classList.add('saved');
+                    const saveBtn = jobCard.querySelector('.save-btn');
+                    saveBtn.textContent = '✓ Saved';
+                    saveBtn.setAttribute('aria-label', 'Unsave job');
+                } else {
+                    jobCard.classList.remove('saved');
+                    const saveBtn = jobCard.querySelector('.save-btn');
+                    saveBtn.textContent = '💾 Save';
+                    saveBtn.setAttribute('aria-label', 'Save job');
+                }
+            }
+            
+            updateSavedCounter();
+        }
+        
+        function updateSavedCounter() {
+            const counter = document.getElementById('saved-counter');
+            const count = document.getElementById('saved-count');
+            if (savedJobs.size > 0) {
+                counter.style.display = 'block';
+                count.textContent = savedJobs.size;
+            } else {
+                counter.style.display = 'none';
+            }
         }
 
         function showProgress() {
@@ -1225,218 +1537,24 @@ SOFTWARE ENGINEER
         }
 
         function resetApplication() {
-            // Reset all data
             userProfile = {};
             allJobs = [];
             savedJobs = new Set();
             
-            // Reset form inputs
             document.getElementById('file-input').value = '';
             document.getElementById('resume-text-input').value = '';
-            document.getElementById('profile-name').value = '';
-            document.getElementById('profile-location').value = '';
-            document.getElementById('profile-experience').value = 'mid';
-            document.getElementById('profile-salary').value = '';
-            document.getElementById('profile-career-field').value = '';
-            document.getElementById('profile-roles').value = '';
-            document.getElementById('profile-skills').value = '';
-            
-            // Hide all sections except input
             document.getElementById('profile-review-section').style.display = 'none';
             document.getElementById('progress-section').style.display = 'none';
             document.getElementById('results-section').style.display = 'none';
             document.getElementById('error-message').style.display = 'none';
             document.getElementById('reset-btn').style.display = 'none';
             
-            // Show input options
             document.querySelector('.input-options-container').style.display = 'block';
-            
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function showResetButton() {
             document.getElementById('reset-btn').style.display = 'block';
-        }
-
-        function displayCareerSuggestions(careerField) {
-            const suggestions = {
-                'Accountant': [
-                    '<strong>Quantify achievements:</strong> Include specific numbers (e.g., "Reduced errors by 25%" or "Managed $2M+ budget")',
-                    '<strong>Highlight certifications:</strong> Emphasize CPA, CMA, or other relevant credentials prominently',
-                    '<strong>Technical skills:</strong> List accounting software (QuickBooks, SAP, Oracle) and advanced Excel skills',
-                    '<strong>Compliance knowledge:</strong> Mention GAAP, tax regulations, and audit experience',
-                    '<strong>Keywords:</strong> Include: financial reporting, reconciliation, accounts payable/receivable, tax preparation'
-                ],
-                'Advocate': [
-                    '<strong>Case wins:</strong> Highlight successful cases, settlements, or favorable outcomes',
-                    '<strong>Specialization:</strong> Clearly state your practice areas (corporate, criminal, family, etc.)',
-                    '<strong>Bar admissions:</strong> List all state bars and court admissions prominently',
-                    '<strong>Legal research:</strong> Emphasize research, writing, and analytical skills',
-                    '<strong>Keywords:</strong> Include: litigation, legal research, contract negotiation, client advocacy, case management'
-                ],
-                'Agriculture': [
-                    '<strong>Practical experience:</strong> Detail hands-on farming, crop management, or livestock experience',
-                    '<strong>Technical knowledge:</strong> Mention precision agriculture, irrigation systems, or agricultural technology',
-                    '<strong>Certifications:</strong> Include pesticide applicator licenses, organic certifications, or agricultural degrees',
-                    '<strong>Results-oriented:</strong> Show yield improvements, cost reductions, or sustainability achievements',
-                    '<strong>Keywords:</strong> Include: crop production, soil management, agricultural equipment, farm operations'
-                ],
-                'Apparel': [
-                    '<strong>Portfolio link:</strong> Include a link to your design portfolio or lookbook',
-                    '<strong>Technical skills:</strong> List CAD software, pattern-making, textile knowledge',
-                    '<strong>Brand experience:</strong> Mention well-known brands or designers you\'ve worked with',
-                    '<strong>Trend awareness:</strong> Show knowledge of current fashion trends and market demands',
-                    '<strong>Keywords:</strong> Include: fashion design, textile selection, garment construction, trend forecasting'
-                ],
-                'Arts': [
-                    '<strong>Portfolio essential:</strong> Include a prominent link to your online portfolio or website',
-                    '<strong>Exhibitions:</strong> List galleries, shows, or exhibitions where your work was featured',
-                    '<strong>Awards/recognition:</strong> Highlight any grants, residencies, or artistic achievements',
-                    '<strong>Medium expertise:</strong> Clearly state your primary mediums and techniques',
-                    '<strong>Keywords:</strong> Include: visual arts, creative process, exhibition, art direction, commission work'
-                ],
-                'Automobile': [
-                    '<strong>ASE certifications:</strong> Prominently display automotive certifications',
-                    '<strong>Diagnostic skills:</strong> Emphasize ability to diagnose and repair complex vehicle issues',
-                    '<strong>Tool proficiency:</strong> List specialized automotive tools and diagnostic equipment',
-                    '<strong>Vehicle specialization:</strong> Note if you specialize in specific makes or systems',
-                    '<strong>Keywords:</strong> Include: automotive repair, diagnostics, preventive maintenance, vehicle systems'
-                ],
-                'Aviation': [
-                    '<strong>Licenses/ratings:</strong> List all pilot licenses, ratings, and endorsements prominently',
-                    '<strong>Flight hours:</strong> Include total flight hours and hours by aircraft type',
-                    '<strong>Safety record:</strong> Mention clean safety record and adherence to regulations',
-                    '<strong>Aircraft types:</strong> Specify experience with different aircraft models',
-                    '<strong>Keywords:</strong> Include: flight operations, aviation safety, FAA regulations, aircraft systems'
-                ],
-                'Banking': [
-                    '<strong>Financial metrics:</strong> Include loan amounts processed, accounts managed, or sales targets met',
-                    '<strong>Compliance:</strong> Emphasize knowledge of banking regulations and risk management',
-                    '<strong>Customer service:</strong> Highlight customer satisfaction scores or relationship building',
-                    '<strong>Product knowledge:</strong> Show expertise in banking products and financial services',
-                    '<strong>Keywords:</strong> Include: financial services, customer relations, loan processing, banking operations'
-                ],
-                'BOP': [
-                    '<strong>Process improvements:</strong> Quantify efficiency gains or cost savings achieved',
-                    '<strong>Systems implementation:</strong> Highlight experience with ERP, CRM, or other operational systems',
-                    '<strong>Cross-functional leadership:</strong> Show ability to coordinate across departments',
-                    '<strong>Metrics-driven:</strong> Include KPIs you\'ve tracked and improved',
-                    '<strong>Keywords:</strong> Include: operations management, process optimization, workflow efficiency, project management'
-                ],
-                'Business-Development': [
-                    '<strong>Revenue impact:</strong> Quantify deals closed, revenue generated, or partnerships established',
-                    '<strong>Pipeline management:</strong> Show ability to build and manage sales pipeline',
-                    '<strong>Relationship building:</strong> Emphasize networking and stakeholder management skills',
-                    '<strong>Market analysis:</strong> Highlight strategic planning and market research capabilities',
-                    '<strong>Keywords:</strong> Include: business development, strategic partnerships, revenue growth, market expansion'
-                ],
-                'Chef': [
-                    '<strong>Cuisine expertise:</strong> Clearly state your culinary specialties and styles',
-                    '<strong>Kitchen management:</strong> Highlight team leadership and kitchen operations experience',
-                    '<strong>Menu development:</strong> Showcase creativity in menu design and food costing',
-                    '<strong>Volume/quality:</strong> Mention capacity (covers per night) and quality standards maintained',
-                    '<strong>Keywords:</strong> Include: culinary arts, menu planning, food preparation, kitchen management, food safety'
-                ],
-                'Construction': [
-                    '<strong>Project scale:</strong> Include budget sizes and project types (residential, commercial, etc.)',
-                    '<strong>Safety record:</strong> Emphasize OSHA compliance and accident-free days',
-                    '<strong>Certifications:</strong> List relevant licenses (contractor\'s license, LEED, etc.)',
-                    '<strong>On-time/budget:</strong> Highlight ability to complete projects on schedule and within budget',
-                    '<strong>Keywords:</strong> Include: construction management, project planning, building codes, site supervision'
-                ],
-                'Designer': [
-                    '<strong>Portfolio link:</strong> Make your portfolio the most prominent element',
-                    '<strong>Software proficiency:</strong> List Adobe Creative Suite, Figma, Sketch, or other design tools',
-                    '<strong>Design process:</strong> Show understanding of user-centered design and iterative processes',
-                    '<strong>Measurable impact:</strong> Include metrics (increased engagement, conversion rates, etc.)',
-                    '<strong>Keywords:</strong> Include: UI/UX design, visual design, prototyping, user research, design systems'
-                ],
-                'Digital-Media': [
-                    '<strong>Analytics-driven:</strong> Show metrics (views, engagement, growth rates)',
-                    '<strong>Platform expertise:</strong> Specify social media platforms and content management systems',
-                    '<strong>Content portfolio:</strong> Link to published work, campaigns, or content samples',
-                    '<strong>Audience growth:</strong> Quantify follower growth or engagement improvements',
-                    '<strong>Keywords:</strong> Include: content creation, social media management, digital marketing, SEO, analytics'
-                ],
-                'Engineering': [
-                    '<strong>Technical skills:</strong> List programming languages, CAD software, and engineering tools',
-                    '<strong>Project outcomes:</strong> Quantify improvements (efficiency gains, cost reductions)',
-                    '<strong>Certifications:</strong> Include PE license, Six Sigma, or relevant engineering certifications',
-                    '<strong>Problem-solving:</strong> Highlight complex technical problems solved',
-                    '<strong>Keywords:</strong> Include: engineering design, technical analysis, product development, testing, documentation'
-                ],
-                'Finance': [
-                    '<strong>Quantitative results:</strong> Include ROI improvements, cost savings, or portfolio performance',
-                    '<strong>Financial modeling:</strong> Emphasize modeling, forecasting, and analytical skills',
-                    '<strong>Certifications:</strong> Highlight CFA, CPA, or other financial credentials',
-                    '<strong>Tools expertise:</strong> List Excel, Bloomberg, financial software proficiency',
-                    '<strong>Keywords:</strong> Include: financial analysis, investment management, risk assessment, financial modeling'
-                ],
-                'Fitness': [
-                    '<strong>Certifications:</strong> List all fitness certifications (ACE, NASM, ACSM, etc.)',
-                    '<strong>Client results:</strong> Include success stories or transformation metrics',
-                    '<strong>Specializations:</strong> Note areas like strength training, yoga, nutrition, etc.',
-                    '<strong>Program design:</strong> Show ability to create customized fitness programs',
-                    '<strong>Keywords:</strong> Include: personal training, fitness coaching, exercise programming, client motivation'
-                ],
-                'Healthcare': [
-                    '<strong>Licenses/credentials:</strong> Prominently display RN, MD, or other healthcare licenses',
-                    '<strong>Patient care:</strong> Emphasize patient outcomes and quality of care metrics',
-                    '<strong>Specializations:</strong> Clearly state medical specialties or areas of expertise',
-                    '<strong>Compliance:</strong> Mention HIPAA knowledge and healthcare regulations',
-                    '<strong>Keywords:</strong> Include: patient care, medical procedures, healthcare compliance, clinical skills'
-                ],
-                'HR': [
-                    '<strong>Metrics-driven:</strong> Include time-to-hire, retention rates, or employee satisfaction scores',
-                    '<strong>HRIS systems:</strong> List experience with Workday, SAP, ADP, or other HR systems',
-                    '<strong>Certifications:</strong> Highlight SHRM-CP, PHR, or other HR credentials',
-                    '<strong>Full-cycle recruiting:</strong> Show end-to-end HR process experience',
-                    '<strong>Keywords:</strong> Include: talent acquisition, employee relations, HRIS, performance management, compensation'
-                ],
-                'IT': [
-                    '<strong>Technical stack:</strong> List all programming languages, frameworks, and technologies',
-                    '<strong>Certifications:</strong> Include AWS, Azure, CompTIA, Cisco, or other IT certifications',
-                    '<strong>Project impact:</strong> Quantify system improvements, uptime, or performance gains',
-                    '<strong>GitHub/portfolio:</strong> Link to your code repositories or technical blog',
-                    '<strong>Keywords:</strong> Include: software development, cloud computing, cybersecurity, database management, DevOps'
-                ],
-                'PR': [
-                    '<strong>Media placements:</strong> Highlight coverage in major publications or broadcast media',
-                    '<strong>Campaign results:</strong> Include metrics (impressions, reach, sentiment improvements)',
-                    '<strong>Crisis management:</strong> Show experience handling sensitive communications',
-                    '<strong>Relationship building:</strong> Emphasize media contacts and stakeholder relationships',
-                    '<strong>Keywords:</strong> Include: public relations, media relations, press releases, crisis communication, brand management'
-                ],
-                'Sales': [
-                    '<strong>Quota achievement:</strong> Show percentage over quota or sales targets met',
-                    '<strong>Revenue numbers:</strong> Include specific dollar amounts closed or pipeline value',
-                    '<strong>Deal size/cycle:</strong> Mention average deal size and sales cycle length',
-                    '<strong>CRM proficiency:</strong> List Salesforce, HubSpot, or other sales tools',
-                    '<strong>Keywords:</strong> Include: sales strategy, business development, client acquisition, account management, pipeline management'
-                ],
-                'Teacher': [
-                    '<strong>Certifications/licenses:</strong> Prominently display teaching licenses and endorsements',
-                    '<strong>Student outcomes:</strong> Include test score improvements or achievement metrics',
-                    '<strong>Curriculum development:</strong> Show ability to design engaging lessons and curricula',
-                    '<strong>Subject expertise:</strong> Clearly state subjects and grade levels taught',
-                    '<strong>Keywords:</strong> Include: curriculum development, classroom management, student assessment, differentiated instruction'
-                ]
-            };
-            
-            const suggestionsList = suggestions[careerField] || suggestions['IT'];
-            const suggestionsHTML = `
-                <div style="margin-bottom: 1rem;">
-                    <strong style="font-size: 1.05rem;">Detected Career Field: ${careerField}</strong>
-                </div>
-                <div style="margin-bottom: 0.5rem;">To strengthen your resume in this field:</div>
-                <ul style="margin-left: 1.5rem; line-height: 1.8;">
-                    ${suggestionsList.map(tip => `<li>${tip}</li>`).join('')}
-                </ul>
-            `;
-            
-            document.getElementById('suggestions-content').innerHTML = suggestionsHTML;
-            document.getElementById('career-suggestions').style.display = 'block';
         }
     </script>
 </body>
