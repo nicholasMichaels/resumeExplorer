@@ -321,10 +321,11 @@
             text-align: center;
         }
 
-        .job-listing {
+       .job-listing {
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
+            padding-bottom: 3rem; 
             margin-bottom: 1rem;
             color: #333;
             transition: all 0.3s ease;
@@ -352,13 +353,16 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
+            z-index: 1;
         }
 
-        .job-header {
+       .job-header {
             display: flex;
             justify-content: space-between;
-            align-items: start;
+            align-items: flex-start;
             margin-bottom: 1rem;
+            padding-right: 0;
+            position: relative;
         }
 
         .job-title {
@@ -374,12 +378,17 @@
         }
 
         .job-match-score {
+            position: absolute;
+            bottom: -1rem; 
+            right: 0;       
             background: #4CAF50;
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.9rem;
+            white-space: nowrap;
+            z-index: 1;    
         }
 
         .job-details {
