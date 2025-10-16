@@ -695,7 +695,12 @@ SOFTWARE ENGINEER
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
+        
+        // Groq API configuration
+        const GROQ_API_KEY = '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';
+        const GROQ_PROJECT_ID = 'project_01k7mqazpben9tdh1m464tkwke';
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+        
         let userProfile = {};
         let allJobs = [];
         let savedJobs = new Set();
@@ -758,7 +763,7 @@ SOFTWARE ENGINEER
                 }
                 
                 updateProgress(50, 'Analyzing resume...');
-                userProfile = analyzeResumeAdvanced(resumeText);
+                userProfile = await analyzeResumeAdvanced(resumeText);
                 
                 showProfileReview();
             } catch (error) {
@@ -783,7 +788,7 @@ SOFTWARE ENGINEER
             
             try {
                 updateProgress(30, 'Analyzing resume...');
-                userProfile = analyzeResumeAdvanced(resumeText);
+                userProfile = await analyzeResumeAdvanced(resumeText);
                 
                 showProfileReview();
             } catch (error) {
@@ -795,147 +800,113 @@ SOFTWARE ENGINEER
             }
         }
 
-        function analyzeResumeAdvanced(resumeText) {
+        async function analyzeResumeAdvanced(resumeText) {
             try {
-                const textLower = resumeText.toLowerCase();
-                
-                const name = extractName(resumeText);
-                const location = extractLocation(resumeText);
-                const skills = extractSkills(resumeText);
-                const experience = determineExperienceLevel(resumeText);
-                const roles = extractRoles(resumeText);
-                const careerField = detectCareerField(resumeText);
-                const salary = estimateSalary(resumeText);
-                
-                const strengths = [];
-                if (skills.length >= 5) strengths.push('Good variety of skills listed');
-                if (/\d+%|\d+ years?|managed \d+|increased|improved/i.test(resumeText)) {
-                    strengths.push('Includes quantifiable achievements');
+                // Call Groq API directly using fetch
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Groq-Project-ID': GROQ_PROJECT_ID
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.3-70b-versatile",
+                        messages: [{
+                            role: "system",
+                            content: `You are an expert resume analyzer. Analyze the resume and return a JSON object with this EXACT structure:
+{
+  "strengths": ["strength1", "strength2"],
+  "weaknesses": [
+    {"issue": "problem description", "impact": "why it matters", "fix": "how to solve it"}
+  ],
+  "missingElements": ["missing1", "missing2"],
+  "atsScore": 7,
+  "improvementPriority": ["priority1", "priority2", "priority3"]
+}
+
+Focus on: ATS compatibility, formatting issues, missing keywords, weak descriptions, and actionable improvements.`
+                        }, {
+                            role: "user",
+                            content: resumeText
+                        }],
+                        temperature: 0.3,
+                        max_tokens: 1500
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed: ${response.status}`);
                 }
-                if (textLower.includes('led') || textLower.includes('managed')) {
-                    strengths.push('Demonstrates leadership experience');
-                }
-                if (resumeText.length > 500) {
-                    strengths.push('Comprehensive resume content');
-                }
+
+                const data = await response.json();
+                const aiAnalysis = data.choices[0].message.content;
                 
-                const weaknesses = [];
-                
-                if (!/\d+%/.test(resumeText)) {
-                    weaknesses.push({
-                        issue: 'No quantifiable achievements with percentages',
-                        impact: 'Employers cannot measure your actual impact',
-                        fix: 'Add metrics: "Increased sales by 25%" or "Reduced costs by $50K annually"'
-                    });
-                }
-                
-                if (skills.length < 5) {
-                    weaknesses.push({
-                        issue: 'Limited skills section',
-                        impact: 'May not pass ATS keyword filters',
-                        fix: 'List 8-12 relevant technical and soft skills specific to your target role'
-                    });
-                }
-                
-                if (!/led|managed|coordinated|directed|oversaw/i.test(resumeText)) {
-                    weaknesses.push({
-                        issue: 'Weak action verbs',
-                        impact: 'Resume appears passive and less impressive',
-                        fix: 'Start bullet points with strong verbs: Led, Managed, Developed, Achieved, Drove'
-                    });
-                }
-                
-                if (!textLower.includes('project') && !textLower.includes('initiative')) {
-                    weaknesses.push({
-                        issue: 'No project or initiative mentions',
-                        impact: 'Difficult to assess your practical experience',
-                        fix: 'Describe 2-3 key projects with outcomes and technologies used'
-                    });
+                // Parse AI response
+                let aiData = {};
+                try {
+                    // Try to extract JSON from the response
+                    const jsonMatch = aiAnalysis.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        aiData = JSON.parse(jsonMatch[0]);
+                    }
+                } catch (parseError) {
+                    console.warn('Could not parse AI response as JSON:', parseError);
                 }
                 
-                if (resumeText.length < 300) {
-                    weaknesses.push({
-                        issue: 'Resume is too brief',
-                        impact: 'Insufficient information for employers to evaluate you',
-                        fix: 'Expand with detailed responsibilities, achievements, and skills for each role'
-                    });
-                }
-                
-                let atsScore = 5;
-                if (skills.length >= 8) atsScore += 2;
-                if (/\d+%/.test(resumeText)) atsScore += 1;
-                if (resumeText.length > 400) atsScore += 1;
-                if (/led|managed|developed/i.test(resumeText)) atsScore += 1;
-                atsScore = Math.min(10, atsScore);
-                
-                const missingElements = [];
-                if (!textLower.includes('@') && !textLower.includes('email')) {
-                    missingElements.push('Email address');
-                }
-                if (!textLower.includes('phone') && !/\(\d{3}\)/.test(resumeText)) {
-                    missingElements.push('Phone number');
-                }
-                if (!textLower.includes('linkedin')) {
-                    missingElements.push('LinkedIn profile URL');
-                }
-                if (!textLower.includes('education') && !textLower.includes('university')) {
-                    missingElements.push('Education section');
-                }
-                
-                const improvementPriority = [];
-                if (weaknesses.length > 0) {
-                    improvementPriority.push('Add quantifiable metrics to all achievements');
-                }
-                if (skills.length < 8) {
-                    improvementPriority.push('Expand skills section with role-specific keywords');
-                }
-                if (missingElements.length > 0) {
-                    improvementPriority.push('Add missing contact information and LinkedIn profile');
-                }
-                improvementPriority.push('Use stronger action verbs at the start of each bullet point');
-                improvementPriority.push('Tailor resume for each job application with relevant keywords');
-                
-                return {
-                    name,
-                    location,
-                    skills,
-                    experience,
-                    roles,
-                    careerField,
-                    salary,
-                    strengths,
-                    weaknesses,
-                    missingElements,
-                    atsScore,
-                    improvementPriority
+                // Merge AI analysis with existing extraction methods
+                const baseAnalysis = {
+                    name: extractName(resumeText),
+                    location: extractLocation(resumeText),
+                    skills: extractSkills(resumeText) || [],
+                    experience: determineExperienceLevel(resumeText),
+                    roles: extractRoles(resumeText) || [],
+                    careerField: detectCareerField(resumeText),
+                    salary: estimateSalary(resumeText)
                 };
-            } catch (error) {
-                console.error('Analysis error:', error);
+
+                // Combine with AI insights
                 return {
-                    name: extractName(resumeText) || 'Candidate',
-                    location: 'Not Specified',
-                    skills: [],
-                    experience: 'entry',
-                    roles: ['Professional'],
-                    careerField: '',
-                    salary: '$45,000 - $70,000',
-                    strengths: [],
+                    ...baseAnalysis,
+                    strengths: aiData.strengths || [],
+                    weaknesses: aiData.weaknesses || [],
+                    missingElements: aiData.missingElements || [],
+                    atsScore: aiData.atsScore || 5,
+                    improvementPriority: aiData.improvementPriority || [],
+                    // Ensure arrays exist
+                    skills: baseAnalysis.skills || [],
+                    roles: baseAnalysis.roles || []
+                };
+
+            } catch (error) {
+                console.error('Groq API Error:', error);
+                // Fallback to basic analysis if AI fails
+                return {
+                    name: extractName(resumeText),
+                    location: extractLocation(resumeText),
+                    skills: extractSkills(resumeText) || [],
+                    experience: determineExperienceLevel(resumeText),
+                    roles: extractRoles(resumeText) || [],
+                    careerField: detectCareerField(resumeText),
+                    salary: estimateSalary(resumeText),
+                    // Default values for AI-dependent fields
+                    strengths: ['Resume uploaded successfully'],
                     weaknesses: [],
                     missingElements: [],
-                    atsScore: 5,
+                    atsScore: null,
                     improvementPriority: []
                 };
             }
         }
-
+        
         function showProfileReview() {
-            document.getElementById('profile-name').value = userProfile.name;
-            document.getElementById('profile-location').value = userProfile.location;
-            document.getElementById('profile-experience').value = userProfile.experience;
-            document.getElementById('profile-salary').value = userProfile.salary;
+            document.getElementById('profile-name').value = userProfile.name || '';
+            document.getElementById('profile-location').value = userProfile.location || '';
+            document.getElementById('profile-experience').value = userProfile.experience || 'entry';
+            document.getElementById('profile-salary').value = userProfile.salary || '';
             document.getElementById('profile-career-field').value = userProfile.careerField || '';
-            document.getElementById('profile-roles').value = userProfile.roles.join(', ');
-            document.getElementById('profile-skills').value = userProfile.skills.join(', ');
+            document.getElementById('profile-roles').value = (userProfile.roles && userProfile.roles.length > 0) ? userProfile.roles.join(', ') : '';
+            document.getElementById('profile-skills').value = (userProfile.skills && userProfile.skills.length > 0) ? userProfile.skills.join(', ') : '';
             
             if (userProfile.weaknesses && userProfile.weaknesses.length > 0) {
                 displayAIAnalysis();
@@ -1034,8 +1005,8 @@ SOFTWARE ENGINEER
             userProfile.experience = document.getElementById('profile-experience').value;
             userProfile.salary = document.getElementById('profile-salary').value;
             userProfile.careerField = document.getElementById('profile-career-field').value;
-            userProfile.roles = document.getElementById('profile-roles').value.split(',').map(r => r.trim());
-            userProfile.skills = document.getElementById('profile-skills').value.split(',').map(s => s.trim());
+            userProfile.roles = document.getElementById('profile-roles').value.split(',').map(r => r.trim()).filter(r => r);
+            userProfile.skills = document.getElementById('profile-skills').value.split(',').map(s => s.trim()).filter(s => s);
             
             document.getElementById('profile-review-section').style.display = 'none';
             showProgress();
@@ -1152,7 +1123,7 @@ SOFTWARE ENGINEER
                 }
             });
             
-            return foundSkills;
+            return foundSkills.length > 0 ? foundSkills : ['Communication', 'Team Work'];
         }
 
         function determineExperienceLevel(text) {
@@ -1192,62 +1163,57 @@ SOFTWARE ENGINEER
         }
 
         function extractRoles(text) {
-            const roles = [
-                'Software Engineer', 'Software Developer', 'Full Stack Developer', 'Frontend Developer', 'Backend Developer',
-                'Web Developer', 'Mobile Developer', 'iOS Developer', 'Android Developer',
-                'DevOps Engineer', 'Cloud Engineer', 'Systems Administrator', 'Network Engineer',
-                'Data Engineer', 'Data Analyst', 'Data Scientist', 'Machine Learning Engineer', 'AI Engineer',
-                'QA Engineer', 'Test Engineer', 'Quality Assurance',
-                'UX Designer', 'UI Designer', 'Graphic Designer', 'Product Designer', 'Web Designer',
-                'Business Analyst', 'Product Manager', 'Project Manager', 'Program Manager',
-                'Management Consultant', 'Strategy Consultant',
-                'Marketing Manager', 'Digital Marketing Specialist', 'Content Marketing Manager',
-                'Sales Representative', 'Account Manager', 'Business Development',
-                'Sales Manager', 'Account Executive',
-                'Financial Analyst', 'Accountant', 'Controller', 'Finance Manager',
-                'Investment Analyst', 'Credit Analyst',
-                'HR Manager', 'Recruiter', 'Talent Acquisition', 'HR Specialist',
-                'Nurse', 'Registered Nurse', 'Physician', 'Medical Assistant',
-                'Healthcare Administrator',
-                'Teacher', 'Professor', 'Instructor', 'Academic Advisor',
-                'Customer Success Manager', 'Operations Manager', 'Supply Chain Manager',
-                'Legal Counsel', 'Paralegal', 'Executive Assistant', 'Administrative Assistant'
-            ];
-            
-            const found = [];
-            const foundTitles = new Set();
-
-            for (const role of roles) {
-                // Fix the escape string pattern and remove the erroneous if condition
-                const escapedRole = role.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp('\\b' + escapedRole + '\\b', 'gi');
-                if (regex.test(text) && !foundTitles.has(role.toLowerCase())) {
-                    found.push(role);
-                    foundTitles.add(role.toLowerCase());
+        const roles = {
+            'IT': ['software', 'developer', 'programmer', 'engineer', 'coding', 'programming', 'javascript', 'python', 'java', 'web development', 'mobile app', 'full stack', 'backend', 'frontend', 'devops', 'cloud', 'database', 'sql'],
+            'Healthcare': ['nurse', 'doctor', 'medical', 'healthcare', 'clinical', 'patient', 'hospital', 'physician', 'rn', 'registered nurse', 'medical assistant'],
+            'Finance': ['finance', 'accounting', 'analyst', 'investment', 'banking', 'financial', 'accountant', 'cpa', 'bookkeeping', 'audit', 'tax'],
+            'Sales': ['sales', 'business development', 'account', 'revenue', 'account executive', 'sales representative', 'client relations'],
+            'Marketing': ['marketing', 'advertising', 'campaign', 'brand', 'seo', 'content', 'social media', 'digital marketing', 'marketing manager'],
+            'Engineering': ['mechanical', 'electrical', 'civil', 'chemical', 'structural', 'manufacturing', 'industrial engineer'],
+            'Education': ['teacher', 'professor', 'educator', 'instructor', 'academic', 'teaching', 'curriculum', 'classroom'],
+            'HR': ['human resources', 'hr', 'recruitment', 'talent acquisition', 'recruiter', 'talent', 'employee relations'],
+            'Accountant': ['accountant', 'accounting', 'bookkeeper', 'cpa', 'accounts payable', 'accounts receivable', 'general ledger'],
+            'Advocate': ['legal', 'lawyer', 'attorney', 'advocate', 'counsel', 'paralegal', 'law']
+        };
+        
+        const found = [];
+        const foundTitles = new Set();
+        
+        // Search through each role category and its keywords
+        for (const [category, keywords] of Object.entries(roles)) {
+            for (const keyword of keywords) {
+                const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp('\\b' + escapedKeyword + '\\b', 'gi');
+                if (regex.test(text) && !foundTitles.has(keyword.toLowerCase())) {
+                    found.push(category);
+                    foundTitles.add(keyword.toLowerCase());
+                    break; // Found one match in this category, move to next
                 }
             }
-
-            if (found.length === 0) {
-                const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-                for (let i = 0; i < Math.min(15, lines.length); i++) {
-                    const line = lines[i];
-                    if (line.includes('@') || line.match(/\d{3}[-.)]\d{3}/)) continue;
-                    
-                    if (/\b(engineer|developer|analyst|manager|designer|specialist|coordinator|administrator|consultant)\b/i.test(line)) {
-                        if (line.length < 100) {
-                            found.push(line);
-                            break;
-                        }
+        }
+        
+        // Fallback for when no roles are found
+        if (found.length === 0) {
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+            for (let i = 0; i < Math.min(15, lines.length); i++) {
+                const line = lines[i];
+                if (line.includes('@') || line.match(/\d{3}[-.)]\d{3}/)) continue;
+                
+                if (/\b(engineer|developer|analyst|manager|designer|specialist|coordinator|administrator|consultant)\b/i.test(line)) {
+                    if (line.length < 100) {
+                        found.push(line);
+                        break;
                     }
                 }
             }
+        }
+        
+        return found.length > 0 ? Array.from(new Set(found)).slice(0, 3) : ['Professional'];
+    }
 
-            return found.length > 0 ? found.slice(0, 3) : ['Professional'];
-            }
-
-            function detectCareerField(text) {
+        function detectCareerField(text) {
             const textLower = text.toLowerCase();
-
+            
             const keywords = {
                 'IT': ['software', 'developer', 'programmer', 'engineer', 'coding', 'programming', 'javascript', 'python', 'java', 'web development', 'mobile app', 'full stack', 'backend', 'frontend', 'devops', 'cloud', 'database', 'sql'],
                 'Healthcare': ['nurse', 'doctor', 'medical', 'healthcare', 'clinical', 'patient', 'hospital', 'physician', 'rn', 'registered nurse', 'medical assistant'],
@@ -1260,13 +1226,12 @@ SOFTWARE ENGINEER
                 'Accountant': ['accountant', 'accounting', 'bookkeeper', 'cpa', 'accounts payable', 'accounts receivable', 'general ledger'],
                 'Advocate': ['legal', 'lawyer', 'attorney', 'advocate', 'counsel', 'paralegal', 'law']
             };
-
+            
             const scores = {};
-
+            
             for (const [field, words] of Object.entries(keywords)) {
                 scores[field] = 0;
                 words.forEach(keyword => {
-                    // Fix the escape string pattern
                     const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     const regex = new RegExp('\\b' + escapedKeyword + '\\b', 'gi');
                     const matches = textLower.match(regex);
@@ -1275,17 +1240,17 @@ SOFTWARE ENGINEER
                     }
                 });
             }
-            
+                
             let maxScore = 0;
             let topField = '';
-            
+                
             for (const [field, score] of Object.entries(scores)) {
                 if (score > maxScore) {
                     maxScore = score;
                     topField = field;
                 }
             }
-            
+                
             return maxScore > 0 ? topField : '';
         }
 
@@ -1331,7 +1296,7 @@ SOFTWARE ENGINEER
             const adjustedLow = Math.round((low * multiplier) / 1000) * 1000;
             const adjustedHigh = Math.round((high * multiplier) / 1000) * 1000;
             
-            return `${adjustedLow.toLocaleString()} - ${adjustedHigh.toLocaleString()}`;
+            return `$${adjustedLow.toLocaleString()} - $${adjustedHigh.toLocaleString()}`;
         }
 
         async function fetchJobMatches() {
