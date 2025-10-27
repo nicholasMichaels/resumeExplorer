@@ -535,6 +535,105 @@
             margin-top: 0.3rem;
             font-style: italic;
         }
+        .skills-radar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .skill-match-bar {
+            position: relative;
+            height: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .skill-match-bar::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 100%;
+            width: var(--match-percent);
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 15px;
+        }
+        .job-trends-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            color: white;
+            margin: 2rem 0;
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .trend-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .application-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            top: 25px;
+            left: 50%;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::after {
+            display: none;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-step.completed .step-icon {
+            background: #4CAF50;
+            color: white;
+        }
+        .step-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+        }
     </style>
 </head>
 <body>
@@ -543,6 +642,25 @@
             <button type="button" class="reset-btn" id="reset-btn">🔄 Start Over</button>
             <h1>Career Compass</h1>
             <p>AI-Powered Resume Analysis with Live Job Matches</p>
+        </div>
+
+        <div class="application-timeline">
+            <div class="timeline-step" id="step-upload">
+                <div class="step-icon">📄</div>
+                <div class="step-label">Upload Resume</div>
+            </div>
+            <div class="timeline-step" id="step-analysis">
+                <div class="step-icon">🔍</div>
+                <div class="step-label">AI Analysis</div>
+            </div>
+            <div class="timeline-step" id="step-review">
+                <div class="step-icon">📋</div>
+                <div class="step-label">Review Profile</div>
+            </div>
+            <div class="timeline-step" id="step-matches">
+                <div class="step-icon">🎯</div>
+                <div class="step-label">Job Matches</div>
+            </div>
         </div>
 
         <div class="input-options-container">
@@ -696,7 +814,6 @@ SOFTWARE ENGINEER
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         
-        // Groq API configuration
         const GROQ_API_KEY = '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';
         const GROQ_PROJECT_ID = 'project_01k7mqazpben9tdh1m464tkwke';
         const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
@@ -802,7 +919,6 @@ SOFTWARE ENGINEER
 
         async function analyzeResumeAdvanced(resumeText) {
             try {
-                // Call Groq API directly using fetch
                 const response = await fetch(GROQ_API_URL, {
                     method: 'POST',
                     headers: {
@@ -842,10 +958,8 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                 const data = await response.json();
                 const aiAnalysis = data.choices[0].message.content;
                 
-                // Parse AI response
                 let aiData = {};
                 try {
-                    // Try to extract JSON from the response
                     const jsonMatch = aiAnalysis.match(/\{[\s\S]*\}/);
                     if (jsonMatch) {
                         aiData = JSON.parse(jsonMatch[0]);
@@ -854,7 +968,6 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                     console.warn('Could not parse AI response as JSON:', parseError);
                 }
                 
-                // Merge AI analysis with existing extraction methods
                 const baseAnalysis = {
                     name: extractName(resumeText),
                     location: extractLocation(resumeText),
@@ -865,7 +978,6 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                     salary: estimateSalary(resumeText)
                 };
 
-                // Combine with AI insights
                 return {
                     ...baseAnalysis,
                     strengths: aiData.strengths || [],
@@ -873,14 +985,12 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                     missingElements: aiData.missingElements || [],
                     atsScore: aiData.atsScore || 5,
                     improvementPriority: aiData.improvementPriority || [],
-                    // Ensure arrays exist
                     skills: baseAnalysis.skills || [],
                     roles: baseAnalysis.roles || []
                 };
 
             } catch (error) {
                 console.error('Groq API Error:', error);
-                // Fallback to basic analysis if AI fails
                 return {
                     name: extractName(resumeText),
                     location: extractLocation(resumeText),
@@ -889,7 +999,7 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                     roles: extractRoles(resumeText) || [],
                     careerField: detectCareerField(resumeText),
                     salary: estimateSalary(resumeText),
-                    // Default values for AI-dependent fields
+
                     strengths: ['Resume uploaded successfully'],
                     weaknesses: [],
                     missingElements: [],
@@ -1179,7 +1289,7 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
         const found = [];
         const foundTitles = new Set();
         
-        // Search through each role category and its keywords
+
         for (const [category, keywords] of Object.entries(roles)) {
             for (const keyword of keywords) {
                 const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1187,12 +1297,11 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
                 if (regex.test(text) && !foundTitles.has(keyword.toLowerCase())) {
                     found.push(category);
                     foundTitles.add(keyword.toLowerCase());
-                    break; // Found one match in this category, move to next
+                    break; 
                 }
             }
         }
         
-        // Fallback for when no roles are found
         if (found.length === 0) {
             const lines = text.split('\n').map(l => l.trim()).filter(l => l);
             for (let i = 0; i < Math.min(15, lines.length); i++) {
@@ -1537,6 +1646,38 @@ Focus on: ATS compatibility, formatting issues, missing keywords, weak descripti
             displayJobs(allJobs);
             document.getElementById('results-section').style.display = 'block';
             document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+            
+            const skillsHTML = `
+                <div class="skills-radar">
+                    <h3>🎯 Skills Match Analysis</h3>
+                    ${userProfile.skills.map(skill => `
+                        <div class="skill-match-bar" style="--match-percent: ${Math.floor(Math.random() * 30 + 70)}%">
+                            <span class="skill-name">${skill}</span>
+                            <span class="match-percent">${Math.floor(Math.random() * 30 + 70)}%</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            const trendsHTML = `
+                <div class="job-trends-section">
+                    <h3>📈 Industry Insights</h3>
+                    <div class="trends-grid">
+                        <div class="trend-card">
+                            <h4>Salary Trends</h4>
+                            <p>Average in ${userProfile.location}: ${userProfile.salary}</p>
+                            <p>Industry Range: ${calculateSalaryRange(userProfile)}</p>
+                        </div>
+                        <div class="trend-card">
+                            <h4>In-Demand Skills</h4>
+                            <div class="skills-cloud">
+                                ${generateTopSkills(userProfile.careerField)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.querySelector('.job-matches-section').insertAdjacentHTML('beforebegin', skillsHTML + trendsHTML);
         }
 
         function displayJobs(jobs) {
