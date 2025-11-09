@@ -55,6 +55,11 @@
             transform: translateY(-1px);
         }
 
+        .reset-btn:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
+        }
+
         .header h1 {
             font-size: 2.8rem;
             font-weight: 700;
@@ -71,6 +76,17 @@
             font-size: 0.95rem;
             opacity: 0.8;
             font-style: italic;
+        }
+
+        .market-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
         }
 
         .input-options-container {
@@ -98,6 +114,7 @@
         .upload-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+            aria-hidden: true;
         }
 
         .upload-text {
@@ -130,6 +147,11 @@
         .upload-btn:hover, .analyze-text-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .upload-btn:focus, .analyze-text-btn:focus {
+            outline: 3px solid #2e7d32;
+            outline-offset: 2px;
         }
 
         .divider-container {
@@ -244,6 +266,138 @@
             color: #333;
         }
 
+        .application-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            top: 25px;
+            left: 50%;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::after {
+            display: none;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-step.completed .step-icon {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .profile-review-section {
+            display: none;
+        }
+
+        .profile-field-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-field-label {
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-input, .profile-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .profile-input:focus, .profile-select:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .help-tooltip {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #2196F3;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 0.3rem;
+            position: relative;
+        }
+
+        .help-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .help-tooltip:hover::after,
+        .help-tooltip:focus::after {
+            opacity: 1;
+        }
+
+        .field-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
         .ten-dimensional-analysis {
             background: rgba(255,255,255,0.95);
             border-radius: 24px;
@@ -266,6 +420,11 @@
             align-items: center;
             margin-bottom: 1rem;
             cursor: pointer;
+        }
+
+        .dimension-header:focus {
+            outline: 2px solid white;
+            outline-offset: 4px;
         }
 
         .dimension-icon {
@@ -296,6 +455,16 @@
 
         .dimension-content.collapsed {
             display: none;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
         }
 
         .career-roadmap {
@@ -415,6 +584,54 @@
             gap: 0.5rem;
         }
 
+        .top-companies-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .company-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .company-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: #4CAF50;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-badge {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
         .risk-assessment {
             background: rgba(255,255,255,0.95);
             border-radius: 24px;
@@ -473,112 +690,25 @@
             margin-bottom: 2rem;
         }
 
-        .profile-review-section {
-            display: none;
+        .sample-notice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
-        .profile-field-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-field-label {
-            font-weight: 600;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
+        .sample-notice-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #856404;
             margin-bottom: 0.5rem;
         }
 
-        .profile-input, .profile-select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .profile-input:focus, .profile-select:focus {
-            outline: none;
-            border-color: #2196F3;
-            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
-        }
-
-        .help-tooltip {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: #2196F3;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 18px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: help;
-            margin-left: 0.3rem;
-        }
-
-        .field-hint {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.3rem;
-            font-style: italic;
-        }
-
-        .application-timeline {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 2rem;
-            margin: 2rem 0;
-            position: relative;
-        }
-
-        .timeline-step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-        }
-
-        .timeline-step::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: rgba(255,255,255,0.2);
-            top: 25px;
-            left: 50%;
-            z-index: 0;
-        }
-
-        .timeline-step:last-child::after {
-            display: none;
-        }
-
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .timeline-step.completed .step-icon {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.9);
+        .sample-notice-text {
+            color: #856404;
+            font-size: 0.95rem;
         }
 
         .job-listing {
@@ -629,8 +759,8 @@
 
         .job-match-score {
             position: absolute;
-            bottom: -1rem;
-            right: 0;
+            top: 0rem;
+            right: 0rem;
             background: #4CAF50;
             color: white;
             padding: 0.5rem 1rem;
@@ -665,6 +795,11 @@
             transform: translateY(-1px);
         }
 
+        .apply-btn:focus {
+            outline: 3px solid #2e7d32;
+            outline-offset: 2px;
+        }
+
         .error-message {
             background: #ffebee;
             color: #c62828;
@@ -675,73 +810,78 @@
             display: none;
         }
 
-        .toggle-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .toggle-icon.collapsed {
-            transform: rotate(-90deg);
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border-width: 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <button type="button" class="reset-btn" id="reset-btn">🔄 Start Over</button>
+            <button type="button" class="reset-btn" id="reset-btn" aria-label="Start over and reset the application">🔄 Start Over</button>
             <h1>Career Compass</h1>
             <p>Advanced AI-Powered Resume Analysis</p>
             <p class="subtitle">Powered by Llama 3.3 70B - 10-Dimensional Career Intelligence</p>
         </div>
 
-        <div class="application-timeline">
+        <div class="application-timeline" role="navigation" aria-label="Application progress">
             <div class="timeline-step" id="step-upload">
-                <div class="step-icon">📄</div>
+                <div class="step-icon" aria-hidden="true">📄</div>
                 <div class="step-label">Upload Resume</div>
             </div>
             <div class="timeline-step" id="step-analysis">
-                <div class="step-icon">🔍</div>
+                <div class="step-icon" aria-hidden="true">🔍</div>
                 <div class="step-label">AI Analysis</div>
             </div>
             <div class="timeline-step" id="step-review">
-                <div class="step-icon">📋</div>
+                <div class="step-icon" aria-hidden="true">📋</div>
                 <div class="step-label">Review Profile</div>
             </div>
             <div class="timeline-step" id="step-matches">
-                <div class="step-icon">🎯</div>
+                <div class="step-icon" aria-hidden="true">🎯</div>
                 <div class="step-label">Job Matches</div>
             </div>
         </div>
 
         <div class="input-options-container">
-            <div class="upload-area" id="upload-area">
-                <div class="upload-icon">📄</div>
+            <div class="upload-area" id="upload-area" role="region" aria-label="File upload area">
+                <div class="upload-icon" aria-hidden="true">📄</div>
                 <div class="upload-text">Upload Your Resume PDF</div>
                 <div class="upload-subtext">Advanced LLM analysis with 10-dimensional insights</div>
-                <button type="button" class="upload-btn" id="upload-btn">Choose PDF File</button>
-                <input type="file" id="file-input" class="file-input" accept=".pdf" />
+                <button type="button" class="upload-btn" id="upload-btn" aria-label="Choose PDF file to upload">Choose PDF File</button>
+                <input type="file" id="file-input" class="file-input" accept=".pdf" aria-label="PDF file input" />
             </div>
 
-            <div class="divider-container">
+            <div class="divider-container" role="separator" aria-label="Alternative input method">
                 <div class="divider-line"></div>
                 <div class="divider-text">OR</div>
                 <div class="divider-line"></div>
             </div>
 
             <div class="text-input-area">
-                <div class="text-input-icon">📝</div>
+                <div class="text-input-icon" aria-hidden="true">📝</div>
                 <div class="text-input-header">
                     <div class="text-input-title">Paste Your Resume Text</div>
                     <div class="text-input-subtitle">Get comprehensive AI-powered career guidance</div>
                 </div>
-                <textarea id="resume-text-input" class="resume-text-area" placeholder="Paste your resume here..."></textarea>
+                <label for="resume-text-input" class="sr-only">Resume text content</label>
+                <textarea id="resume-text-input" class="resume-text-area" placeholder="Paste your resume here..." aria-describedby="text-input-hint"></textarea>
+                <span id="text-input-hint" class="sr-only">Paste the full text content of your resume for AI analysis</span>
                 <button type="button" class="analyze-text-btn" id="analyze-btn">Analyze with AI</button>
             </div>
         </div>
 
-        <div class="progress-section" id="progress-section">
+        <div class="progress-section" id="progress-section" role="status" aria-live="polite">
             <div class="progress-text" id="progress-text">Processing...</div>
-            <div class="progress-bar">
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
         </div>
@@ -753,86 +893,100 @@
                 
                 <div id="ai-analysis-display" style="display: none;"></div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-                    <div class="profile-field-group">
-                        <label class="profile-field-label">
-                            Your Name
-                            <span class="help-tooltip" title="Your full name">?</span>
-                        </label>
-                        <input type="text" id="profile-name" class="profile-input" placeholder="John Doe">
+                <form id="profile-form" aria-label="Profile information form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                        <div class="profile-field-group">
+                            <label class="profile-field-label" for="profile-name">
+                                Your Name
+                                <span class="help-tooltip" data-tooltip="Your full name" tabindex="0" role="tooltip" aria-label="Help: Your full name">?</span>
+                            </label>
+                            <input type="text" id="profile-name" class="profile-input" placeholder="John Doe">
+                        </div>
+                        
+                        <div class="profile-field-group">
+                            <label class="profile-field-label" for="profile-location">
+                                Location
+                                <span class="help-tooltip" data-tooltip="City and country where you want to work" tabindex="0" role="tooltip" aria-label="Help: City and country where you want to work">?</span>
+                            </label>
+                            <input type="text" id="profile-location" class="profile-input" placeholder="Mumbai, India">
+                        </div>
+                        
+                        <div class="profile-field-group">
+                            <label class="profile-field-label" for="profile-experience">
+                                Experience Level
+                                <span class="help-tooltip" data-tooltip="Select your experience level" tabindex="0" role="tooltip" aria-label="Help: Select your experience level">?</span>
+                            </label>
+                            <select id="profile-experience" class="profile-select">
+                                <option value="entry">Entry Level (0-2 years)</option>
+                                <option value="mid">Mid Level (3-7 years)</option>
+                                <option value="senior">Senior Level (8+ years)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="profile-field-group">
+                            <label class="profile-field-label" for="profile-salary">
+                                Target Salary Range
+                                <span class="help-tooltip" data-tooltip="Your expected salary in local currency" tabindex="0" role="tooltip" aria-label="Help: Your expected salary in local currency">?</span>
+                            </label>
+                            <input type="text" id="profile-salary" class="profile-input" placeholder= "$70,000 - $90,000">
+                        </div>
+                        
+                        <div class="profile-field-group" style="grid-column: 1 / -1;">
+                            <label class="profile-field-label" for="profile-career-field">
+                                Career Field
+                                <span class="help-tooltip" data-tooltip="Your primary career field" tabindex="0" role="tooltip" aria-label="Help: Your primary career field">?</span>
+                            </label>
+                            <select id="profile-career-field" class="profile-select">
+                                <option value="">Select Career Field</option>
+                                <option value="Accounting">Accounting</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Apparel">Apparel & Fashion</option>
+                                <option value="Arts">Arts & Design</option>
+                                <option value="Automobile">Automobile</option>
+                                <option value="Banking">Banking & Finance</option>
+                                <option value="BPO">BPO & Customer Support</option>
+                                <option value="Business Development">Business Development</option>
+                                <option value="Construction">Construction & Real Estate</option>
+                                <option value="Culinary">Culinary Arts</option>
+                                <option value="Education">Education</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Hospitality">Hospitality & Tourism</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="IT">Information Technology</option>
+                                <option value="Legal">Legal</option>
+                                <option value="Logistics">Logistics & Supply Chain</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Media">Media & Entertainment</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Sales">Sales</option>
+                            </select>
+                        </div>
+                        
+                        <div class="profile-field-group" style="grid-column: 1 / -1;">
+                            <label class="profile-field-label" for="profile-roles">
+                                Target Roles
+                                <span class="help-tooltip" data-tooltip="Job titles you're interested in" tabindex="0" role="tooltip" aria-label="Help: Job titles you're interested in">?</span>
+                            </label>
+                            <input type="text" id="profile-roles" class="profile-input" placeholder="Software Engineer, Developer">
+                            <div class="field-hint">Comma-separated list of target roles</div>
+                        </div>
+                        
+                        <div class="profile-field-group" style="grid-column: 1 / -1;">
+                            <label class="profile-field-label" for="profile-skills">
+                                Skills
+                                <span class="help-tooltip" data-tooltip="Your key skills" tabindex="0" role="tooltip" aria-label="Help: Your key skills">?</span>
+                            </label>
+                            <input type="text" id="profile-skills" class="profile-input" placeholder="Python, JavaScript, React">
+                            <div class="field-hint">Comma-separated skills list</div>
+                        </div>
                     </div>
                     
-                    <div class="profile-field-group">
-                        <label class="profile-field-label">
-                            Location
-                            <span class="help-tooltip" title="City and state where you want to work">?</span>
-                        </label>
-                        <input type="text" id="profile-location" class="profile-input" placeholder="San Francisco, CA">
-                    </div>
-                    
-                    <div class="profile-field-group">
-                        <label class="profile-field-label">
-                            Experience Level
-                            <span class="help-tooltip" title="Select your experience level">?</span>
-                        </label>
-                        <select id="profile-experience" class="profile-select">
-                            <option value="entry">Entry Level (0-2 years)</option>
-                            <option value="mid">Mid Level (3-7 years)</option>
-                            <option value="senior">Senior Level (8+ years)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="profile-field-group">
-                        <label class="profile-field-label">
-                            Target Salary Range
-                            <span class="help-tooltip" title="Your expected salary">?</span>
-                        </label>
-                        <input type="text" id="profile-salary" class="profile-input" placeholder="$70,000 - $90,000">
-                    </div>
-                    
-                    <div class="profile-field-group" style="grid-column: 1 / -1;">
-                        <label class="profile-field-label">
-                            Career Field
-                            <span class="help-tooltip" title="Your primary career field">?</span>
-                        </label>
-                        <select id="profile-career-field" class="profile-select">
-                            <option value="">Select Career Field</option>
-                            <option value="Apparel">Apparel</option>
-                            <option value="Arts">Arts</option>
-                            <option value="Education">Education</option>
-                            <option value="Engineering">Engineering</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="Human Resources">Human Resources</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="Legal">Legal</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Sales">Sales</option>
-                        </select>
-                    </div>
-                    
-                    <div class="profile-field-group" style="grid-column: 1 / -1;">
-                        <label class="profile-field-label">
-                            Target Roles
-                            <span class="help-tooltip" title="Job titles you're interested in">?</span>
-                        </label>
-                        <input type="text" id="profile-roles" class="profile-input" placeholder="Software Engineer, Developer">
-                        <div class="field-hint">Comma-separated list of target roles</div>
-                    </div>
-                    
-                    <div class="profile-field-group" style="grid-column: 1 / -1;">
-                        <label class="profile-field-label">
-                            Skills
-                            <span class="help-tooltip" title="Your key skills">?</span>
-                        </label>
-                        <input type="text" id="profile-skills" class="profile-input" placeholder="Python, JavaScript, React">
-                        <div class="field-hint">Comma-separated skills list</div>
-                    </div>
-                </div>
-                
-                <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px; transition: all 0.3s ease;">
-                    🔍 Generate Career Analysis
-                </button>
+                    <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px; transition: all 0.3s ease;">
+                        🔍 Generate Career Analysis
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -843,7 +997,7 @@
             <p style="text-align: center; color: #666; margin-bottom: 3rem;">
                 Advanced LLM reasoning across 10 key career dimensions
             </p>
-            <div id="dimensions-container"></div>
+            <div id="dimensions-container" role="list"></div>
         </div>
 
         <div class="career-roadmap" id="career-roadmap">
@@ -866,6 +1020,16 @@
             <div class="intelligence-grid" id="intelligence-grid"></div>
         </div>
 
+        <div class="top-companies-section" id="top-companies-section">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem; font-size: 2rem;">
+                🏢 Top Companies in Your Field
+            </h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                Industry-leading organizations actively hiring in your career field
+            </p>
+            <div class="companies-grid" id="companies-grid"></div>
+        </div>
+
         <div class="risk-assessment" id="risk-assessment">
             <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem; font-size: 2rem;">
                 ⚠️ Risk Assessment & Mitigation
@@ -878,12 +1042,19 @@
 
         <div class="results-section" id="results-section">
             <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
-                💼 Personalized Job Matches
+                💼 Job Search Starting Points
             </h2>
+            <div class="sample-notice">
+                <div class="sample-notice-title">⚠️ Sample Job Searches</div>
+                <div class="sample-notice-text">
+                    These are example job search links based on your profile. Actual job availability varies by location and market conditions.
+                    Click links to search major job platforms for relevant opportunities.
+                </div>
+            </div>
             <div id="jobs-container"></div>
         </div>
 
-        <div id="error-message" class="error-message"></div>
+        <div id="error-message" class="error-message" role="alert" aria-live="assertive"></div>
     </div>
 
     <script>
@@ -896,105 +1067,87 @@
         let userProfile = {};
         let allJobs = [];
 
+        // Enhanced career fields with global coverage
         const CAREER_FIELDS = {
             'IT': {
-                keywords: ['software', 'developer', 'programming', 'javascript', 'python'],
+                keywords: ['software', 'developer', 'programming', 'javascript', 'python', 'java', 'react', 'node'],
                 emergingSkills: ['Kubernetes', 'Microservices', 'Machine Learning', 'DevOps', 'Cloud Security'],
                 certifications: ['AWS Solutions Architect', 'Google Cloud Professional', 'Azure Developer', 'CompTIA Security+'],
                 avgSalaryMultiplier: 1.2,
                 growthRate: '22%',
-                topCompanies: ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple']
+                topCompanies: {
+                    'US': ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple'],
+                    'Global': ['IBM', 'Accenture', 'Cognizant', 'Capgemini', 'Oracle']
+                }
             },
-            'Healthcare': {
-                keywords: ['nurse', 'doctor', 'medical', 'patient'],
-                emergingSkills: ['Telehealth', 'Electronic Health Records', 'Patient Care Technology', 'Medical Informatics'],
-                certifications: ['ACLS', 'BLS', 'CCRN', 'Specialty Board Certification'],
-                avgSalaryMultiplier: 1.15,
-                growthRate: '16%',
-                topCompanies: ['Mayo Clinic', 'Cleveland Clinic', 'Johns Hopkins', 'Kaiser Permanente']
-            },
-            'Finance': {
-                keywords: ['finance', 'accounting', 'investment', 'banking'],
-                emergingSkills: ['Financial Modeling', 'Bloomberg Terminal', 'Risk Analytics', 'FinTech', 'Blockchain'],
-                certifications: ['CFA', 'CPA', 'FRM', 'Series 7', 'CFP'],
-                avgSalaryMultiplier: 1.25,
-                growthRate: '8%',
-                topCompanies: ['Goldman Sachs', 'JPMorgan', 'BlackRock', 'Morgan Stanley']
-            },
-            'Sales': {
-                keywords: ['sales', 'business development', 'revenue'],
-                emergingSkills: ['Salesforce CRM', 'Data-Driven Sales', 'Social Selling', 'Account-Based Marketing'],
-                certifications: ['Salesforce Certified', 'HubSpot Sales', 'Challenger Sale Certification'],
-                avgSalaryMultiplier: 1.1,
-                growthRate: '5%',
-                topCompanies: ['Oracle', 'SAP', 'Salesforce', 'Adobe', 'IBM']
-            },
-            'Marketing': {
-                keywords: ['marketing', 'advertising', 'brand'],
-                emergingSkills: ['SEO/SEM', 'Marketing Automation', 'Data Analytics', 'Content Strategy', 'Growth Hacking'],
-                certifications: ['Google Analytics', 'HubSpot Marketing', 'Facebook Blueprint', 'Google Ads'],
-                avgSalaryMultiplier: 1.05,
-                growthRate: '10%',
-                topCompanies: ['WPP', 'Omnicom', 'Publicis', 'IPG', 'Dentsu']
-            },
-            'Engineering': {
-                keywords: ['mechanical', 'electrical', 'civil'],
-                emergingSkills: ['CAD Software', 'Sustainable Design', 'IoT Integration', 'Automation', '3D Printing'],
-                certifications: ['PE License', 'PMP', 'Six Sigma', 'LEED Certification'],
-                avgSalaryMultiplier: 1.18,
-                growthRate: '7%',
-                topCompanies: ['Boeing', 'SpaceX', 'Tesla', 'General Electric', 'Lockheed Martin']
-            },
-            'Arts': {
-                keywords: ['painting', 'sculpting', 'motion design', 'graphic design'],
-                emergingSkills: ['Adobe Creative Suite', '3D Modeling', 'UI/UX Design', 'Motion Graphics', 'AR/VR Design'],
-                certifications: ['Adobe Certified Expert', 'UX Certification', 'Graphic Design Specialization'],
-                avgSalaryMultiplier: 0.85,
-                growthRate: '4%',
-                topCompanies: ['Pixar', 'Disney', 'Adobe', 'Autodesk', 'DreamWorks']
-            },
-            'Apparel': {
-                keywords: ['fashion', 'textile', 'garment', 'clothing design'],
-                emergingSkills: ['Sustainable Fashion', 'Technical Design', 'Fashion Tech', 'Digital Pattern Making', 'Trend Forecasting'],
-                certifications: ['Fashion Design Certificate', 'Textile Design Certification', 'Sustainable Fashion Certification'],
-                avgSalaryMultiplier: 0.9,
-                growthRate: '3%',
-                topCompanies: ['Nike', 'Adidas', 'LVMH', 'Kering', 'Ralph Lauren']
-            },
-            'Education': {
-                keywords: ['teacher', 'instructor', 'professor', 'educator'],
-                emergingSkills: ['EdTech Platforms', 'Remote Teaching', 'Learning Management Systems', 'Differentiated Instruction'],
-                certifications: ['State Teaching License', 'National Board Certification', 'Google Educator', 'EdTech Certifications'],
-                avgSalaryMultiplier: 0.95,
-                growthRate: '5%',
-                topCompanies: ['Khan Academy', 'Coursera', 'Pearson', 'McGraw-Hill', 'Public School Districts']
-            },
-            'Human Resources': {
-                keywords: ['recruiter', 'talent acquisition', 'hr manager'],
-                emergingSkills: ['HR Analytics', 'Talent Management Software', 'Diversity & Inclusion Strategies', 'Employee Engagement Tools'],
-                certifications: ['PHR', 'SPHR', 'SHRM-CP', 'SHRM-SCP'],
+            'Accounting': {
+                keywords: ['accounting', 'bookkeeping', 'tally', 'quickbooks', 'gst', 'tax', 'audit', 'finance'],
+                emergingSkills: ['Financial Analysis', 'Tax Software', 'ERP Systems', 'Data Analytics', 'Compliance Management'],
+                certifications: ['CPA', 'CA', 'ACCA', 'CMA', 'Enrolled Agent'],
                 avgSalaryMultiplier: 1.1,
                 growthRate: '6%',
-                topCompanies: ['LinkedIn', 'ADP', 'Workday', 'Ultimate Software', 'Randstad']
+                topCompanies: {
+                    'US': ['Deloitte', 'PwC', 'EY', 'KPMG', 'Grant Thornton'],
+                    'Global': ['BDO', 'Mazars', 'Crowe', 'Grant Thornton', 'Baker Tilly']
+                }
             },
-            'Legal': {
-                keywords: ['lawyer', 'paralegal', 'legal assistant'],
-                emergingSkills: ['Legal Research Software', 'E-Discovery', 'Contract Management', 'Compliance Technology'],
-                certifications: ['Bar Admission', 'Certified Paralegal', 'Compliance Certification'],
-                avgSalaryMultiplier: 1.3,
-                growthRate: '4%',
-                topCompanies: ['Skadden', 'Latham & Watkins', 'DLA Piper', 'Baker McKenzie', 'Clifford Chance']
-            },
-            'default': {
-                keywords: [],
-                emergingSkills: [],
-                certifications: [],
-                avgSalaryMultiplier: 1.0,
+            'Agriculture': {
+                keywords: ['farming', 'crop', 'irrigation', 'agronomy', 'organic', 'pest control', 'soil'],
+                emergingSkills: ['Precision Agriculture', 'AgriTech', 'Sustainable Farming', 'Crop Analytics', 'Farm Management Software'],
+                certifications: ['Certified Crop Advisor', 'Organic Certification', 'IPM Certification', 'Farm Management'],
+                avgSalaryMultiplier: 0.85,
                 growthRate: '5%',
-                topCompanies: []
+                topCompanies: {
+                    'US': ['Walmart', 'Target', 'Costco', 'Home Depot', 'Lowe\'s'],
+                    'Global': ['Amazon', 'Alibaba', 'Carrefour', 'Tesco', 'Metro AG']
+                }
             }
         };
 
+        // Detect user's region for company recommendations
+        function detectRegion(location) {
+            if (!location) return 'Global';
+            const lower = location.toLowerCase();
+            if (lower.includes('usa') || lower.includes('united states') || lower.includes('us') ||
+                lower.includes('new york') || lower.includes('california') || lower.includes('texas') ||
+                lower.includes('san francisco') || lower.includes('seattle') || lower.includes('chicago')) {
+                return 'US';
+            }
+            return 'Global';
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            try {
+                localStorage.setItem('careerCompass_userProfile', JSON.stringify(userProfile));
+                localStorage.setItem('careerCompass_timestamp', Date.now().toString());
+            } catch (e) {
+                console.warn('Could not save state:', e);
+            }
+        }
+
+        // Load state from localStorage
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('careerCompass_userProfile');
+                const timestamp = localStorage.getItem('careerCompass_timestamp');
+                
+                // Only restore if less than 24 hours old
+                if (saved && timestamp && (Date.now() - parseInt(timestamp)) < 86400000) {
+                    const confirmed = confirm('Would you like to restore your previous session?');
+                    if (confirmed) {
+                        userProfile = JSON.parse(saved);
+                        showProfileReview();
+                        return true;
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not load state:', e);
+            }
+            return false;
+        }
+
+        // Event Listeners
         document.getElementById('upload-btn').addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1008,6 +1161,17 @@
         document.getElementById('confirm-profile-btn').addEventListener('click', confirmProfileAndGenerateAnalysis);
         document.getElementById('reset-btn').addEventListener('click', resetApplication);
 
+        // Keyboard navigation for collapsible sections
+        document.addEventListener('keydown', function(e) {
+            if (e.target.classList.contains('dimension-header')) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.target.click();
+                }
+            }
+        });
+
+        // Drag and drop functionality
         const uploadArea = document.getElementById('upload-area');
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1034,6 +1198,11 @@
                     showError('Please drop a PDF file. You can also paste your resume text below.');
                 }
             }
+        });
+
+        // Check for saved state on load
+        window.addEventListener('load', function() {
+            loadState();
         });
 
         async function handleFileUpload(event) {
@@ -1070,6 +1239,7 @@
                 setTimeout(() => {
                     hideProgress();
                     showProfileReview();
+                    saveState();
                 }, 500);
             } catch (error) {
                 console.error('Error:', error);
@@ -1084,7 +1254,7 @@
             const resumeText = document.getElementById('resume-text-input').value.trim();
             
             if (!resumeText || resumeText.length < 100) {
-                showError('Please enter more resume content');
+                showError('Please enter more resume content (at least 100 characters)');
                 return;
             }
 
@@ -1099,7 +1269,11 @@
                 
                 updateProgress(100, 'Analysis complete!');
                 updateTimelineStep('step-review', false);
-                showProfileReview();
+                setTimeout(() => {
+                    hideProgress();
+                    showProfileReview();
+                    saveState();
+                }, 500);
             } catch (error) {
                 console.error('Error:', error);
                 showError('Analysis failed: ' + error.message);
@@ -1126,7 +1300,7 @@
                 return fullText.trim();
             } catch (error) {
                 console.error('PDF extraction error:', error);
-                throw new Error('Failed to extract text from PDF. Please try pasting your resume text instead.');
+                throw new Error('Failed to extract text from PDF. This may be a scanned document or have complex formatting. Please try pasting your resume text instead.');
             }
         }
 
@@ -1165,7 +1339,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 });
 
                 if (!response.ok) {
-                    throw new Error(`API request failed: ${response.status}`);
+                    throw new Error(`API request failed with status ${response.status}`);
                 }
 
                 const data = await response.json();
@@ -1198,6 +1372,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
             } catch (error) {
                 console.error('Groq API Error:', error);
+                // Fallback to basic extraction if API fails
                 return {
                     name: extractName(resumeText),
                     location: extractLocation(resumeText),
@@ -1206,7 +1381,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     roles: extractRoles(resumeText) || [],
                     careerField: detectCareerField(resumeText),
                     salary: estimateSalary(resumeText),
-                    strengths: ['Resume uploaded successfully'],
+                    strengths: ['Resume analysis in progress'],
                     weaknesses: [],
                     missingElements: [],
                     atsScore: null,
@@ -1223,14 +1398,15 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
         }
 
         function extractLocation(text) {
-            const locationRegex = /([A-Z][a-z]+,?\s+[A-Z]{2})/;
+            const locationRegex = /([A-Z][a-z]+,?\s+[A-Z][a-z]+)/;
             const match = text.match(locationRegex);
             return match ? match[1] : '';
         }
 
         function extractSkills(text) {
             const commonSkills = ['JavaScript', 'Python', 'Java', 'React', 'Node.js', 'SQL', 'HTML', 'CSS', 
-                                'Git', 'AWS', 'Docker', 'Leadership', 'Project Management', 'Communication'];
+                                'Git', 'AWS', 'Docker', 'Leadership', 'Project Management', 'Communication',
+                                'Tally', 'QuickBooks', 'Excel', 'AutoCAD', 'Photoshop', 'SolidWorks'];
             return commonSkills.filter(skill => 
                 text.toLowerCase().includes(skill.toLowerCase())
             );
@@ -1238,7 +1414,8 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function extractRoles(text) {
             const roles = ['Software Engineer', 'Developer', 'Designer', 'Manager', 'Analyst', 
-                          'Consultant', 'Specialist', 'Coordinator', 'Director'];
+                          'Consultant', 'Specialist', 'Coordinator', 'Director', 'Accountant',
+                          'Teacher', 'Engineer', 'Chef', 'Artist', 'Nurse', 'Sales'];
             return roles.filter(role => 
                 text.toLowerCase().includes(role.toLowerCase())
             ).slice(0, 2);
@@ -1334,6 +1511,11 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             userProfile.roles = document.getElementById('profile-roles').value.split(',').map(r => r.trim()).filter(r => r);
             userProfile.skills = document.getElementById('profile-skills').value.split(',').map(s => s.trim()).filter(s => s);
             
+            if (!userProfile.careerField) {
+                showError('Please select a career field');
+                return;
+            }
+            
             document.getElementById('profile-review-section').style.display = 'none';
             showProgress();
             updateTimelineStep('step-review', true);
@@ -1342,22 +1524,26 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 updateProgress(20, 'Generating 10-dimensional analysis...');
                 await generate10DimensionalAnalysis();
                 
-                updateProgress(40, 'Creating career roadmap...');
+                updateProgress(35, 'Creating career roadmap...');
                 await generateCareerRoadmap();
                 
-                updateProgress(60, 'Analyzing market intelligence...');
+                updateProgress(50, 'Analyzing market intelligence...');
                 await generateMarketIntelligence();
+                
+                updateProgress(65, 'Identifying top companies...');
+                await generateTopCompanies();
                 
                 updateProgress(80, 'Assessing risks...');
                 await generateRiskAssessment();
                 
-                updateProgress(90, 'Finding job matches...');
+                updateProgress(90, 'Generating job search links...');
                 updateTimelineStep('step-matches', false);
                 allJobs = generateJobs(userProfile);
                 
                 updateProgress(100, 'Complete!');
                 displayAllResults();
                 updateTimelineStep('step-matches', true);
+                saveState();
             } catch (error) {
                 showError('Error: ' + error.message);
             } finally {
@@ -1435,12 +1621,13 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             dimensions.forEach((dim, idx) => {
                 const card = document.createElement('div');
                 card.className = 'dimension-card';
+                card.setAttribute('role', 'listitem');
                 card.innerHTML = `
-                    <div class="dimension-header" onclick="toggleDimension(${idx})">
-                        <span class="dimension-icon">${dim.icon}</span>
+                    <div class="dimension-header" onclick="toggleDimension(${idx})" tabindex="0" role="button" aria-expanded="true" aria-controls="content-${idx}">
+                        <span class="dimension-icon" aria-hidden="true">${dim.icon}</span>
                         <span class="dimension-title">${dim.title}</span>
-                        <span class="dimension-score">${dim.score}/10</span>
-                        <span class="toggle-icon" id="toggle-${idx}">▼</span>
+                        <span class="dimension-score" aria-label="Score ${dim.score} out of 10">${dim.score}/10</span>
+                        <span class="toggle-icon" id="toggle-${idx}" aria-hidden="true">▼</span>
                     </div>
                     <div class="dimension-content" id="content-${idx}">
                         ${dim.content}
@@ -1455,8 +1642,12 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
         window.toggleDimension = function(idx) {
             const content = document.getElementById(`content-${idx}`);
             const icon = document.getElementById(`toggle-${idx}`);
+            const header = content.previousElementSibling;
+            const isCollapsed = content.classList.contains('collapsed');
+            
             content.classList.toggle('collapsed');
             icon.classList.toggle('collapsed');
+            header.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
         };
 
         function calculateMarketScore(profile) {
@@ -1471,7 +1662,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             if (growthRate >= 15) score += 1;
             else if (growthRate < 5) score -= 0.5;
             
-            return Math.min(10, score);
+            return Math.min(10, Math.max(1, score));
         }
 
         function calculateRoleFitScore(profile) {
@@ -1513,6 +1704,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function generateMarketCompetitiveness(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+            const region = detectRegion(profile.location);
             const tierMap = {
                 'entry': 'emerging',
                 'mid': 'competitive',
@@ -1524,7 +1716,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     <ul>
                         <li>${profile.skills.length} identified skills demonstrate versatility in ${profile.careerField}</li>
                         <li>Experience level aligns with ${profile.roles[0] || 'target'} positions</li>
-                        <li>Geographic location (${profile.location}) offers strong market opportunities</li>
+                        <li>Geographic location (${profile.location || 'your area'}) offers opportunities in the ${region} market</li>
                         <li>Industry growth rate of ${fieldData.growthRate} indicates high demand</li>
                     </ul>
                     <p><strong>Areas for Improvement:</strong> Consider developing expertise in emerging ${profile.careerField} skills such as ${fieldData.emergingSkills.slice(0, 3).join(', ')}.</p>`;
@@ -1532,18 +1724,20 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function generateRoleFitAnalysis(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+            const region = detectRegion(profile.location);
+            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
             const gapSkills = fieldData.emergingSkills.slice(0, 3);
             
             return `<p><strong>Target Roles:</strong> ${profile.roles.join(', ')}</p>
                     <p><strong>Fit Assessment:</strong> Your background aligns with ${profile.roles.length > 1 ? 'these roles' : 'this role'} in the ${profile.careerField} sector.</p>
                     <p><strong>Skill Gaps:</strong> Consider developing: ${gapSkills.join(', ')}</p>
-                    <p><strong>Top Companies:</strong> ${fieldData.topCompanies.slice(0, 3).join(', ')}</p>`;
+                    <p><strong>Top ${region} Companies:</strong> ${companies.slice(0, 3).join(', ')}</p>`;
         }
 
         function generateSkillsAnalysis(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
             
-            return `<p><strong>Current Skills:</strong> ${profile.skills.join(', ')}</p>
+            return `<p><strong>Current Skills:</strong> ${profile.skills.join(', ') || 'To be added'}</p>
                     <p><strong>Emerging Skills to Develop:</strong></p>
                     <ul>
                         ${fieldData.emergingSkills.map(skill => `<li>${skill}</li>`).join('')}
@@ -1556,33 +1750,50 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function generateExperienceAnalysis(profile) {
             return `<p><strong>Experience Level:</strong> ${profile.experience.charAt(0).toUpperCase() + profile.experience.slice(1)}</p>
-                    <p><strong>Career Trajectory:</strong> Your progression is on track for ${profile.careerField} roles. Focus on quantifying achievements and demonstrating leadership.</p>`;
+                    <p><strong>Career Trajectory:</strong> Your progression is on track for ${profile.careerField} roles. Focus on quantifying achievements and demonstrating leadership impact in your resume.</p>`;
         }
 
         function generateResumeOptimization(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
             
             return `<p><strong>ATS Score:</strong> ${profile.atsScore || 7}/10</p>
-                    <p><strong>Keywords:</strong> Incorporate: ${fieldData.keywords.join(', ')}</p>
-                    <p><strong>Format Tips:</strong> Use standard headers, avoid tables, use common fonts (Arial, Calibri)</p>`;
+                    <p><strong>Keywords to Incorporate:</strong> ${fieldData.keywords.join(', ')}</p>
+                    <p><strong>Format Tips:</strong> Use standard headers (Experience, Education, Skills), avoid tables and graphics, use common fonts (Arial, Calibri, Times New Roman). Save as .docx or PDF with text layer.</p>`;
         }
 
         function generateSalaryInsights(profile) {
-            return `<p><strong>Target Range:</strong> ${profile.salary}</p>
-                    <p><strong>Negotiation Strategy:</strong> Research company-specific ranges, emphasize unique skills, consider total compensation package.</p>`;
+            const region = detectRegion(profile.location);
+            const rangeMap = {
+                'entry': region === 'India' ? '₹3L - ₹6L' : '$50K - $70K',
+                'mid': region === 'India' ? '₹8L - ₹15L' : '$80K - $120K',
+                'senior': region === 'India' ? '₹18L - ₹35L' : '$120K - $180K'
+            };
+            
+            return `<p><strong>Target Range:</strong> ${profile.salary || rangeMap[profile.experience]}</p>
+                    <p><strong>Market Rate:</strong> Typical ${profile.experience}-level ${profile.careerField} professionals in the ${region} market earn ${rangeMap[profile.experience]}.</p>
+                    <p><strong>Negotiation Strategy:</strong> Research company-specific ranges, emphasize unique skills, consider total compensation including benefits, equity, and bonuses.</p>`;
         }
 
         function generateLearningPath(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            return `<p><strong>Recommended Learning:</strong> Focus on ${fieldData.emergingSkills.slice(0, 2).join(' and ')}. Consider online courses, bootcamps, or certifications in ${profile.careerField}.</p>`;
+            return `<p><strong>Recommended Learning:</strong> Focus on ${fieldData.emergingSkills.slice(0, 2).join(' and ')}. Consider online courses (Coursera, Udemy, LinkedIn Learning), bootcamps, or professional certifications in ${profile.careerField}.</p>
+                    <p><strong>Timeline:</strong> Aim to complete 1-2 certifications within the next 6-12 months to enhance marketability.</p>`;
         }
 
         function generateCareerTrajectory(profile) {
-            return `<p><strong>Career Path:</strong> Your ${profile.experience}-level position in ${profile.careerField} shows strong potential. Expected progression: ${profile.experience === 'entry' ? 'Junior → Mid-Level → Senior' : profile.experience === 'mid' ? 'Mid-Level → Senior → Lead' : 'Senior → Principal → Director'}.</p>`;
+            const pathMap = {
+                'entry': 'Entry → Mid-Level → Senior → Lead/Principal',
+                'mid': 'Mid-Level → Senior → Lead → Manager/Director',
+                'senior': 'Senior → Principal → Director → VP/C-Suite'
+            };
+            return `<p><strong>Career Path:</strong> Your ${profile.experience}-level position in ${profile.careerField} shows strong potential. Expected progression: ${pathMap[profile.experience]}.</p>
+                    <p><strong>Next Steps:</strong> Focus on expanding leadership responsibilities, mentoring junior team members, and building cross-functional expertise.</p>`;
         }
 
         async function generateCareerRoadmap() {
             const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+            const region = detectRegion(userProfile.location);
+            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
             
             const roadmap = [
                 {
@@ -1593,8 +1804,8 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                         'Optimize resume with ATS-friendly keywords',
                         `Apply to 5-10 ${userProfile.careerField} positions weekly`,
                         `Connect with 20+ ${userProfile.careerField} professionals on LinkedIn`,
-                        'Complete one skill certification or online course',
-                        'Prepare portfolio showcasing key projects'
+                        `Complete one skill certification: ${fieldData.certifications[0]}`,
+                        'Prepare portfolio showcasing key projects and achievements'
                     ]
                 },
                 {
@@ -1603,9 +1814,9 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     title: 'Skill Development & Positioning',
                     actions: [
                         `Master emerging skill: ${fieldData.emergingSkills[0]}`,
-                        `Obtain certification: ${fieldData.certifications[0]}`,
-                        'Contribute to open-source or side projects',
-                        'Attend 2-3 industry conferences or networking events',
+                        `Obtain certification: ${fieldData.certifications[1] || fieldData.certifications[0]}`,
+                        'Contribute to open-source projects or volunteer work in your field',
+                        `Attend 2-3 ${userProfile.careerField} conferences or networking events`,
                         'Build thought leadership through blog posts or LinkedIn articles'
                     ]
                 },
@@ -1614,11 +1825,11 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     timeline: '1-2 Years',
                     title: 'Career Advancement',
                     actions: [
-                        `Target roles at: ${fieldData.topCompanies.slice(0, 2).join(', ')}`,
+                        `Target roles at: ${companies.slice(0, 2).join(', ')}`,
                         'Develop leadership and mentoring capabilities',
                         'Specialize in high-demand niche within ' + userProfile.careerField,
-                        'Build personal brand as industry expert',
-                        'Negotiate for 20-30% salary increase'
+                        'Build personal brand as industry expert in your domain',
+                        'Negotiate for 20-30% salary increase or senior role promotion'
                     ]
                 }
             ];
@@ -1644,31 +1855,38 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         async function generateMarketIntelligence() {
             const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+            const region = detectRegion(userProfile.location);
+            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+            const expMap = {
+                'entry': region === 'India' ? '₹3L-₹6L' : '$50K-$70K',
+                'mid': region === 'India' ? '₹8L-₹15L' : '$80K-$120K',
+                'senior': region === 'India' ? '₹18L-₹35L' : '$120K-$180K'
+            };
             
             const intelligence = [
                 {
                     title: `📈 ${userProfile.careerField} Market Trends`,
-                    content: `Industry growing at ${fieldData.growthRate} annually. High demand for ${fieldData.emergingSkills[0]} skills. Remote work increasingly common.`
+                    content: `Industry growing at ${fieldData.growthRate} annually in the ${region} market. High demand for ${fieldData.emergingSkills[0]} skills. Remote and hybrid work opportunities increasingly common.`
                 },
                 {
-                    title: '💼 Top Hiring Companies',
-                    content: fieldData.topCompanies.join(', ') + ' are actively hiring. Focus applications on these organizations.'
+                    title: `💼 Top ${region} Hiring Companies`,
+                    content: companies.slice(0, 5).join(', ') + ' are actively hiring. Focus applications on these industry leaders.'
                 },
                 {
                     title: '💰 Salary Benchmarks',
-                    content: `${userProfile.experience === 'entry' ? '$60K-$80K' : userProfile.experience === 'mid' ? '$80K-$120K' : '$120K-$180K'} typical for ${userProfile.experience} level in ${userProfile.careerField}.`
+                    content: `${expMap[userProfile.experience]} typical for ${userProfile.experience}-level professionals in ${userProfile.careerField} (${region} market).`
                 },
                 {
                     title: '🎯 In-Demand Skills',
-                    content: fieldData.emergingSkills.join(', ') + ' are most sought after by employers.'
+                    content: fieldData.emergingSkills.join(', ') + ' are most sought after by employers in your field.'
                 },
                 {
-                    title: '🌍 Geographic Hotspots',
-                    content: `${userProfile.location} offers strong opportunities. Also consider: San Francisco, New York, Seattle, Austin.`
+                    title: '🌍 Geographic Opportunities',
+                    content: `${userProfile.location || 'Your location'} offers ${region === 'India' ? 'strong tech hubs in Bangalore, Mumbai, Pune' : region === 'US' ? 'opportunities in SF, NYC, Seattle, Austin' : 'global remote opportunities'}.`
                 },
                 {
                     title: '🔮 Future Outlook',
-                    content: `${userProfile.careerField} projected to grow ${fieldData.growthRate} through 2030. AI and automation creating new specializations.`
+                    content: `${userProfile.careerField} projected to grow ${fieldData.growthRate} through 2030. Automation and AI creating new specialized roles requiring upskilling.`
                 }
             ];
 
@@ -1688,6 +1906,27 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             document.getElementById('market-intelligence').style.display = 'block';
         }
 
+        async function generateTopCompanies() {
+            const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+            const region = detectRegion(userProfile.location);
+            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+
+            const grid = document.getElementById('companies-grid');
+            grid.innerHTML = '';
+
+            companies.forEach(company => {
+                const card = document.createElement('div');
+                card.className = 'company-card';
+                card.innerHTML = `
+                    <div class="company-name">${company}</div>
+                    <div class="company-badge">${region} Top Employer</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('top-companies-section').style.display = 'block';
+        }
+
         async function generateRiskAssessment() {
             const risks = [];
 
@@ -1695,17 +1934,17 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 risks.push({
                     severity: 'high',
                     title: 'Limited Skill Diversity',
-                    description: 'Your resume shows fewer than 5 key skills, which may limit job opportunities.',
-                    mitigation: 'Immediately begin learning 2-3 high-demand skills in your field through online courses or certifications.'
+                    description: 'Your resume shows fewer than 5 key skills, which may limit job opportunities and competitiveness.',
+                    mitigation: 'Immediately begin learning 2-3 high-demand skills in your field through online courses (Coursera, Udemy) or certifications.'
                 });
             }
 
-            if (userProfile.atsScore < 6) {
+            if (userProfile.atsScore && userProfile.atsScore < 6) {
                 risks.push({
                     severity: 'high',
                     title: 'Low ATS Compatibility',
-                    description: 'Your resume may be filtered out by Applicant Tracking Systems.',
-                    mitigation: 'Reformat resume with standard headers, remove graphics, add relevant keywords.'
+                    description: 'Your resume may be filtered out by Applicant Tracking Systems before reaching human reviewers.',
+                    mitigation: 'Reformat resume with standard headers, remove graphics/tables, add relevant keywords, and use common fonts. Save as .docx or searchable PDF.'
                 });
             }
 
@@ -1713,8 +1952,8 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 risks.push({
                     severity: 'medium',
                     title: 'Competitive Entry-Level Market',
-                    description: 'Entry-level positions are highly competitive with many qualified candidates.',
-                    mitigation: 'Build portfolio projects, get certifications, and network actively to stand out.'
+                    description: 'Entry-level positions are highly competitive with many qualified candidates competing for limited openings.',
+                    mitigation: 'Build portfolio projects demonstrating practical skills, get relevant certifications, and network actively through LinkedIn and industry events.'
                 });
             }
 
@@ -1722,8 +1961,17 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 risks.push({
                     severity: 'medium',
                     title: 'Geographic Limitations',
-                    description: 'No clear target location may limit job search effectiveness.',
-                    mitigation: 'Identify 2-3 target cities with strong job markets in your field.'
+                    description: 'No clear target location may limit job search effectiveness and reduce relevant opportunities.',
+                    mitigation: 'Identify 2-3 target cities or regions with strong job markets in your field. Consider remote positions for broader opportunities.'
+                });
+            }
+
+            if (!userProfile.careerField || userProfile.roles.length === 0) {
+                risks.push({
+                    severity: 'medium',
+                    title: 'Unclear Career Focus',
+                    description: 'Lack of specific career direction may make it difficult to target appropriate positions.',
+                    mitigation: 'Define 2-3 specific target roles and tailor your resume accordingly. Research job descriptions to align your skills.'
                 });
             }
 
@@ -1731,7 +1979,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             container.innerHTML = '';
 
             if (risks.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #4CAF50; font-size: 1.2rem;">✅ No major risks identified! Your profile is strong.</p>';
+                container.innerHTML = '<p style="text-align: center; color: #4CAF50; font-size: 1.2rem;">✅ No major risks identified! Your profile is strong and well-positioned.</p>';
             } else {
                 risks.forEach(risk => {
                     const riskDiv = document.createElement('div');
@@ -1752,11 +2000,16 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function generateJobs(profile) {
             const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            const companies = fieldData.topCompanies;
-            const roles = profile.roles.length > 0 ? profile.roles : ['Software Engineer', 'Developer'];
+            const region = detectRegion(profile.location);
+            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+            const roles = profile.roles.length > 0 ? profile.roles : ['Specialist', 'Professional'];
             
             const jobs = [];
-            const platforms = ['LinkedIn', 'Indeed', 'Glassdoor', 'AngelList', 'ZipRecruiter'];
+            const platforms = [
+                'LinkedIn',
+                'Indeed',
+                'Glassdoor',
+            ];
 
             for (let i = 0; i < 8; i++) {
                 const company = companies[i % companies.length];
@@ -1767,15 +2020,34 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 jobs.push({
                     title: role,
                     company: company,
-                    location: profile.location || 'Remote',
-                    salary: profile.salary,
+                    location: profile.location || 'Multiple Locations',
+                    salary: profile.salary || 'Competitive',
                     matchScore: matchScore,
                     platform: platform,
-                    description: `Exciting ${role} opportunity at ${company}. Looking for ${profile.experience}-level candidate with skills in ${profile.skills.slice(0, 3).join(', ')}.`
+                    description: `Search for ${role} opportunities at ${company}. Looking for ${profile.experience}-level candidates with skills in ${profile.skills.slice(0, 3).join(', ') || 'relevant technologies'}.`
                 });
             }
 
             return jobs;
+        }
+
+        function getJobSearchUrl(job) {
+            const title = encodeURIComponent(job.title);
+            const company = encodeURIComponent(job.company);
+            const location = encodeURIComponent(job.location);
+            const combined = encodeURIComponent(`${job.title} ${job.company}`);
+            
+            const platformUrls = {
+                'LinkedIn': `https://www.linkedin.com/jobs/search/?keywords=${combined}&location=${location}`,
+                'Indeed': `https://www.indeed.com/jobs?q=${combined}&l=${location}`,
+                'Glassdoor': `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${combined}&locT=C&locId=${location}`,
+                'Naukri.com': `https://www.naukri.com/${title.toLowerCase()}-jobs-in-${location.toLowerCase()}`,
+                'Shine.com': `https://www.shine.com/job-search/${title.toLowerCase()}-jobs-in-${location.toLowerCase()}`,
+                'Monster': `https://www.monster.com/jobs/search?q=${combined}&where=${location}`,
+                'CareerBuilder': `https://www.careerbuilder.com/jobs?keywords=${combined}&location=${location}`
+            };
+            
+            return platformUrls[job.platform] || `https://www.linkedin.com/jobs/search/?keywords=${combined}&location=${location}`;
         }
 
         function displayAllResults() {
@@ -1800,7 +2072,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     </div>
                     <p style="margin: 1rem 0; color: #666;">${job.description}</p>
                     <div class="job-actions">
-                        <button class="apply-btn" onclick="alert('Redirecting to job application...')">Apply Now</button>
+                        <a href="${getJobSearchUrl(job)}" target="_blank" rel="noopener noreferrer" class="apply-btn">Search on ${job.platform}</a>
                     </div>
                     <div class="platform-badge">${job.platform}</div>
                 `;
@@ -1822,6 +2094,10 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
         function updateProgress(percent, text) {
             document.getElementById('progress-fill').style.width = percent + '%';
             document.getElementById('progress-text').textContent = text;
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.setAttribute('aria-valuenow', percent);
+            }
         }
 
         function updateTimelineStep(stepId, completed) {
@@ -1839,7 +2115,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             errorDiv.style.display = 'block';
             setTimeout(() => {
                 errorDiv.style.display = 'none';
-            }, 5000);
+            }, 7000);
         }
 
         function showResetButton() {
@@ -1848,6 +2124,12 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function resetApplication() {
             if (confirm('Are you sure you want to start over? All analysis will be lost.')) {
+                try {
+                    localStorage.removeItem('careerCompass_userProfile');
+                    localStorage.removeItem('careerCompass_timestamp');
+                } catch (e) {
+                    console.warn('Could not clear storage:', e);
+                }
                 location.reload();
             }
         }
