@@ -114,7 +114,6 @@
         .upload-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
-            aria-hidden: true;
         }
 
         .upload-text {
@@ -908,7 +907,7 @@
                                 Location
                                 <span class="help-tooltip" data-tooltip="City and country where you want to work" tabindex="0" role="tooltip" aria-label="Help: City and country where you want to work">?</span>
                             </label>
-                            <input type="text" id="profile-location" class="profile-input" placeholder="Mumbai, India">
+                            <input type="text" id="profile-location" class="profile-input" placeholder="Ideal Location">
                         </div>
                         
                         <div class="profile-field-group">
@@ -1075,6 +1074,10 @@
                 certifications: ['AWS Solutions Architect', 'Google Cloud Professional', 'Azure Developer', 'CompTIA Security+'],
                 avgSalaryMultiplier: 1.2,
                 growthRate: '22%',
+                salaryRanges: {
+                    'US': { entry: [60000, 85000], mid: [90000, 140000], senior: [140000, 220000] },
+                    'Global': { entry: [35000, 55000], mid: [60000, 95000], senior: [100000, 160000] }
+                },
                 topCompanies: {
                     'US': ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple'],
                     'Global': ['IBM', 'Accenture', 'Cognizant', 'Capgemini', 'Oracle']
@@ -1086,6 +1089,10 @@
                 certifications: ['CPA', 'CA', 'ACCA', 'CMA', 'Enrolled Agent'],
                 avgSalaryMultiplier: 1.1,
                 growthRate: '6%',
+                salaryRanges: {
+                    'US': { entry: [48000, 62000], mid: [65000, 90000], senior: [95000, 140000] },
+                    'Global': { entry: [28000, 42000], mid: [45000, 70000], senior: [75000, 115000] }
+                },
                 topCompanies: {
                     'US': ['Deloitte', 'PwC', 'EY', 'KPMG', 'Grant Thornton'],
                     'Global': ['BDO', 'Mazars', 'Crowe', 'Grant Thornton', 'Baker Tilly']
@@ -1097,9 +1104,88 @@
                 certifications: ['Certified Crop Advisor', 'Organic Certification', 'IPM Certification', 'Farm Management'],
                 avgSalaryMultiplier: 0.85,
                 growthRate: '5%',
+                salaryRanges: {
+                    'US': { entry: [38000, 52000], mid: [55000, 75000], senior: [80000, 110000] },
+                    'Global': { entry: [20000, 35000], mid: [38000, 58000], senior: [62000, 88000] }
+                },
                 topCompanies: {
                     'US': ['Walmart', 'Target', 'Costco', 'Home Depot', 'Lowe\'s'],
                     'Global': ['Amazon', 'Alibaba', 'Carrefour', 'Tesco', 'Metro AG']
+                }
+            },
+            'Healthcare': {
+                keywords: ['nurse', 'doctor', 'medical', 'patient', 'clinical', 'healthcare', 'hospital'],
+                emergingSkills: ['Telemedicine', 'Electronic Health Records', 'Patient Care', 'Medical Technology'],
+                certifications: ['RN License', 'BLS', 'ACLS', 'Medical Board Certification'],
+                avgSalaryMultiplier: 1.15,
+                growthRate: '16%',
+                salaryRanges: {
+                    'US': { entry: [58000, 78000], mid: [80000, 115000], senior: [120000, 190000] },
+                    'Global': { entry: [32000, 50000], mid: [55000, 85000], senior: [90000, 140000] }
+                },
+                topCompanies: {
+                    'US': ['Mayo Clinic', 'Cleveland Clinic', 'Johns Hopkins', 'Mass General', 'Kaiser Permanente'],
+                    'Global': ['Apollo Hospitals', 'Fortis Healthcare', 'Max Healthcare', 'Manipal Hospitals']
+                }
+            },
+            'Engineering': {
+                keywords: ['engineering', 'mechanical', 'civil', 'electrical', 'design', 'cad', 'solidworks'],
+                emergingSkills: ['CAD/CAM', 'Project Management', 'Sustainable Design', 'Automation'],
+                certifications: ['PE License', 'PMP', 'Six Sigma', 'AutoCAD Certification'],
+                avgSalaryMultiplier: 1.1,
+                growthRate: '7%',
+                salaryRanges: {
+                    'US': { entry: [62000, 78000], mid: [85000, 115000], senior: [120000, 170000] },
+                    'Global': { entry: [35000, 52000], mid: [58000, 88000], senior: [95000, 135000] }
+                },
+                topCompanies: {
+                    'US': ['Boeing', 'Lockheed Martin', 'General Electric', 'Tesla', 'SpaceX'],
+                    'Global': ['Siemens', 'ABB', 'Bosch', 'Schneider Electric', 'Honeywell']
+                }
+            },
+            'Marketing': {
+                keywords: ['marketing', 'digital marketing', 'seo', 'social media', 'content', 'brand', 'analytics'],
+                emergingSkills: ['Digital Marketing', 'SEO/SEM', 'Marketing Analytics', 'Social Media Strategy'],
+                certifications: ['Google Analytics', 'HubSpot', 'Facebook Blueprint', 'Google Ads'],
+                avgSalaryMultiplier: 1.0,
+                growthRate: '10%',
+                salaryRanges: {
+                    'US': { entry: [48000, 68000], mid: [70000, 100000], senior: [105000, 150000] },
+                    'Global': { entry: [28000, 45000], mid: [50000, 78000], senior: [85000, 125000] }
+                },
+                topCompanies: {
+                    'US': ['Google', 'Meta', 'Amazon', 'Adobe', 'Salesforce'],
+                    'Global': ['WPP', 'Omnicom', 'Publicis', 'Dentsu', 'Havas']
+                }
+            },
+            'Sales': {
+                keywords: ['sales', 'business development', 'account management', 'revenue', 'client relations'],
+                emergingSkills: ['CRM Software', 'Sales Analytics', 'Negotiation', 'Pipeline Management'],
+                certifications: ['Salesforce Certified', 'Certified Sales Professional', 'HubSpot Sales'],
+                avgSalaryMultiplier: 1.05,
+                growthRate: '8%',
+                salaryRanges: {
+                    'US': { entry: [45000, 65000], mid: [70000, 100000], senior: [105000, 160000] },
+                    'Global': { entry: [25000, 42000], mid: [48000, 75000], senior: [80000, 125000] }
+                },
+                topCompanies: {
+                    'US': ['Salesforce', 'Oracle', 'SAP', 'Adobe', 'Microsoft'],
+                    'Global': ['IBM', 'Cisco', 'Dell', 'HP', 'Accenture']
+                }
+            },
+            'Education': {
+                keywords: ['teacher', 'education', 'teaching', 'curriculum', 'instruction', 'professor', 'tutor'],
+                emergingSkills: ['Online Teaching', 'Educational Technology', 'Curriculum Development', 'Student Assessment'],
+                certifications: ['Teaching License', 'TEFL/TESOL', 'National Board Certification'],
+                avgSalaryMultiplier: 0.9,
+                growthRate: '5%',
+                salaryRanges: {
+                    'US': { entry: [42000, 58000], mid: [60000, 80000], senior: [85000, 115000] },
+                    'Global': { entry: [22000, 38000], mid: [42000, 62000], senior: [68000, 95000] }
+                },
+                topCompanies: {
+                    'US': ['Teach For America', 'KIPP', 'Success Academy', 'Public School Districts'],
+                    'Global': ['British Council', 'International Schools', 'Pearson', 'Cambridge Assessment']
                 }
             }
         };
@@ -1108,12 +1194,48 @@
         function detectRegion(location) {
             if (!location) return 'Global';
             const lower = location.toLowerCase();
-            if (lower.includes('usa') || lower.includes('united states') || lower.includes('us') ||
+            
+            // US detection - all US locations
+            if (lower.includes('usa') || lower.includes('united states') || lower.includes(' us ') || lower.includes(',us') ||
                 lower.includes('new york') || lower.includes('california') || lower.includes('texas') ||
-                lower.includes('san francisco') || lower.includes('seattle') || lower.includes('chicago')) {
+                lower.includes('san francisco') || lower.includes('seattle') || lower.includes('chicago') ||
+                lower.includes('boston') || lower.includes('los angeles') || lower.includes('miami') ||
+                lower.includes('atlanta') || lower.includes('denver') || lower.includes('austin') ||
+                lower.includes('portland') || lower.includes('philadelphia') || lower.includes('washington') ||
+                lower.includes('dallas') || lower.includes('houston') || lower.includes('phoenix') ||
+                lower.includes(' ny') || lower.includes(' ca') || lower.includes(' tx') || lower.includes(' fl') ||
+                lower.includes(' il') || lower.includes(' wa') || lower.includes(' ma') || lower.includes(' co')) {
                 return 'US';
             }
+            
+            // Everything else is Global
             return 'Global';
+        }
+        
+        // Format salary based on region
+        function formatSalary(amount, region) {
+            if (region === 'US') {
+                // Format as USD with K
+                const thousands = Math.round(amount / 1000);
+                return `${thousands}K`;
+            } else {
+                // Format as USD for global
+                const thousands = Math.round(amount / 1000);
+                return `${thousands}K`;
+            }
+        }
+        
+        // Get salary range for profile
+        function getSalaryRange(careerField, experience, region) {
+            const fieldData = CAREER_FIELDS[careerField];
+            if (!fieldData || !fieldData.salaryRanges) {
+                return '$50K - $80K';
+            }
+            
+            const ranges = fieldData.salaryRanges[region] || fieldData.salaryRanges['Global'];
+            const range = ranges[experience] || ranges['mid'];
+            
+            return `${formatSalary(range[0], region)} - ${formatSalary(range[1], region)}`;
         }
 
         // Save state to localStorage
@@ -1355,14 +1477,20 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                     console.warn('Could not parse AI response:', parseError);
                 }
                 
+                const extractedLocation = extractLocation(resumeText);
+                const extractedExperience = determineExperienceLevel(resumeText);
+                const extractedCareerField = detectCareerField(resumeText);
+                const detectedRegion = detectRegion(extractedLocation);
+                const extractedSalary = estimateSalary(resumeText);
+                
                 return {
                     name: extractName(resumeText),
-                    location: extractLocation(resumeText),
+                    location: extractedLocation,
                     skills: extractSkills(resumeText) || [],
-                    experience: determineExperienceLevel(resumeText),
+                    experience: extractedExperience,
                     roles: extractRoles(resumeText) || [],
-                    careerField: detectCareerField(resumeText),
-                    salary: estimateSalary(resumeText),
+                    careerField: extractedCareerField,
+                    salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
                     strengths: aiData.strengths || [],
                     weaknesses: aiData.weaknesses || [],
                     missingElements: aiData.missingElements || [],
@@ -1373,14 +1501,20 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             } catch (error) {
                 console.error('Groq API Error:', error);
                 // Fallback to basic extraction if API fails
+                const extractedLocation = extractLocation(resumeText);
+                const extractedExperience = determineExperienceLevel(resumeText);
+                const extractedCareerField = detectCareerField(resumeText);
+                const detectedRegion = detectRegion(extractedLocation);
+                const extractedSalary = estimateSalary(resumeText);
+                
                 return {
                     name: extractName(resumeText),
-                    location: extractLocation(resumeText),
+                    location: extractedLocation,
                     skills: extractSkills(resumeText) || [],
-                    experience: determineExperienceLevel(resumeText),
+                    experience: extractedExperience,
                     roles: extractRoles(resumeText) || [],
-                    careerField: detectCareerField(resumeText),
-                    salary: estimateSalary(resumeText),
+                    careerField: extractedCareerField,
+                    salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
                     strengths: ['Resume analysis in progress'],
                     weaknesses: [],
                     missingElements: [],
@@ -1392,15 +1526,82 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function extractName(text) {
             const lines = text.split('\n').filter(l => l.trim());
-            const firstLine = lines[0] || '';
-            const nameMatch = firstLine.match(/^([A-Z][a-z]+ [A-Z][a-z]+)/);
-            return nameMatch ? nameMatch[1] : '';
+            
+            // Try multiple patterns for name extraction
+            for (let i = 0; i < Math.min(5, lines.length); i++) {
+                const line = lines[i].trim();
+                
+                // Pattern 1: Full name with potential middle initial (2-4 words, all capitalized)
+                const fullNameMatch = line.match(/^([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)$/);
+                if (fullNameMatch && fullNameMatch[1].length < 50) {
+                    return fullNameMatch[1];
+                }
+                
+                // Pattern 2: Name at start of line
+                const startNameMatch = line.match(/^([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)/);
+                if (startNameMatch && !line.toLowerCase().includes('resume') && 
+                    !line.toLowerCase().includes('curriculum') &&
+                    startNameMatch[1].length < 40) {
+                    return startNameMatch[1];
+                }
+            }
+            
+            return '';
         }
 
         function extractLocation(text) {
-            const locationRegex = /([A-Z][a-z]+,?\s+[A-Z][a-z]+)/;
-            const match = text.match(locationRegex);
-            return match ? match[1] : '';
+            const lines = text.split('\n');
+            
+            // Common location patterns
+            const patterns = [
+                // City, State, Country
+                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2}|\w+),?\s*([A-Z][a-z]+)/,
+                // City, State
+                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2}|[A-Z][a-z]+)/,
+                // City, Country
+                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
+                // Just city name near contact info
+                /(?:location|address|city|based in)[\s:]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/i
+            ];
+            
+            // Search first 15 lines for location
+            for (let i = 0; i < Math.min(15, lines.length); i++) {
+                const line = lines[i].trim();
+                
+                for (const pattern of patterns) {
+                    const match = line.match(pattern);
+                    if (match) {
+                        // Return the full matched location
+                        if (match[3]) return `${match[1]}, ${match[2]}, ${match[3]}`;
+                        if (match[2]) return `${match[1]}, ${match[2]}`;
+                        if (match[1]) return match[1];
+                    }
+                }
+            }
+            
+            // Fallback: look for common city names
+            const commonCities = [
+                // US cities
+                'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 
+                'San Francisco', 'Boston', 'Seattle', 'Austin', 'Denver',
+                'Dallas', 'Miami', 'Atlanta', 'Portland', 'San Diego',
+                // International cities
+                'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai',
+                'London', 'Paris', 'Berlin', 'Tokyo', 'Singapore',
+                'Toronto', 'Vancouver', 'Sydney', 'Melbourne', 'Dubai',
+                'Amsterdam', 'Barcelona', 'Madrid', 'Rome', 'Stockholm',
+                'Copenhagen', 'Dublin', 'Zurich', 'Hong Kong', 'Shanghai',
+                'Beijing', 'Seoul', 'Bangkok', 'Kuala Lumpur', 'Jakarta'
+            ];
+            
+            const textLower = text.toLowerCase();
+            for (const city of commonCities) {
+                if (textLower.includes(city.toLowerCase())) {
+                    return city;
+                }
+            }
+            
+            return '';
         }
 
         function extractSkills(text) {
@@ -1442,7 +1643,21 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
         }
 
         function estimateSalary(text) {
-            return '$70,000 - $90,000';
+            // First check if resume already contains salary expectations
+            const salaryPatterns = [
+                /(?:salary|compensation|expected|desired)[\s:]+\$?([\d,]+)\s*k?\s*-\s*\$?([\d,]+)\s*k?/i,
+                /\$?([\d,]+)\s*k?\s*-\s*\$?([\d,]+)\s*k?.*(?:per year|annually|p\.a\.)/i
+            ];
+            
+            for (const pattern of salaryPatterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    return `${match[1]} - ${match[2]}`;
+                }
+            }
+            
+            // If no salary found, return empty string (will be estimated based on field + experience)
+            return '';
         }
 
         function showProfileReview() {
@@ -1763,15 +1978,18 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
 
         function generateSalaryInsights(profile) {
             const region = detectRegion(profile.location);
-            const rangeMap = {
-                'entry': region === 'India' ? '₹3L - ₹6L' : '$50K - $70K',
-                'mid': region === 'India' ? '₹8L - ₹15L' : '$80K - $120K',
-                'senior': region === 'India' ? '₹18L - ₹35L' : '$120K - $180K'
-            };
+            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+            const salaryRange = getSalaryRange(profile.careerField, profile.experience, region);
             
-            return `<p><strong>Target Range:</strong> ${profile.salary || rangeMap[profile.experience]}</p>
-                    <p><strong>Market Rate:</strong> Typical ${profile.experience}-level ${profile.careerField} professionals in the ${region} market earn ${rangeMap[profile.experience]}.</p>
-                    <p><strong>Negotiation Strategy:</strong> Research company-specific ranges, emphasize unique skills, consider total compensation including benefits, equity, and bonuses.</p>`;
+            const regionName = region === 'US' ? 'US' : 'international';
+            const regionalContext = region === 'US' 
+                ? 'Salaries in major tech hubs (San Francisco, NYC, Seattle) can be 30-50% higher than national averages. Remote positions often offer geographic pay adjustments.'
+                : 'Salaries vary significantly by country and region. Major cities and tech hubs typically offer higher compensation. Remote positions with international companies may offer competitive rates.';
+            
+            return `<p><strong>Target Range:</strong> ${profile.salary || salaryRange}</p>
+                    <p><strong>Market Rate:</strong> Typical ${profile.experience}-level ${profile.careerField} professionals in the ${regionName} market earn ${salaryRange}.</p>
+                    <p><strong>Regional Context:</strong> ${regionalContext}</p>
+                    <p><strong>Negotiation Strategy:</strong> Research company-specific ranges on Glassdoor and Levels.fyi, emphasize unique skills in ${fieldData.emergingSkills[0]}, consider total compensation including benefits, equity, bonuses, and remote work options.</p>`;
         }
 
         function generateLearningPath(profile) {
@@ -1857,11 +2075,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
             const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
             const region = detectRegion(userProfile.location);
             const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
-            const expMap = {
-                'entry': region === 'India' ? '₹3L-₹6L' : '$50K-$70K',
-                'mid': region === 'India' ? '₹8L-₹15L' : '$80K-$120K',
-                'senior': region === 'India' ? '₹18L-₹35L' : '$120K-$180K'
-            };
+            const salaryRange = getSalaryRange(userProfile.careerField, userProfile.experience, region);
             
             const intelligence = [
                 {
@@ -1874,7 +2088,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 },
                 {
                     title: '💰 Salary Benchmarks',
-                    content: `${expMap[userProfile.experience]} typical for ${userProfile.experience}-level professionals in ${userProfile.careerField} (${region} market).`
+                    content: `${salaryRange} typical for ${userProfile.experience}-level professionals in ${userProfile.careerField} (${region} market).`
                 },
                 {
                     title: '🎯 In-Demand Skills',
@@ -1882,7 +2096,7 @@ Focus on ATS compatibility, actionable improvements, and career positioning.`
                 },
                 {
                     title: '🌍 Geographic Opportunities',
-                    content: `${userProfile.location || 'Your location'} offers ${region === 'India' ? 'strong tech hubs in Bangalore, Mumbai, Pune' : region === 'US' ? 'opportunities in SF, NYC, Seattle, Austin' : 'global remote opportunities'}.`
+                    content: `${userProfile.location || 'Your location'} offers ${region === 'US' ? 'opportunities in major tech hubs and remote positions nationwide' : 'global remote opportunities and positions in international markets'}.`
                 },
                 {
                     title: '🔮 Future Outlook',
