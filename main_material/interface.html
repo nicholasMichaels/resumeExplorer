@@ -32,10 +32,15 @@
             position: relative;
         }
 
-        .reset-btn {
+        .header-buttons {
             position: absolute;
             top: 0;
             right: 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reset-btn, .export-btn {
             background: rgba(255,255,255,0.1);
             color: white;
             border: 2px solid rgba(255,255,255,0.3);
@@ -49,13 +54,13 @@
             display: none;
         }
 
-        .reset-btn:hover {
+        .reset-btn:hover, .export-btn:hover {
             background: rgba(255,255,255,0.2);
             border-color: rgba(255,255,255,0.5);
             transform: translateY(-1px);
         }
 
-        .reset-btn:focus {
+        .reset-btn:focus, .export-btn:focus {
             outline: 2px solid white;
             outline-offset: 2px;
         }
@@ -556,7 +561,7 @@
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             border-radius: 24px;
-            padding: 3rem;
+            padding: 2rem;
             margin-bottom: 2rem;
             display: none;
         }
@@ -593,7 +598,7 @@
 
         .companies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
@@ -821,1532 +826,1450 @@
             border-width: 0;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <button type="button" class="reset-btn" id="reset-btn" aria-label="Start over and reset the application">🔄 Start Over</button>
-            <h1>Career Compass</h1>
-            <p>Advanced AI-Powered Resume Analysis</p>
-            <p class="subtitle">Powered by Llama 3.3 70B - 10-Dimensional Career Intelligence</p>
-        </div>
-
-        <div class="application-timeline" role="navigation" aria-label="Application progress">
-            <div class="timeline-step" id="step-upload">
-                <div class="step-icon" aria-hidden="true">📄</div>
-                <div class="step-label">Upload Resume</div>
-            </div>
-            <div class="timeline-step" id="step-analysis">
-                <div class="step-icon" aria-hidden="true">🔍</div>
-                <div class="step-label">AI Analysis</div>
-            </div>
-            <div class="timeline-step" id="step-review">
-                <div class="step-icon" aria-hidden="true">📋</div>
-                <div class="step-label">Review Profile</div>
-            </div>
-            <div class="timeline-step" id="step-matches">
-                <div class="step-icon" aria-hidden="true">🎯</div>
-                <div class="step-label">Job Matches</div>
-            </div>
-        </div>
-
-        <div class="input-options-container">
-            <div class="upload-area" id="upload-area" role="region" aria-label="File upload area">
-                <div class="upload-icon" aria-hidden="true">📄</div>
-                <div class="upload-text">Upload Your Resume PDF</div>
-                <div class="upload-subtext">Advanced LLM analysis with 10-dimensional insights</div>
-                <button type="button" class="upload-btn" id="upload-btn" aria-label="Choose PDF file to upload">Choose PDF File</button>
-                <input type="file" id="file-input" class="file-input" accept=".pdf" aria-label="PDF file input" />
-            </div>
-
-            <div class="divider-container" role="separator" aria-label="Alternative input method">
-                <div class="divider-line"></div>
-                <div class="divider-text">OR</div>
-                <div class="divider-line"></div>
-            </div>
-
-            <div class="text-input-area">
-                <div class="text-input-icon" aria-hidden="true">📝</div>
-                <div class="text-input-header">
-                    <div class="text-input-title">Paste Your Resume Text</div>
-                    <div class="text-input-subtitle">Get comprehensive AI-powered career guidance</div>
-                </div>
-                <label for="resume-text-input" class="sr-only">Resume text content</label>
-                <textarea id="resume-text-input" class="resume-text-area" placeholder="Paste your resume here..." aria-describedby="text-input-hint"></textarea>
-                <span id="text-input-hint" class="sr-only">Paste the full text content of your resume for AI analysis</span>
-                <button type="button" class="analyze-text-btn" id="analyze-btn">Analyze with AI</button>
-            </div>
-        </div>
-
-        <div class="progress-section" id="progress-section" role="status" aria-live="polite">
-            <div class="progress-text" id="progress-text">Processing...</div>
-            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-        </div>
-
-        <div class="profile-review-section" id="profile-review-section">
-            <div style="background: rgba(255,255,255,0.95); border-radius: 24px; padding: 3rem; margin-bottom: 2rem;">
-                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem;">📋 Review Your Extracted Profile</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 2rem;">AI has analyzed your resume using advanced reasoning. Review and adjust before continuing.</p>
-                
-                <div id="ai-analysis-display" style="display: none;"></div>
-                
-                <form id="profile-form" aria-label="Profile information form">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-                        <div class="profile-field-group">
-                            <label class="profile-field-label" for="profile-name">
-                                Your Name
-                                <span class="help-tooltip" data-tooltip="Your full name" tabindex="0" role="tooltip" aria-label="Help: Your full name">?</span>
-                            </label>
-                            <input type="text" id="profile-name" class="profile-input" placeholder="John Doe">
-                        </div>
-                        
-                        <div class="profile-field-group">
-                            <label class="profile-field-label" for="profile-location">
-                                Location
-                                <span class="help-tooltip" data-tooltip="City and country where you want to work" tabindex="0" role="tooltip" aria-label="Help: City and country where you want to work">?</span>
-                            </label>
-                            <input type="text" id="profile-location" class="profile-input" placeholder="Ideal Location">
-                        </div>
-                        
-                        <div class="profile-field-group">
-                            <label class="profile-field-label" for="profile-experience">
-                                Experience Level
-                                <span class="help-tooltip" data-tooltip="Select your experience level" tabindex="0" role="tooltip" aria-label="Help: Select your experience level">?</span>
-                            </label>
-                            <select id="profile-experience" class="profile-select">
-                                <option value="entry">Entry Level (0-2 years)</option>
-                                <option value="mid">Mid Level (3-7 years)</option>
-                                <option value="senior">Senior Level (8+ years)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="profile-field-group">
-                            <label class="profile-field-label" for="profile-salary">
-                                Target Salary Range
-                                <span class="help-tooltip" data-tooltip="Your expected salary in local currency" tabindex="0" role="tooltip" aria-label="Help: Your expected salary in local currency">?</span>
-                            </label>
-                            <input type="text" id="profile-salary" class="profile-input" placeholder= "$70,000 - $90,000">
-                        </div>
-                        
-                        <div class="profile-field-group" style="grid-column: 1 / -1;">
-                            <label class="profile-field-label" for="profile-career-field">
-                                Career Field
-                                <span class="help-tooltip" data-tooltip="Your primary career field" tabindex="0" role="tooltip" aria-label="Help: Your primary career field">?</span>
-                            </label>
-                            <select id="profile-career-field" class="profile-select">
-                                <option value="">Select Career Field</option>
-                                <option value="Accounting">Accounting</option>
-                                <option value="Agriculture">Agriculture</option>
-                                <option value="Apparel">Apparel & Fashion</option>
-                                <option value="Arts">Arts & Design</option>
-                                <option value="Automobile">Automobile</option>
-                                <option value="Banking">Banking & Finance</option>
-                                <option value="BPO">BPO & Customer Support</option>
-                                <option value="Business Development">Business Development</option>
-                                <option value="Construction">Construction & Real Estate</option>
-                                <option value="Culinary">Culinary Arts</option>
-                                <option value="Education">Education</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="Healthcare">Healthcare</option>
-                                <option value="Hospitality">Hospitality & Tourism</option>
-                                <option value="Human Resources">Human Resources</option>
-                                <option value="IT">Information Technology</option>
-                                <option value="Legal">Legal</option>
-                                <option value="Logistics">Logistics & Supply Chain</option>
-                                <option value="Manufacturing">Manufacturing</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Media">Media & Entertainment</option>
-                                <option value="Retail">Retail</option>
-                                <option value="Sales">Sales</option>
-                            </select>
-                        </div>
-                        
-                        <div class="profile-field-group" style="grid-column: 1 / -1;">
-                            <label class="profile-field-label" for="profile-roles">
-                                Target Roles
-                                <span class="help-tooltip" data-tooltip="Job titles you're interested in" tabindex="0" role="tooltip" aria-label="Help: Job titles you're interested in">?</span>
-                            </label>
-                            <input type="text" id="profile-roles" class="profile-input" placeholder="Software Engineer, Developer">
-                            <div class="field-hint">Comma-separated list of target roles</div>
-                        </div>
-                        
-                        <div class="profile-field-group" style="grid-column: 1 / -1;">
-                            <label class="profile-field-label" for="profile-skills">
-                                Skills
-                                <span class="help-tooltip" data-tooltip="Your key skills" tabindex="0" role="tooltip" aria-label="Help: Your key skills">?</span>
-                            </label>
-                            <input type="text" id="profile-skills" class="profile-input" placeholder="Python, JavaScript, React">
-                            <div class="field-hint">Comma-separated skills list</div>
-                        </div>
+    </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <div class="header-buttons">
+                        <button type="button" class="export-btn" id="export-btn" aria-label="Export analysis as PDF">📥 Export PDF</button>
+                        <button type="button" class="reset-btn" id="reset-btn" aria-label="Start over and reset the application">🔄 Start Over</button>
                     </div>
-                    
-                    <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px; transition: all 0.3s ease;">
-                        🔍 Generate Career Analysis
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <div class="ten-dimensional-analysis" id="ten-dimensional-analysis">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
-                🎯 10-Dimensional Career Analysis
-            </h2>
-            <p style="text-align: center; color: #666; margin-bottom: 3rem;">
-                Advanced LLM reasoning across 10 key career dimensions
-            </p>
-            <div id="dimensions-container" role="list"></div>
-        </div>
-
-        <div class="career-roadmap" id="career-roadmap">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem; font-size: 2rem;">
-                🗺️ Your Career Development Roadmap
-            </h2>
-            <p style="text-align: center; color: #666; margin-bottom: 3rem;">
-                Strategic progression plan based on AI analysis
-            </p>
-            <div class="roadmap-timeline" id="roadmap-timeline"></div>
-        </div>
-
-        <div class="market-intelligence" id="market-intelligence">
-            <h2 style="text-align: center; margin-bottom: 1rem; font-size: 2rem;">
-                📊 Market Intelligence & Insights
-            </h2>
-            <p style="text-align: center; opacity: 0.9; margin-bottom: 2rem;">
-                Data-driven career positioning and market analysis
-            </p>
-            <div class="intelligence-grid" id="intelligence-grid"></div>
-        </div>
-
-        <div class="top-companies-section" id="top-companies-section">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem; font-size: 2rem;">
-                🏢 Top Companies in Your Field
-            </h2>
-            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
-                Industry-leading organizations actively hiring in your career field
-            </p>
-            <div class="companies-grid" id="companies-grid"></div>
-        </div>
-
-        <div class="risk-assessment" id="risk-assessment">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem; font-size: 2rem;">
-                ⚠️ Risk Assessment & Mitigation
-            </h2>
-            <p style="text-align: center; color: #666; margin-bottom: 3rem;">
-                Potential concerns and strategic solutions
-            </p>
-            <div id="risks-container"></div>
-        </div>
-
-        <div class="results-section" id="results-section">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
-                💼 Job Search Starting Points
-            </h2>
-            <div class="sample-notice">
-                <div class="sample-notice-title">⚠️ Sample Job Searches</div>
-                <div class="sample-notice-text">
-                    These are example job search links based on your profile. Actual job availability varies by location and market conditions.
-                    Click links to search major job platforms for relevant opportunities.
+                    <h1>Career Compass</h1>
+                    <p>Advanced AI-Powered Resume Analysis</p>
+                    <p class="subtitle">Powered by Llama 3.3 70B - 10-Dimensional Career Intelligence</p>
                 </div>
-            </div>
-            <div id="jobs-container"></div>
-        </div>
 
-        <div id="error-message" class="error-message" role="alert" aria-live="assertive"></div>
-    </div>
+                <div class="application-timeline" role="navigation" aria-label="Application progress">
+                    <div class="timeline-step" id="step-upload">
+                        <div class="step-icon" aria-hidden="true">📄</div>
+                        <div class="step-label">Upload Resume</div>
+                    </div>
+                    <div class="timeline-step" id="step-analysis">
+                        <div class="step-icon" aria-hidden="true">🔍</div>
+                        <div class="step-label">AI Analysis</div>
+                    </div>
+                    <div class="timeline-step" id="step-review">
+                        <div class="step-icon" aria-hidden="true">📋</div>
+                        <div class="step-label">Review Profile</div>
+                    </div>
+                    <div class="timeline-step" id="step-matches">
+                        <div class="step-icon" aria-hidden="true">🎯</div>
+                        <div class="step-label">Job Matches</div>
+                    </div>
+                </div>
 
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
-        const GROQ_API_KEY = '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';
-        const GROQ_PROJECT_ID = 'project_01k7mqazpben9tdh1m464tkwke';
-        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-        
-        let userProfile = {};
-        let allJobs = [];
+                <div class="input-options-container">
+                    <div class="upload-area" id="upload-area" role="region" aria-label="File upload area">
+                        <div class="upload-icon" aria-hidden="true">📄</div>
+                        <div class="upload-text">Upload Your Resume PDF</div>
+                        <div class="upload-subtext">Advanced LLM analysis with 10-dimensional insights</div>
+                        <button type="button" class="upload-btn" id="upload-btn" aria-label="Choose PDF file to upload">Choose PDF File</button>
+                        <input type="file" id="file-input" class="file-input" accept=".pdf" aria-label="PDF file input" />
+                    </div>
 
-        // Enhanced career fields with global coverage
-        const CAREER_FIELDS = {
-            'IT': {
-                keywords: ['software', 'developer', 'programming', 'javascript', 'python', 'java', 'react', 'node'],
-                emergingSkills: ['Kubernetes', 'Microservices', 'Machine Learning', 'DevOps', 'Cloud Security'],
-                certifications: ['AWS Solutions Architect', 'Google Cloud Professional', 'Azure Developer', 'CompTIA Security+'],
-                avgSalaryMultiplier: 1.2,
-                growthRate: '22%',
-                salaryRanges: {
-                    'US': { entry: [60000, 85000], mid: [90000, 140000], senior: [140000, 220000] },
-                    'Global': { entry: [35000, 55000], mid: [60000, 95000], senior: [100000, 160000] }
-                },
-                topCompanies: {
-                    'US': ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple'],
-                    'Global': ['IBM', 'Accenture', 'Cognizant', 'Capgemini', 'Oracle']
-                }
-            },
-            'Accounting': {
-                keywords: ['accounting', 'bookkeeping', 'tally', 'quickbooks', 'gst', 'tax', 'audit', 'finance'],
-                emergingSkills: ['Financial Analysis', 'Tax Software', 'ERP Systems', 'Data Analytics', 'Compliance Management'],
-                certifications: ['CPA', 'CA', 'ACCA', 'CMA', 'Enrolled Agent'],
-                avgSalaryMultiplier: 1.1,
-                growthRate: '6%',
-                salaryRanges: {
-                    'US': { entry: [48000, 62000], mid: [65000, 90000], senior: [95000, 140000] },
-                    'Global': { entry: [28000, 42000], mid: [45000, 70000], senior: [75000, 115000] }
-                },
-                topCompanies: {
-                    'US': ['Deloitte', 'PwC', 'EY', 'KPMG', 'Grant Thornton'],
-                    'Global': ['BDO', 'Mazars', 'Crowe', 'Grant Thornton', 'Baker Tilly']
-                }
-            },
-            'Agriculture': {
-                keywords: ['farming', 'crop', 'irrigation', 'agronomy', 'organic', 'pest control', 'soil'],
-                emergingSkills: ['Precision Agriculture', 'AgriTech', 'Sustainable Farming', 'Crop Analytics', 'Farm Management Software'],
-                certifications: ['Certified Crop Advisor', 'Organic Certification', 'IPM Certification', 'Farm Management'],
-                avgSalaryMultiplier: 0.85,
-                growthRate: '5%',
-                salaryRanges: {
-                    'US': { entry: [38000, 52000], mid: [55000, 75000], senior: [80000, 110000] },
-                    'Global': { entry: [20000, 35000], mid: [38000, 58000], senior: [62000, 88000] }
-                },
-                topCompanies: {
-                    'US': ['Walmart', 'Target', 'Costco', 'Home Depot', 'Lowe\'s'],
-                    'Global': ['Amazon', 'Alibaba', 'Carrefour', 'Tesco', 'Metro AG']
-                }
-            },
-            'Healthcare': {
-                keywords: ['nurse', 'doctor', 'medical', 'patient', 'clinical', 'healthcare', 'hospital'],
-                emergingSkills: ['Telemedicine', 'Electronic Health Records', 'Patient Care', 'Medical Technology'],
-                certifications: ['RN License', 'BLS', 'ACLS', 'Medical Board Certification'],
-                avgSalaryMultiplier: 1.15,
-                growthRate: '16%',
-                salaryRanges: {
-                    'US': { entry: [58000, 78000], mid: [80000, 115000], senior: [120000, 190000] },
-                    'Global': { entry: [32000, 50000], mid: [55000, 85000], senior: [90000, 140000] }
-                },
-                topCompanies: {
-                    'US': ['Mayo Clinic', 'Cleveland Clinic', 'Johns Hopkins', 'Mass General', 'Kaiser Permanente'],
-                    'Global': ['Apollo Hospitals', 'Fortis Healthcare', 'Max Healthcare', 'Manipal Hospitals']
-                }
-            },
-            'Engineering': {
-                keywords: ['engineering', 'mechanical', 'civil', 'electrical', 'design', 'cad', 'solidworks'],
-                emergingSkills: ['CAD/CAM', 'Project Management', 'Sustainable Design', 'Automation'],
-                certifications: ['PE License', 'PMP', 'Six Sigma', 'AutoCAD Certification'],
-                avgSalaryMultiplier: 1.1,
-                growthRate: '7%',
-                salaryRanges: {
-                    'US': { entry: [62000, 78000], mid: [85000, 115000], senior: [120000, 170000] },
-                    'Global': { entry: [35000, 52000], mid: [58000, 88000], senior: [95000, 135000] }
-                },
-                topCompanies: {
-                    'US': ['Boeing', 'Lockheed Martin', 'General Electric', 'Tesla', 'SpaceX'],
-                    'Global': ['Siemens', 'ABB', 'Bosch', 'Schneider Electric', 'Honeywell']
-                }
-            },
-            'Marketing': {
-                keywords: ['marketing', 'digital marketing', 'seo', 'social media', 'content', 'brand', 'analytics'],
-                emergingSkills: ['Digital Marketing', 'SEO/SEM', 'Marketing Analytics', 'Social Media Strategy'],
-                certifications: ['Google Analytics', 'HubSpot', 'Facebook Blueprint', 'Google Ads'],
-                avgSalaryMultiplier: 1.0,
-                growthRate: '10%',
-                salaryRanges: {
-                    'US': { entry: [48000, 68000], mid: [70000, 100000], senior: [105000, 150000] },
-                    'Global': { entry: [28000, 45000], mid: [50000, 78000], senior: [85000, 125000] }
-                },
-                topCompanies: {
-                    'US': ['Google', 'Meta', 'Amazon', 'Adobe', 'Salesforce'],
-                    'Global': ['WPP', 'Omnicom', 'Publicis', 'Dentsu', 'Havas']
-                }
-            },
-            'Sales': {
-                keywords: ['sales', 'business development', 'account management', 'revenue', 'client relations'],
-                emergingSkills: ['CRM Software', 'Sales Analytics', 'Negotiation', 'Pipeline Management'],
-                certifications: ['Salesforce Certified', 'Certified Sales Professional', 'HubSpot Sales'],
-                avgSalaryMultiplier: 1.05,
-                growthRate: '8%',
-                salaryRanges: {
-                    'US': { entry: [45000, 65000], mid: [70000, 100000], senior: [105000, 160000] },
-                    'Global': { entry: [25000, 42000], mid: [48000, 75000], senior: [80000, 125000] }
-                },
-                topCompanies: {
-                    'US': ['Salesforce', 'Oracle', 'SAP', 'Adobe', 'Microsoft'],
-                    'Global': ['IBM', 'Cisco', 'Dell', 'HP', 'Accenture']
-                }
-            },
-            'Education': {
-                keywords: ['teacher', 'education', 'teaching', 'curriculum', 'instruction', 'professor', 'tutor'],
-                emergingSkills: ['Online Teaching', 'Educational Technology', 'Curriculum Development', 'Student Assessment'],
-                certifications: ['Teaching License', 'TEFL/TESOL', 'National Board Certification'],
-                avgSalaryMultiplier: 0.9,
-                growthRate: '5%',
-                salaryRanges: {
-                    'US': { entry: [42000, 58000], mid: [60000, 80000], senior: [85000, 115000] },
-                    'Global': { entry: [22000, 38000], mid: [42000, 62000], senior: [68000, 95000] }
-                },
-                topCompanies: {
-                    'US': ['Teach For America', 'KIPP', 'Success Academy', 'Public School Districts'],
-                    'Global': ['British Council', 'International Schools', 'Pearson', 'Cambridge Assessment']
-                }
-            }
-        };
+                    <div class="divider-container" role="separator" aria-label="Alternative input method">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">OR</div>
+                        <div class="divider-line"></div>
+                    </div>
 
-        // Detect user's region for company recommendations
-        function detectRegion(location) {
-            if (!location) return 'Global';
-            const lower = location.toLowerCase();
-            
-            // US detection - all US locations
-            if (lower.includes('usa') || lower.includes('united states') || lower.includes(' us ') || lower.includes(',us') ||
-                lower.includes('new york') || lower.includes('california') || lower.includes('texas') ||
-                lower.includes('san francisco') || lower.includes('seattle') || lower.includes('chicago') ||
-                lower.includes('boston') || lower.includes('los angeles') || lower.includes('miami') ||
-                lower.includes('atlanta') || lower.includes('denver') || lower.includes('austin') ||
-                lower.includes('portland') || lower.includes('philadelphia') || lower.includes('washington') ||
-                lower.includes('dallas') || lower.includes('houston') || lower.includes('phoenix') ||
-                lower.includes(' ny') || lower.includes(' ca') || lower.includes(' tx') || lower.includes(' fl') ||
-                lower.includes(' il') || lower.includes(' wa') || lower.includes(' ma') || lower.includes(' co')) {
-                return 'US';
-            }
-            
-            // Everything else is Global
-            return 'Global';
-        }
-        
-        // Format salary based on region
-        function formatSalary(amount, region) {
-            if (region === 'US') {
-                // Format as USD with K
-                const thousands = Math.round(amount / 1000);
-                return `${thousands}K`;
-            } else {
-                // Format as USD for global
-                const thousands = Math.round(amount / 1000);
-                return `${thousands}K`;
-            }
-        }
-        
-        // Get salary range for profile
-        function getSalaryRange(careerField, experience, region) {
-            const fieldData = CAREER_FIELDS[careerField];
-            if (!fieldData || !fieldData.salaryRanges) {
-                return '$50K - $80K';
-            }
-            
-            const ranges = fieldData.salaryRanges[region] || fieldData.salaryRanges['Global'];
-            const range = ranges[experience] || ranges['mid'];
-            
-            return `${formatSalary(range[0], region)} - ${formatSalary(range[1], region)}`;
-        }
-
-        // Save state to localStorage
-        function saveState() {
-            try {
-                localStorage.setItem('careerCompass_userProfile', JSON.stringify(userProfile));
-                localStorage.setItem('careerCompass_timestamp', Date.now().toString());
-            } catch (e) {
-                console.warn('Could not save state:', e);
-            }
-        }
-
-        // Load state from localStorage
-        function loadState() {
-            try {
-                const saved = localStorage.getItem('careerCompass_userProfile');
-                const timestamp = localStorage.getItem('careerCompass_timestamp');
-                
-                // Only restore if less than 24 hours old
-                if (saved && timestamp && (Date.now() - parseInt(timestamp)) < 86400000) {
-                    const confirmed = confirm('Would you like to restore your previous session?');
-                    if (confirmed) {
-                        userProfile = JSON.parse(saved);
-                        showProfileReview();
-                        return true;
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not load state:', e);
-            }
-            return false;
-        }
-
-        // Event Listeners
-        document.getElementById('upload-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const fileInput = document.getElementById('file-input');
-            fileInput.value = '';
-            fileInput.click();
-        });
-
-        document.getElementById('analyze-btn').addEventListener('click', analyzeResumeText);
-        document.getElementById('file-input').addEventListener('change', handleFileUpload);
-        document.getElementById('confirm-profile-btn').addEventListener('click', confirmProfileAndGenerateAnalysis);
-        document.getElementById('reset-btn').addEventListener('click', resetApplication);
-
-        // Keyboard navigation for collapsible sections
-        document.addEventListener('keydown', function(e) {
-            if (e.target.classList.contains('dimension-header')) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    e.target.click();
-                }
-            }
-        });
-
-        // Drag and drop functionality
-        const uploadArea = document.getElementById('upload-area');
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        uploadArea.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                const file = files[0];
-                if (file.type === 'application/pdf') {
-                    const fileInput = document.getElementById('file-input');
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
-                    handleFileUpload({ target: { files: dataTransfer.files } });
-                } else {
-                    showError('Please drop a PDF file. You can also paste your resume text below.');
-                }
-            }
-        });
-
-        // Check for saved state on load
-        window.addEventListener('load', function() {
-            loadState();
-        });
-
-        async function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) {
-                showError('No file selected');
-                return;
-            }
-            
-            if (file.type !== 'application/pdf') {
-                showError('Please upload a PDF file. You can also paste your resume text below.');
-                document.getElementById('file-input').value = '';
-                return;
-            }
-
-            document.querySelector('.input-options-container').style.display = 'none';
-            showProgress();
-            updateTimelineStep('step-upload', true);
-            
-            try {
-                updateProgress(20, 'Reading PDF...');
-                const resumeText = await extractTextFromPDF(file);
-                
-                if (!resumeText || resumeText.length < 50) {
-                    throw new Error('Could not extract enough text from PDF. Please try pasting your resume text instead.');
-                }
-                
-                updateProgress(50, 'Analyzing resume with Llama 3.3 70B...');
-                updateTimelineStep('step-analysis', true);
-                userProfile = await analyzeResumeAdvanced(resumeText);
-                
-                updateProgress(100, 'Analysis complete!');
-                updateTimelineStep('step-review', false);
-                setTimeout(() => {
-                    hideProgress();
-                    showProfileReview();
-                    saveState();
-                }, 500);
-            } catch (error) {
-                console.error('Error:', error);
-                showError(error.message || 'Analysis failed. Please try pasting your resume text instead.');
-                document.querySelector('.input-options-container').style.display = 'block';
-                hideProgress();
-                document.getElementById('file-input').value = '';
-            }
-        }
-
-        async function analyzeResumeText() {
-            const resumeText = document.getElementById('resume-text-input').value.trim();
-            
-            if (!resumeText || resumeText.length < 100) {
-                showError('Please enter more resume content (at least 100 characters)');
-                return;
-            }
-
-            document.querySelector('.input-options-container').style.display = 'none';
-            showProgress();
-            updateTimelineStep('step-upload', true);
-            
-            try {
-                updateProgress(30, 'Analyzing resume with Llama 3.3 70B...');
-                updateTimelineStep('step-analysis', true);
-                userProfile = await analyzeResumeAdvanced(resumeText);
-                
-                updateProgress(100, 'Analysis complete!');
-                updateTimelineStep('step-review', false);
-                setTimeout(() => {
-                    hideProgress();
-                    showProfileReview();
-                    saveState();
-                }, 500);
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Analysis failed: ' + error.message);
-                document.querySelector('.input-options-container').style.display = 'block';
-            } finally {
-                hideProgress();
-            }
-        }
-
-        async function extractTextFromPDF(file) {
-            try {
-                const arrayBuffer = await file.arrayBuffer();
-                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-                const pdf = await loadingTask.promise;
-                let fullText = '';
-                
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
-                    fullText += pageText + '\n';
-                }
-                
-                return fullText.trim();
-            } catch (error) {
-                console.error('PDF extraction error:', error);
-                throw new Error('Failed to extract text from PDF. This may be a scanned document or have complex formatting. Please try pasting your resume text instead.');
-            }
-        }
-
-        async function analyzeResumeAdvanced(resumeText) {
-            try {
-                const response = await fetch(GROQ_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${GROQ_API_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Groq-Project-ID': GROQ_PROJECT_ID
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile",
-                        messages: [{
-                            role: "system",
-                            content: `You are an expert resume analyzer. Analyze the resume and return a JSON object with this structure:
-{
-  "strengths": ["strength1", "strength2"],
-  "weaknesses": [
-    {"issue": "problem", "impact": "why it matters", "fix": "solution"}
-  ],
-  "missingElements": ["missing1", "missing2"],
-  "atsScore": 7,
-  "improvementPriority": ["priority1", "priority2"]
-}
-
-Focus on ATS compatibility, actionable improvements, and career positioning.`
-                        }, {
-                            role: "user",
-                            content: resumeText
-                        }],
-                        temperature: 0.3,
-                        max_tokens: 1500
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                const data = await response.json();
-                const aiAnalysis = data.choices[0].message.content;
-                
-                let aiData = {};
-                try {
-                    const jsonMatch = aiAnalysis.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        aiData = JSON.parse(jsonMatch[0]);
-                    }
-                } catch (parseError) {
-                    console.warn('Could not parse AI response:', parseError);
-                }
-                
-                const extractedLocation = extractLocation(resumeText);
-                const extractedExperience = determineExperienceLevel(resumeText);
-                const extractedCareerField = detectCareerField(resumeText);
-                const detectedRegion = detectRegion(extractedLocation);
-                const extractedSalary = estimateSalary(resumeText);
-                
-                return {
-                    name: extractName(resumeText),
-                    location: extractedLocation,
-                    skills: extractSkills(resumeText) || [],
-                    experience: extractedExperience,
-                    roles: extractRoles(resumeText) || [],
-                    careerField: extractedCareerField,
-                    salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
-                    strengths: aiData.strengths || [],
-                    weaknesses: aiData.weaknesses || [],
-                    missingElements: aiData.missingElements || [],
-                    atsScore: aiData.atsScore || 5,
-                    improvementPriority: aiData.improvementPriority || []
-                };
-
-            } catch (error) {
-                console.error('Groq API Error:', error);
-                // Fallback to basic extraction if API fails
-                const extractedLocation = extractLocation(resumeText);
-                const extractedExperience = determineExperienceLevel(resumeText);
-                const extractedCareerField = detectCareerField(resumeText);
-                const detectedRegion = detectRegion(extractedLocation);
-                const extractedSalary = estimateSalary(resumeText);
-                
-                return {
-                    name: extractName(resumeText),
-                    location: extractedLocation,
-                    skills: extractSkills(resumeText) || [],
-                    experience: extractedExperience,
-                    roles: extractRoles(resumeText) || [],
-                    careerField: extractedCareerField,
-                    salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
-                    strengths: ['Resume analysis in progress'],
-                    weaknesses: [],
-                    missingElements: [],
-                    atsScore: null,
-                    improvementPriority: []
-                };
-            }
-        }
-
-        function extractName(text) {
-            const lines = text.split('\n').filter(l => l.trim());
-            
-            // Try multiple patterns for name extraction
-            for (let i = 0; i < Math.min(5, lines.length); i++) {
-                const line = lines[i].trim();
-                
-                // Pattern 1: Full name with potential middle initial (2-4 words, all capitalized)
-                const fullNameMatch = line.match(/^([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)$/);
-                if (fullNameMatch && fullNameMatch[1].length < 50) {
-                    return fullNameMatch[1];
-                }
-                
-                // Pattern 2: Name at start of line
-                const startNameMatch = line.match(/^([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+)/);
-                if (startNameMatch && !line.toLowerCase().includes('resume') && 
-                    !line.toLowerCase().includes('curriculum') &&
-                    startNameMatch[1].length < 40) {
-                    return startNameMatch[1];
-                }
-            }
-            
-            return '';
-        }
-
-        function extractLocation(text) {
-            const lines = text.split('\n');
-            
-            // Common location patterns
-            const patterns = [
-                // City, State, Country
-                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2}|\w+),?\s*([A-Z][a-z]+)/,
-                // City, State
-                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2}|[A-Z][a-z]+)/,
-                // City, Country
-                /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
-                // Just city name near contact info
-                /(?:location|address|city|based in)[\s:]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/i
-            ];
-            
-            // Search first 15 lines for location
-            for (let i = 0; i < Math.min(15, lines.length); i++) {
-                const line = lines[i].trim();
-                
-                for (const pattern of patterns) {
-                    const match = line.match(pattern);
-                    if (match) {
-                        // Return the full matched location
-                        if (match[3]) return `${match[1]}, ${match[2]}, ${match[3]}`;
-                        if (match[2]) return `${match[1]}, ${match[2]}`;
-                        if (match[1]) return match[1];
-                    }
-                }
-            }
-            
-            // Fallback: look for common city names
-            const commonCities = [
-                // US cities
-                'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 
-                'San Francisco', 'Boston', 'Seattle', 'Austin', 'Denver',
-                'Dallas', 'Miami', 'Atlanta', 'Portland', 'San Diego',
-                // International cities
-                'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai',
-                'London', 'Paris', 'Berlin', 'Tokyo', 'Singapore',
-                'Toronto', 'Vancouver', 'Sydney', 'Melbourne', 'Dubai',
-                'Amsterdam', 'Barcelona', 'Madrid', 'Rome', 'Stockholm',
-                'Copenhagen', 'Dublin', 'Zurich', 'Hong Kong', 'Shanghai',
-                'Beijing', 'Seoul', 'Bangkok', 'Kuala Lumpur', 'Jakarta'
-            ];
-            
-            const textLower = text.toLowerCase();
-            for (const city of commonCities) {
-                if (textLower.includes(city.toLowerCase())) {
-                    return city;
-                }
-            }
-            
-            return '';
-        }
-
-        function extractSkills(text) {
-            const commonSkills = ['JavaScript', 'Python', 'Java', 'React', 'Node.js', 'SQL', 'HTML', 'CSS', 
-                                'Git', 'AWS', 'Docker', 'Leadership', 'Project Management', 'Communication',
-                                'Tally', 'QuickBooks', 'Excel', 'AutoCAD', 'Photoshop', 'SolidWorks'];
-            return commonSkills.filter(skill => 
-                text.toLowerCase().includes(skill.toLowerCase())
-            );
-        }
-
-        function extractRoles(text) {
-            const roles = ['Software Engineer', 'Developer', 'Designer', 'Manager', 'Analyst', 
-                          'Consultant', 'Specialist', 'Coordinator', 'Director', 'Accountant',
-                          'Teacher', 'Engineer', 'Chef', 'Artist', 'Nurse', 'Sales'];
-            return roles.filter(role => 
-                text.toLowerCase().includes(role.toLowerCase())
-            ).slice(0, 2);
-        }
-
-        function determineExperienceLevel(text) {
-            const yearMatches = text.match(/(\d+)\+?\s*years?/gi);
-            if (yearMatches) {
-                const years = parseInt(yearMatches[0]);
-                if (years >= 8) return 'senior';
-                if (years >= 3) return 'mid';
-            }
-            return 'entry';
-        }
-
-        function detectCareerField(text) {
-            const lowerText = text.toLowerCase();
-            for (const [field, data] of Object.entries(CAREER_FIELDS)) {
-                if (data.keywords.some(kw => lowerText.includes(kw))) {
-                    return field;
-                }
-            }
-            return 'IT';
-        }
-
-        function estimateSalary(text) {
-            // First check if resume already contains salary expectations
-            const salaryPatterns = [
-                /(?:salary|compensation|expected|desired)[\s:]+\$?([\d,]+)\s*k?\s*-\s*\$?([\d,]+)\s*k?/i,
-                /\$?([\d,]+)\s*k?\s*-\s*\$?([\d,]+)\s*k?.*(?:per year|annually|p\.a\.)/i
-            ];
-            
-            for (const pattern of salaryPatterns) {
-                const match = text.match(pattern);
-                if (match) {
-                    return `${match[1]} - ${match[2]}`;
-                }
-            }
-            
-            // If no salary found, return empty string (will be estimated based on field + experience)
-            return '';
-        }
-
-        function showProfileReview() {
-            document.getElementById('profile-name').value = userProfile.name || '';
-            document.getElementById('profile-location').value = userProfile.location || '';
-            document.getElementById('profile-experience').value = userProfile.experience || 'entry';
-            document.getElementById('profile-salary').value = userProfile.salary || '';
-            document.getElementById('profile-career-field').value = userProfile.careerField || '';
-            document.getElementById('profile-roles').value = (userProfile.roles && userProfile.roles.length > 0) ? userProfile.roles.join(', ') : '';
-            document.getElementById('profile-skills').value = (userProfile.skills && userProfile.skills.length > 0) ? userProfile.skills.join(', ') : '';
-            
-            if (userProfile.weaknesses && userProfile.weaknesses.length > 0) {
-                displayInitialAnalysis();
-            }
-            
-            showResetButton();
-            document.getElementById('profile-review-section').style.display = 'block';
-            document.getElementById('profile-review-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function displayInitialAnalysis() {
-            const analysisHTML = `
-                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
-                    <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">🤖 Initial AI Analysis</h3>
-                    
-                    ${userProfile.atsScore ? `
-                        <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center;">
-                            <div style="font-size: 3rem; font-weight: bold;">${userProfile.atsScore}/10</div>
-                            <div style="font-size: 1.2rem;">ATS Compatibility Score</div>
+                    <div class="text-input-area">
+                        <div class="text-input-icon" aria-hidden="true">📝</div>
+                        <div class="text-input-header">
+                            <div class="text-input-title">Paste Your Resume Text</div>
+                            <div class="text-input-subtitle">Get comprehensive AI-powered career guidance</div>
                         </div>
-                    ` : ''}
-                    
-                    ${userProfile.strengths && userProfile.strengths.length > 0 ? `
-                        <div style="margin-bottom: 1.5rem;">
-                            <h4>✅ Strengths</h4>
-                            <ul style="margin-left: 1.5rem; line-height: 2;">
-                                ${userProfile.strengths.map(s => `<li>${s}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    
-                    ${userProfile.weaknesses && userProfile.weaknesses.length > 0 ? `
-                        <div>
-                            <h4>⚠️ Issues to Address</h4>
-                            ${userProfile.weaknesses.slice(0, 3).map((w, i) => `
-                                <div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; margin: 0.5rem 0;">
-                                    <strong>${i + 1}. ${w.issue}</strong>
-                                    <div style="opacity: 0.9; margin-top: 0.5rem;">${w.impact}</div>
+                        <label for="resume-text-input" class="sr-only">Resume text content</label>
+                        <textarea id="resume-text-input" class="resume-text-area" placeholder="Paste your resume here..." aria-describedby="text-input-hint"></textarea>
+                        <span id="text-input-hint" class="sr-only">Paste the full text content of your resume for AI analysis</span>
+                        <button type="button" class="analyze-text-btn" id="analyze-btn">Analyze with AI</button>
+                    </div>
+                </div>
+
+                <div class="progress-section" id="progress-section" role="status" aria-live="polite">
+                    <div class="progress-text" id="progress-text">Processing...</div>
+                    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="profile-review-section" id="profile-review-section">
+                    <div style="background: rgba(255,255,255,0.95); border-radius: 24px; padding: 3rem; margin-bottom: 2rem;">
+                        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 1rem;">📋 Review Your Extracted Profile</h2>
+                        <p style="text-align: center; color: #666; margin-bottom: 2rem;">AI has analyzed your resume using advanced reasoning. Review and adjust before continuing.</p>
+                        
+                        <div id="ai-analysis-display" style="display: none;"></div>
+                        
+                        <form id="profile-form" aria-label="Profile information form">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                                <div class="profile-field-group">
+                                    <label class="profile-field-label" for="profile-name">
+                                        Your Name
+                                        <span class="help-tooltip" data-tooltip="Your full name" tabindex="0" role="tooltip" aria-label="Help: Your full name">?</span>
+                                    </label>
+                                    <input type="text" id="profile-name" class="profile-input" placeholder="John Doe">
                                 </div>
-                            `).join('')}
-                        </div>
-                    ` : ''}
+                                
+                                <div class="profile-field-group">
+                                    <label class="profile-field-label" for="profile-location">
+                                        Location
+                                        <span class="help-tooltip" data-tooltip="City and country where you want to work" tabindex="0" role="tooltip" aria-label="Help: City and country where you want to work">?</span>
+                                    </label>
+                                    <input type="text" id="profile-location" class="profile-input" placeholder="Mumbai, India">
+                                </div>
+                                
+                                <div class="profile-field-group">
+                                    <label class="profile-field-label" for="profile-experience">
+                                        Experience Level
+                                        <span class="help-tooltip" data-tooltip="Select your experience level" tabindex="0" role="tooltip" aria-label="Help: Select your experience level">?</span>
+                                    </label>
+                                    <select id="profile-experience" class="profile-select">
+                                        <option value="entry">Entry Level (0-2 years)</option>
+                                        <option value="mid">Mid Level (3-7 years)</option>
+                                        <option value="senior">Senior Level (8+ years)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="profile-field-group">
+                                    <label class="profile-field-label" for="profile-salary">
+                                        Target Salary Range
+                                        <span class="help-tooltip" data-tooltip="Your expected salary in local currency" tabindex="0" role="tooltip" aria-label="Help: Your expected salary in local currency">?</span>
+                                    </label>
+                                    <input type="text" id="profile-salary" class="profile-input" placeholder="$70,000 - $90,000">
+                                </div>
+                                
+                                <div class="profile-field-group" style="grid-column: 1 / -1;">
+                                    <label class="profile-field-label" for="profile-career-field">
+                                        Career Field
+                                        <span class="help-tooltip" data-tooltip="Your primary career field" tabindex="0" role="tooltip" aria-label="Help: Your primary career field">?</span>
+                                    </label>
+                                    <select id="profile-career-field" class="profile-select">
+                                        <option value="">Select Career Field</option>
+                                        <option value="Accounting">Accounting</option>
+                                        <option value="Agriculture">Agriculture</option>
+                                        <option value="Apparel">Apparel & Fashion</option>
+                                        <option value="Arts">Arts & Design</option>
+                                        <option value="Automobile">Automobile</option>
+                                        <option value="Banking">Banking & Finance</option>
+                                        <option value="BPO">BPO & Customer Support</option>
+                                        <option value="Business Development">Business Development</option>
+                                        <option value="Construction">Construction & Real Estate</option>
+                                        <option value="Culinary">Culinary Arts</option>
+                                        <option value="Education">Education</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                        <option value="Hospitality">Hospitality & Tourism</option>
+                                        <option value="Human Resources">Human Resources</option>
+                                        <option value="IT">Information Technology</option>
+                                        <option value="Legal">Legal</option>
+                                        <option value="Logistics">Logistics & Supply Chain</option>
+                                        <option value="Manufacturing">Manufacturing</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Media">Media & Entertainment</option>
+                                        <option value="Retail">Retail</option>
+                                        <option value="Sales">Sales</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="profile-field-group" style="grid-column: 1 / -1;">
+                                    <label class="profile-field-label" for="profile-roles">
+                                        Target Roles
+                                        <span class="help-tooltip" data-tooltip="Job titles you're interested in" tabindex="0" role="tooltip" aria-label="Help: Job titles you're interested in">?</span>
+                                    </label>
+                                    <input type="text" id="profile-roles" class="profile-input" placeholder="Software Engineer, Developer">
+                                    <div class="field-hint">Comma-separated list of target roles</div>
+                                </div>
+                                
+                                <div class="profile-field-group" style="grid-column: 1 / -1;">
+                                    <label class="profile-field-label" for="profile-skills">
+                                        Skills
+                                        <span class="help-tooltip" data-tooltip="Your key skills" tabindex="0" role="tooltip" aria-label="Help: Your key skills">?</span>
+                                    </label>
+                                    <input type="text" id="profile-skills" class="profile-input" placeholder="Python, JavaScript, React">
+                                    <div class="field-hint">Comma-separated skills list</div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="confirm-profile-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; display: block; margin: 2rem auto 0; min-width: 250px; transition: all 0.3s ease;">
+                                🔍 Generate Career Analysis
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            `;
-            
-            document.getElementById('ai-analysis-display').innerHTML = analysisHTML;
-            document.getElementById('ai-analysis-display').style.display = 'block';
-        }
 
-        async function confirmProfileAndGenerateAnalysis() {
-            userProfile.name = document.getElementById('profile-name').value;
-            userProfile.location = document.getElementById('profile-location').value;
-            userProfile.experience = document.getElementById('profile-experience').value;
-            userProfile.salary = document.getElementById('profile-salary').value;
-            userProfile.careerField = document.getElementById('profile-career-field').value;
-            userProfile.roles = document.getElementById('profile-roles').value.split(',').map(r => r.trim()).filter(r => r);
-            userProfile.skills = document.getElementById('profile-skills').value.split(',').map(s => s.trim()).filter(s => s);
-            
-            if (!userProfile.careerField) {
-                showError('Please select a career field');
-                return;
-            }
-            
-            document.getElementById('profile-review-section').style.display = 'none';
-            showProgress();
-            updateTimelineStep('step-review', true);
-            
-            try {
-                updateProgress(20, 'Generating 10-dimensional analysis...');
-                await generate10DimensionalAnalysis();
-                
-                updateProgress(35, 'Creating career roadmap...');
-                await generateCareerRoadmap();
-                
-                updateProgress(50, 'Analyzing market intelligence...');
-                await generateMarketIntelligence();
-                
-                updateProgress(65, 'Identifying top companies...');
-                await generateTopCompanies();
-                
-                updateProgress(80, 'Assessing risks...');
-                await generateRiskAssessment();
-                
-                updateProgress(90, 'Generating job search links...');
-                updateTimelineStep('step-matches', false);
-                allJobs = generateJobs(userProfile);
-                
-                updateProgress(100, 'Complete!');
-                displayAllResults();
-                updateTimelineStep('step-matches', true);
-                saveState();
-            } catch (error) {
-                showError('Error: ' + error.message);
-            } finally {
-                setTimeout(hideProgress, 500);
-            }
-        }
+                <div class="ten-dimensional-analysis" id="ten-dimensional-analysis">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
+                        🎯 10-Dimensional Career Analysis
+                    </h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 3rem;">
+                        Advanced LLM reasoning across 10 key career dimensions
+                    </p>
+                    <div id="dimensions-container" role="list"></div>
+                </div>
 
-        async function generate10DimensionalAnalysis() {
-            const dimensions = [
-                {
-                    icon: '📊',
-                    title: 'Market Competitiveness',
-                    score: calculateMarketScore(userProfile),
-                    content: generateMarketCompetitiveness(userProfile)
-                },
-                {
-                    icon: '🎯',
-                    title: 'Role Fit & Alignment',
-                    score: calculateRoleFitScore(userProfile),
-                    content: generateRoleFitAnalysis(userProfile)
-                },
-                {
-                    icon: '💡',
-                    title: 'Skills Assessment',
-                    score: calculateSkillsScore(userProfile),
-                    content: generateSkillsAnalysis(userProfile)
-                },
-                {
-                    icon: '📈',
-                    title: 'Experience Evaluation',
-                    score: calculateExperienceScore(userProfile),
-                    content: generateExperienceAnalysis(userProfile)
-                },
-                {
-                    icon: '🔍',
-                    title: 'Resume Optimization',
-                    score: userProfile.atsScore || 7,
-                    content: generateResumeOptimization(userProfile)
-                },
-                {
-                    icon: '💰',
-                    title: 'Salary Intelligence',
-                    score: 8,
-                    content: generateSalaryInsights(userProfile)
-                },
-                {
-                    icon: '🌐',
-                    title: 'Network Strength',
-                    score: 6.5,
-                    content: '<p>Building a strong professional network is essential. Recommendations: Join LinkedIn groups in ' + userProfile.careerField + ', attend industry events, connect with professionals in target companies.</p>'
-                },
-                {
-                    icon: '🎓',
-                    title: 'Learning Path',
-                    score: 7.5,
-                    content: generateLearningPath(userProfile)
-                },
-                {
-                    icon: '🚀',
-                    title: 'Career Trajectory',
-                    score: 8,
-                    content: generateCareerTrajectory(userProfile)
-                },
-                {
-                    icon: '⚡',
-                    title: 'Interview Readiness',
-                    score: 7,
-                    content: '<p>Prepare for common ' + userProfile.careerField + ' interview questions. Practice STAR method responses. Research target companies thoroughly. Prepare questions to ask interviewers.</p>'
-                }
-            ];
+                <div class="career-roadmap" id="career-roadmap">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
+                        🛣️ Personalized Career Roadmap
+                    </h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 3rem;">
+                        A step-by-step plan for your career advancement.
+                    </p>
+                    <div class="roadmap-timeline" id="roadmap-timeline" role="list">
+                        </div>
+                </div>
 
-            const container = document.getElementById('dimensions-container');
-            container.innerHTML = '';
-
-            dimensions.forEach((dim, idx) => {
-                const card = document.createElement('div');
-                card.className = 'dimension-card';
-                card.setAttribute('role', 'listitem');
-                card.innerHTML = `
-                    <div class="dimension-header" onclick="toggleDimension(${idx})" tabindex="0" role="button" aria-expanded="true" aria-controls="content-${idx}">
-                        <span class="dimension-icon" aria-hidden="true">${dim.icon}</span>
-                        <span class="dimension-title">${dim.title}</span>
-                        <span class="dimension-score" aria-label="Score ${dim.score} out of 10">${dim.score}/10</span>
-                        <span class="toggle-icon" id="toggle-${idx}" aria-hidden="true">▼</span>
+                <div class="market-intelligence" id="market-intelligence">
+                    <h2 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">
+                        📈 Market Intelligence
+                    </h2>
+                    <p style="text-align: center; color: rgba(255,255,255,0.9); margin-bottom: 3rem;">
+                        Data-driven insights on your chosen career field.
+                    </p>
+                    <div class="intelligence-grid" id="intelligence-grid">
+                        </div>
+                </div>
+                
+                <div class="top-companies-section" id="top-companies">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
+                        🏢 Top Company Targets
+                    </h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 3rem;">
+                        Identify the best employers for your profile.
+                    </p>
+                    <div id="top-companies-content">
+                        <div class="companies-grid" id="companies-grid">
+                            </div>
                     </div>
-                    <div class="dimension-content" id="content-${idx}">
-                        ${dim.content}
+                </div>
+
+                <div class="risk-assessment" id="risk-assessment">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
+                        🛡️ Career Risk Assessment
+                    </h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 3rem;">
+                        Anticipate potential challenges and build mitigation strategies.
+                    </p>
+                    <div id="risk-assessment-content">
+                        </div>
+                </div>
+
+                <div class="results-section" id="results-section">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem;">
+                        ✨ Personalized Job Matches
+                    </h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 3rem;">
+                        Leveraging your profile and AI analysis to find the best fit.
+                    </p>
+                    
+                    <div class="sample-notice">
+                        <div class="sample-notice-title">⚠️ Sample Job Listings</div>
+                        <div class="sample-notice-text">These are simulated job matches based on your profile and career market data. Use the links to search real jobs.</div>
                     </div>
-                `;
-                container.appendChild(card);
-            });
+                    
+                    <div id="job-listings-container">
+                        </div>
+                </div>
 
-            document.getElementById('ten-dimensional-analysis').style.display = 'block';
-        }
+                <div class="error-message" id="error-message" role="alert" aria-live="assertive"></div>
+            </div>
 
-        window.toggleDimension = function(idx) {
-            const content = document.getElementById(`content-${idx}`);
-            const icon = document.getElementById(`toggle-${idx}`);
-            const header = content.previousElementSibling;
-            const isCollapsed = content.classList.contains('collapsed');
-            
-            content.classList.toggle('collapsed');
-            icon.classList.toggle('collapsed');
-            header.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
-        };
-
-        function calculateMarketScore(profile) {
-            let score = 5;
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            
-            if (profile.skills.length >= 8) score += 2;
-            if (profile.experience === 'senior') score += 2;
-            if (profile.atsScore && profile.atsScore >= 7) score += 1;
-            
-            const growthRate = parseInt(fieldData.growthRate);
-            if (growthRate >= 15) score += 1;
-            else if (growthRate < 5) score -= 0.5;
-            
-            return Math.min(10, Math.max(1, score));
-        }
-
-        function calculateRoleFitScore(profile) {
-            const baseScore = profile.roles.length > 0 ? 8.5 : 6;
-            const fieldData = CAREER_FIELDS[profile.careerField];
-            
-            if (!fieldData) return baseScore;
-            
-            const matchingSkills = profile.skills.filter(skill => 
-                fieldData.keywords.some(kw => skill.toLowerCase().includes(kw))
-            );
-            
-            return Math.min(10, baseScore + (matchingSkills.length * 0.3));
-        }
-
-        function calculateSkillsScore(profile) {
-            const skillCount = profile.skills.length;
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            
-            let score = 6;
-            if (skillCount >= 10) score = 9;
-            else if (skillCount >= 6) score = 7.5;
-            
-            const hasEmergingSkills = profile.skills.some(skill =>
-                fieldData.emergingSkills.some(emerging => 
-                    skill.toLowerCase().includes(emerging.toLowerCase())
-                )
-            );
-            
-            if (hasEmergingSkills) score += 1;
-            
-            return Math.min(10, score);
-        }
-
-        function calculateExperienceScore(profile) {
-            const expMap = { 'entry': 6, 'mid': 8, 'senior': 9.5 };
-            return expMap[profile.experience] || 7;
-        }
-
-        function generateMarketCompetitiveness(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(profile.location);
-            const tierMap = {
-                'entry': 'emerging',
-                'mid': 'competitive',
-                'senior': 'upper'
-            };
-            
-            return `<p><strong>Analysis:</strong> Based on your ${profile.experience}-level experience in ${profile.careerField}, you are positioned in the ${tierMap[profile.experience]} tier of candidates. The ${profile.careerField} field is experiencing ${fieldData.growthRate} annual growth.</p>
-                    <p><strong>Competitive Advantages:</strong></p>
-                    <ul>
-                        <li>${profile.skills.length} identified skills demonstrate versatility in ${profile.careerField}</li>
-                        <li>Experience level aligns with ${profile.roles[0] || 'target'} positions</li>
-                        <li>Geographic location (${profile.location || 'your area'}) offers opportunities in the ${region} market</li>
-                        <li>Industry growth rate of ${fieldData.growthRate} indicates high demand</li>
-                    </ul>
-                    <p><strong>Areas for Improvement:</strong> Consider developing expertise in emerging ${profile.careerField} skills such as ${fieldData.emergingSkills.slice(0, 3).join(', ')}.</p>`;
-        }
-
-        function generateRoleFitAnalysis(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(profile.location);
-            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
-            const gapSkills = fieldData.emergingSkills.slice(0, 3);
-            
-            return `<p><strong>Target Roles:</strong> ${profile.roles.join(', ')}</p>
-                    <p><strong>Fit Assessment:</strong> Your background aligns with ${profile.roles.length > 1 ? 'these roles' : 'this role'} in the ${profile.careerField} sector.</p>
-                    <p><strong>Skill Gaps:</strong> Consider developing: ${gapSkills.join(', ')}</p>
-                    <p><strong>Top ${region} Companies:</strong> ${companies.slice(0, 3).join(', ')}</p>`;
-        }
-
-        function generateSkillsAnalysis(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            
-            return `<p><strong>Current Skills:</strong> ${profile.skills.join(', ') || 'To be added'}</p>
-                    <p><strong>Emerging Skills to Develop:</strong></p>
-                    <ul>
-                        ${fieldData.emergingSkills.map(skill => `<li>${skill}</li>`).join('')}
-                    </ul>
-                    <p><strong>Recommended Certifications:</strong></p>
-                    <ul>
-                        ${fieldData.certifications.slice(0, 3).map(cert => `<li>${cert}</li>`).join('')}
-                    </ul>`;
-        }
-
-        function generateExperienceAnalysis(profile) {
-            return `<p><strong>Experience Level:</strong> ${profile.experience.charAt(0).toUpperCase() + profile.experience.slice(1)}</p>
-                    <p><strong>Career Trajectory:</strong> Your progression is on track for ${profile.careerField} roles. Focus on quantifying achievements and demonstrating leadership impact in your resume.</p>`;
-        }
-
-        function generateResumeOptimization(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            
-            return `<p><strong>ATS Score:</strong> ${profile.atsScore || 7}/10</p>
-                    <p><strong>Keywords to Incorporate:</strong> ${fieldData.keywords.join(', ')}</p>
-                    <p><strong>Format Tips:</strong> Use standard headers (Experience, Education, Skills), avoid tables and graphics, use common fonts (Arial, Calibri, Times New Roman). Save as .docx or PDF with text layer.</p>`;
-        }
-
-        function generateSalaryInsights(profile) {
-            const region = detectRegion(profile.location);
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            const salaryRange = getSalaryRange(profile.careerField, profile.experience, region);
-            
-            const regionName = region === 'US' ? 'US' : 'international';
-            const regionalContext = region === 'US' 
-                ? 'Salaries in major tech hubs (San Francisco, NYC, Seattle) can be 30-50% higher than national averages. Remote positions often offer geographic pay adjustments.'
-                : 'Salaries vary significantly by country and region. Major cities and tech hubs typically offer higher compensation. Remote positions with international companies may offer competitive rates.';
-            
-            return `<p><strong>Target Range:</strong> ${profile.salary || salaryRange}</p>
-                    <p><strong>Market Rate:</strong> Typical ${profile.experience}-level ${profile.careerField} professionals in the ${regionName} market earn ${salaryRange}.</p>
-                    <p><strong>Regional Context:</strong> ${regionalContext}</p>
-                    <p><strong>Negotiation Strategy:</strong> Research company-specific ranges on Glassdoor and Levels.fyi, emphasize unique skills in ${fieldData.emergingSkills[0]}, consider total compensation including benefits, equity, bonuses, and remote work options.</p>`;
-        }
-
-        function generateLearningPath(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            return `<p><strong>Recommended Learning:</strong> Focus on ${fieldData.emergingSkills.slice(0, 2).join(' and ')}. Consider online courses (Coursera, Udemy, LinkedIn Learning), bootcamps, or professional certifications in ${profile.careerField}.</p>
-                    <p><strong>Timeline:</strong> Aim to complete 1-2 certifications within the next 6-12 months to enhance marketability.</p>`;
-        }
-
-        function generateCareerTrajectory(profile) {
-            const pathMap = {
-                'entry': 'Entry → Mid-Level → Senior → Lead/Principal',
-                'mid': 'Mid-Level → Senior → Lead → Manager/Director',
-                'senior': 'Senior → Principal → Director → VP/C-Suite'
-            };
-            return `<p><strong>Career Path:</strong> Your ${profile.experience}-level position in ${profile.careerField} shows strong potential. Expected progression: ${pathMap[profile.experience]}.</p>
-                    <p><strong>Next Steps:</strong> Focus on expanding leadership responsibilities, mentoring junior team members, and building cross-functional expertise.</p>`;
-        }
-
-        async function generateCareerRoadmap() {
-            const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(userProfile.location);
-            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
-            
-            const roadmap = [
-                {
-                    phase: 'short-term',
-                    timeline: 'Next 3-6 Months',
-                    title: 'Immediate Actions',
-                    actions: [
-                        'Optimize resume with ATS-friendly keywords',
-                        `Apply to 5-10 ${userProfile.careerField} positions weekly`,
-                        `Connect with 20+ ${userProfile.careerField} professionals on LinkedIn`,
-                        `Complete one skill certification: ${fieldData.certifications[0]}`,
-                        'Prepare portfolio showcasing key projects and achievements'
-                    ]
-                },
-                {
-                    phase: 'mid-term',
-                    timeline: '6-12 Months',
-                    title: 'Skill Development & Positioning',
-                    actions: [
-                        `Master emerging skill: ${fieldData.emergingSkills[0]}`,
-                        `Obtain certification: ${fieldData.certifications[1] || fieldData.certifications[0]}`,
-                        'Contribute to open-source projects or volunteer work in your field',
-                        `Attend 2-3 ${userProfile.careerField} conferences or networking events`,
-                        'Build thought leadership through blog posts or LinkedIn articles'
-                    ]
-                },
-                {
-                    phase: 'long-term',
-                    timeline: '1-2 Years',
-                    title: 'Career Advancement',
-                    actions: [
-                        `Target roles at: ${companies.slice(0, 2).join(', ')}`,
-                        'Develop leadership and mentoring capabilities',
-                        'Specialize in high-demand niche within ' + userProfile.careerField,
-                        'Build personal brand as industry expert in your domain',
-                        'Negotiate for 20-30% salary increase or senior role promotion'
-                    ]
+            <script>
+                // --- CRITICAL PDF FIX: Set the worker source for PDF.js to ensure PDF extraction works correctly ---
+                if (typeof pdfjsLib !== 'undefined') {
+                    // Using the same CDN version as in the <script> tag: pdf.js/3.11.174
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
                 }
-            ];
 
-            const timeline = document.getElementById('roadmap-timeline');
-            timeline.innerHTML = '';
+                const GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
+                const GROQ_PROJECT_ID = 'YOUR_GROQ_PROJECT_ID_HERE';
+                const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-            roadmap.forEach(phase => {
-                const phaseDiv = document.createElement('div');
-                phaseDiv.className = `roadmap-phase ${phase.phase}`;
-                phaseDiv.innerHTML = `
-                    <div class="phase-timeline">${phase.timeline}</div>
-                    <div class="phase-title">${phase.title}</div>
-                    <ul class="phase-actions">
-                        ${phase.actions.map(action => `<li>${action}</li>`).join('')}
-                    </ul>
-                `;
-                timeline.appendChild(phaseDiv);
-            });
+                let userProfile = {};
+                let allJobs = [];
 
-            document.getElementById('career-roadmap').style.display = 'block';
-        }
+                const CAREER_FIELDS = {
+                    'IT': {
+                        keywords: ['software', 'developer', 'engineer', 'code', 'cloud', 'security', 'database', 'agile', 'scrum', 'backend', 'frontend', 'devops', 'ai', 'machine learning', 'data science', 'javascript', 'python', 'java', 'react', 'kubernetes', 'aws', 'azure', 'gcp'],
+                        growthRate: '22%',
+                        salaryRanges: {
+                            'US': { 'entry': [65000, 90000], 'mid': [95000, 140000], 'senior': [130000, 200000] },
+                            'Global': { 'entry': [30000, 60000], 'mid': [60000, 100000], 'senior': [100000, 150000] }
+                        },
+                        emergingSkills: ['GenAI Prompt Engineering', 'Full Stack Observability', 'Serverless Architecture', 'WebAssembly', 'Quantum Computing Fundamentals'],
+                        certifications: ['AWS Certified Developer', 'Certified Kubernetes Administrator (CKA)', 'CompTIA Security+'],
+                        topCompanies: {
+                            'US': ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta'],
+                            'India': ['TCS', 'Infosys', 'Wipro', 'HCL', 'Tech Mahindra'],
+                            'Global': ['Google', 'Microsoft', 'Amazon', 'IBM', 'Oracle']
+                        }
+                    },
+                    'Marketing': {
+                        keywords: ['seo', 'sem', 'content', 'social media', 'campaign', 'brand', 'analytics', 'cmo', 'hubspot', 'salesforce marketing', 'digital marketing', 'ppc'],
+                        growthRate: '10%',
+                        salaryRanges: {
+                            'US': { 'entry': [45000, 60000], 'mid': [65000, 90000], 'senior': [95000, 130000] },
+                            'Global': { 'entry': [25000, 40000], 'mid': [40000, 70000], 'senior': [70000, 110000] }
+                        },
+                        emergingSkills: ['AI-Driven Personalization', 'First-Party Data Strategy', 'Ethical AI in Marketing', 'Interactive Content Creation', 'Community Management'],
+                        certifications: ['Google Analytics Certification', 'HubSpot Content Marketing Certification', 'Facebook Blueprint Certification'],
+                        topCompanies: {
+                            'US': ['P&G', 'Nike', 'Coca-Cola', 'Netflix', 'Salesforce'],
+                            'Global': ['Omnicom Group', 'WPP', 'Publicis Groupe', 'Havas', 'IPG']
+                        }
+                    },
+                    'Finance': {
+                        keywords: ['accounting', 'audit', 'cpa', 'cfa', 'investing', 'securities', 'financial modeling', 'merger', 'acquisition', 'risk management', 'equity', 'compliance', 'treasury'],
+                        growthRate: '8%',
+                        salaryRanges: {
+                            'US': { 'entry': [50000, 75000], 'mid': [80000, 120000], 'senior': [125000, 180000] },
+                            'Global': { 'entry': [35000, 50000], 'mid': [50000, 85000], 'senior': [85000, 130000] }
+                        },
+                        emergingSkills: ['Blockchain & Digital Assets', 'AI in Fraud Detection', 'Sustainable Finance (ESG)', 'Quantitative Modeling', 'Data Visualization (e.g., Tableau)'],
+                        certifications: ['CFA (Chartered Financial Analyst)', 'CPA (Certified Public Accountant)', 'FRM (Financial Risk Manager)'],
+                        topCompanies: {
+                            'US': ['JPMorgan Chase', 'Goldman Sachs', 'BlackRock', 'Wells Fargo', 'Morgan Stanley'],
+                            'Global': ['HSBC', 'ICBC', 'Bank of America', 'Credit Suisse', 'Citi']
+                        }
+                    }
+                    // Added a few more fields for robustness
+                };
 
-        async function generateMarketIntelligence() {
-            const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(userProfile.location);
-            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
-            const salaryRange = getSalaryRange(userProfile.careerField, userProfile.experience, region);
-            
-            const intelligence = [
-                {
-                    title: `📈 ${userProfile.careerField} Market Trends`,
-                    content: `Industry growing at ${fieldData.growthRate} annually in the ${region} market. High demand for ${fieldData.emergingSkills[0]} skills. Remote and hybrid work opportunities increasingly common.`
-                },
-                {
-                    title: `💼 Top ${region} Hiring Companies`,
-                    content: companies.slice(0, 5).join(', ') + ' are actively hiring. Focus applications on these industry leaders.'
-                },
-                {
-                    title: '💰 Salary Benchmarks',
-                    content: `${salaryRange} typical for ${userProfile.experience}-level professionals in ${userProfile.careerField} (${region} market).`
-                },
-                {
-                    title: '🎯 In-Demand Skills',
-                    content: fieldData.emergingSkills.join(', ') + ' are most sought after by employers in your field.'
-                },
-                {
-                    title: '🌍 Geographic Opportunities',
-                    content: `${userProfile.location || 'Your location'} offers ${region === 'US' ? 'opportunities in major tech hubs and remote positions nationwide' : 'global remote opportunities and positions in international markets'}.`
-                },
-                {
-                    title: '🔮 Future Outlook',
-                    content: `${userProfile.careerField} projected to grow ${fieldData.growthRate} through 2030. Automation and AI creating new specialized roles requiring upskilling.`
+
+                // Utility functions to show/hide sections
+                function showProgress() {
+                    document.getElementById('progress-section').style.display = 'block';
+                    document.getElementById('progress-fill').style.width = '0%';
+                    document.getElementById('progress-text').textContent = 'Starting analysis...';
+                    document.getElementById('error-message').style.display = 'none';
                 }
-            ];
 
-            const grid = document.getElementById('intelligence-grid');
-            grid.innerHTML = '';
+                function updateProgress(percent, text) {
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressFill = document.getElementById('progress-fill');
+                    const progressText = document.getElementById('progress-text');
+                    
+                    if (progressBar) { // Safety check added to prevent the 'Cannot read properties of null' error
+                        progressFill.style.width = `${percent}%`;
+                        progressText.textContent = text;
+                        progressBar.setAttribute('aria-valuenow', percent);
+                    } else {
+                        console.error("Progress bar element not found (ID: progress-bar is missing in HTML)");
+                    }
+                }
 
-            intelligence.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'intelligence-card';
-                card.innerHTML = `
-                    <h4>${item.title}</h4>
-                    <p>${item.content}</p>
-                `;
-                grid.appendChild(card);
-            });
+                function showError(message) {
+                    document.getElementById('progress-section').style.display = 'none';
+                    const errorElement = document.getElementById('error-message');
+                    errorElement.textContent = `Error: ${message}`;
+                    errorElement.style.display = 'block';
+                    // Re-enable input options for easy retry
+                    document.querySelector('.input-options-container').style.display = 'block';
+                    updateTimelineStep('step-analysis', false);
+                    updateTimelineStep('step-review', false);
+                    updateTimelineStep('step-matches', false);
+                }
 
-            document.getElementById('market-intelligence').style.display = 'block';
-        }
+                function updateTimelineStep(id, completed) {
+                    const step = document.getElementById(id);
+                    if (step) {
+                        if (completed) {
+                            step.classList.add('completed');
+                        } else {
+                            step.classList.remove('completed');
+                        }
+                    }
+                }
 
-        async function generateTopCompanies() {
-            const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(userProfile.location);
-            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+                function resetApplication() {
+                    userProfile = {};
+                    allJobs = [];
+                    // Reset all major sections to initial state
+                    document.querySelector('.input-options-container').style.display = 'block';
+                    document.getElementById('progress-section').style.display = 'none';
+                    document.getElementById('profile-review-section').style.display = 'none';
+                    document.getElementById('ten-dimensional-analysis').style.display = 'none';
+                    document.getElementById('career-roadmap').style.display = 'none';
+                    document.getElementById('market-intelligence').style.display = 'none';
+                    document.getElementById('top-companies').style.display = 'none';
+                    document.getElementById('risk-assessment').style.display = 'none';
+                    document.getElementById('results-section').style.display = 'none';
+                    document.getElementById('error-message').style.display = 'none';
+                    
+                    // Reset inputs
+                    document.getElementById('file-input').value = '';
+                    document.getElementById('resume-text-input').value = '';
+                    
+                    // Reset timeline
+                    updateTimelineStep('step-upload', false);
+                    updateTimelineStep('step-analysis', false);
+                    updateTimelineStep('step-review', false);
+                    updateTimelineStep('step-matches', false);
 
-            const grid = document.getElementById('companies-grid');
-            grid.innerHTML = '';
+                    // Hide buttons
+                    document.getElementById('reset-btn').style.display = 'none';
+                    document.getElementById('export-btn').style.display = 'none';
 
-            companies.forEach(company => {
-                const card = document.createElement('div');
-                card.className = 'company-card';
-                card.innerHTML = `
-                    <div class="company-name">${company}</div>
-                    <div class="company-badge">${region} Top Employer</div>
-                `;
-                grid.appendChild(card);
-            });
-
-            document.getElementById('top-companies-section').style.display = 'block';
-        }
-
-        async function generateRiskAssessment() {
-            const risks = [];
-
-            if (userProfile.skills.length < 5) {
-                risks.push({
-                    severity: 'high',
-                    title: 'Limited Skill Diversity',
-                    description: 'Your resume shows fewer than 5 key skills, which may limit job opportunities and competitiveness.',
-                    mitigation: 'Immediately begin learning 2-3 high-demand skills in your field through online courses (Coursera, Udemy) or certifications.'
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    saveState();
+                }
+                
+                // Add event listeners for reset and export
+                document.getElementById('reset-btn').addEventListener('click', resetApplication);
+                
+                // Export functionality (Placeholder: Requires library like jsPDF)
+                document.getElementById('export-btn').addEventListener('click', () => {
+                    alert('PDF export feature is a placeholder. You would typically use a library like jsPDF or html2canvas for this.');
                 });
-            }
 
-            if (userProfile.atsScore && userProfile.atsScore < 6) {
-                risks.push({
-                    severity: 'high',
-                    title: 'Low ATS Compatibility',
-                    description: 'Your resume may be filtered out by Applicant Tracking Systems before reaching human reviewers.',
-                    mitigation: 'Reformat resume with standard headers, remove graphics/tables, add relevant keywords, and use common fonts. Save as .docx or searchable PDF.'
+
+                // Main Logic for PDF Extraction
+                async function extractTextFromPDF(file) {
+                    const url = URL.createObjectURL(file);
+                    
+                    // The GlobalWorkerOptions.workerSrc is set at the top of the script.
+                    const loadingTask = pdfjsLib.getDocument(url);
+                    
+                    try {
+                        const pdf = await loadingTask.promise;
+                        let fullText = '';
+                        let pageCount = 0;
+
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            try {
+                                const page = await pdf.getPage(i);
+                                const textContent = await page.getTextContent();
+                                
+                                // Extract text with better spacing and line breaks
+                                let lastY = null;
+                                let pageText = '';
+                                textContent.items.forEach((item, idx) => {
+                                    const currentY = item.transform[5];
+                                    
+                                    // Add line break if Y position changed significantly (new line)
+                                    if (lastY !== null && Math.abs(currentY - lastY) > 5) {
+                                        pageText += '\n';
+                                    } 
+                                    // Add space between words on same line
+                                    else if (idx > 0 && !pageText.endsWith(' ') && !pageText.endsWith('\n')) {
+                                        pageText += ' ';
+                                    }
+                                    pageText += item.str;
+                                    lastY = currentY;
+                                });
+                                fullText += pageText + '\n\n';
+                                pageCount++;
+
+                            } catch (pageError) {
+                                console.warn(`Error extracting page ${i}:`, pageError);
+                                // Continue with other pages
+                            }
+                        }
+
+                        // Clean up the object URL to free memory
+                        URL.revokeObjectURL(url);
+                        
+                        const trimmedText = fullText.trim();
+                        
+                        // Debug: Log first 500 chars
+                        console.log('PDF Extract Preview:', trimmedText.substring(0, 500));
+                        console.log('Total characters extracted:', trimmedText.length);
+
+                        // Validate extracted text
+                        if (!trimmedText) {
+                            throw new Error('PDF appears to be empty or contains only images. Please try pasting your resume text instead.');
+                        }
+                        if (trimmedText.length < 50) {
+                            throw new Error(`Only ${trimmedText.length} characters extracted from PDF. This may be a scanned document. Please try pasting your resume text instead.`);
+                        }
+                        
+                        // Check if it's mostly gibberish or special characters
+                        const alphanumericCount = (trimmedText.match(/[a-zA-Z0-9]/g) || []).length;
+                        const alphanumericRatio = alphanumericCount / trimmedText.length;
+                        if (alphanumericRatio < 0.5) {
+                            throw new Error('PDF contains mostly special characters or is encrypted. Please try pasting your resume text instead.');
+                        }
+
+                        console.log(`Successfully extracted ${trimmedText.length} characters from PDF.`);
+                        return trimmedText;
+
+                    } catch (error) {
+                        URL.revokeObjectURL(url); // Clean up on error too
+                        throw error;
+                    }
+                }
+
+                // AI Analysis (MOCK/Placeholder - as the Groq API key is a placeholder)
+                async function analyzeResumeAdvanced(resumeText, retryCount = 0) {
+                    const maxRetries = 2;
+                    
+                    // --- MOCK AI RESPONSE FOR DEMO ---
+                    if (GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+                        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call delay
+                        
+                        // Use basic extraction for mock data if API key is not set
+                        const extractedLocation = extractLocation(resumeText);
+                        const extractedExperience = determineExperienceLevel(resumeText);
+                        const extractedCareerField = detectCareerField(resumeText);
+                        const detectedRegion = detectRegion(extractedLocation);
+                        const extractedSalary = estimateSalary(resumeText);
+                        const extractedName = extractName(resumeText);
+                        const extractedSkills = extractSkills(resumeText);
+                        const extractedRoles = extractRoles(resumeText);
+
+                        // **FIX: Hardened Mock Data to ensure all generation steps complete**
+                        return {
+                            name: extractedName || 'Jane Doe',
+                            location: extractedLocation || 'U.S.A.',
+                            skills: extractedSkills.length > 0 ? extractedSkills : ['Python', 'SQL', 'React', 'AWS', 'Project Management'],
+                            experience: extractedExperience,
+                            roles: extractedRoles.length > 0 ? extractedRoles : ['Software Engineer', 'Data Analyst'],
+                            careerField: extractedCareerField,
+                            salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
+                            
+                            // Mock AI Analysis Results
+                            strengths: ['Strong technical skills portfolio and project variety.', 'Experience aligns with high-growth IT roles.', 'Clear progression in career trajectory.'],
+                            weaknesses: [
+                                { "issue": "Lack of quantified metrics in bullet points.", "impact": "Hiring managers cannot easily assess business impact.", "fix": "Rewrite achievements using 'X results in Y by doing Z'." },
+                                { "issue": "Missing key leadership and soft skills vocabulary.", "impact": "Limits appeal for mid/senior level roles.", "fix": "Integrate words like 'mentored,' 'led team,' 'strategic planning'." },
+                                { "issue": "Inconsistent formatting and use of non-standard fonts.", "impact": "May cause issues with some Applicant Tracking Systems (ATS).", "fix": "Simplify design and use common, readable fonts." }
+                            ],
+                            missingElements: ['A clear, concise professional summary at the top.', 'GitHub/Portfolio link is missing.', 'Specific data on project scale (e.g., budget, team size).'],
+                            atsScore: 8,
+                            improvementPriority: ['Quantify Impact', 'Standardize Format', 'Develop Leadership Vocabulary']
+                        };
+                    }
+                    // --- END MOCK AI RESPONSE ---
+                    
+                    // --- REAL API CALL (Requires actual GROQ_API_KEY) ---
+                    try {
+                        const response = await fetch(GROQ_API_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                                'Content-Type': 'application/json',
+                                'Groq-Project-ID': GROQ_PROJECT_ID
+                            },
+                            body: JSON.stringify({
+                                model: "llama-3.3-70b-versatile",
+                                messages: [{
+                                    role: "system",
+                                    content: `You are an expert resume analyzer. Analyze the resume and return a JSON object with this structure: { "name": "Name", "location": "City, Country", "skills": ["skill1", "skill2"], "experience": "entry|mid|senior", "roles": ["role1", "role2"], "careerField": "IT|Finance|Marketing|...", "salary": "$X - $Y", "strengths": ["strength1", "strength2"], "weaknesses": [ {"issue": "problem", "impact": "why it matters", "fix": "solution"} ], "missingElements": ["missing1", "missing2"], "atsScore": 7, "improvementPriority": ["priority1", "priority2"] } Focus on ATS compatibility, actionable improvements, and career positioning.`
+                                }, {
+                                    role: "user",
+                                    content: resumeText
+                                }],
+                                temperature: 0.3,
+                                max_tokens: 1500
+                            })
+                        });
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            if (response.status >= 500 && retryCount < maxRetries) {
+                                console.log(`Server error, retrying... (${retryCount + 1}/${maxRetries})`);
+                                await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                                return analyzeResumeAdvanced(resumeText, retryCount + 1);
+                            }
+                            if (response.status === 401) { throw new Error('API authentication failed. Please check your API key.'); }
+                            if (response.status === 429) { throw new Error('Rate limit exceeded. Please try again in a few minutes.'); }
+                            if (response.status === 400) { throw new Error('Invalid request. Your resume may be too long or contain unsupported characters.'); }
+                            throw new Error(`API request failed: ${response.status} - ${errorText}`);
+                        }
+
+                        const data = await response.json();
+                        const aiData = JSON.parse(data.choices[0].message.content.trim());
+                        
+                        return {
+                            name: aiData.name || extractName(resumeText),
+                            location: aiData.location || extractLocation(resumeText),
+                            skills: aiData.skills || extractSkills(resumeText),
+                            experience: aiData.experience || determineExperienceLevel(resumeText),
+                            roles: aiData.roles || extractRoles(resumeText),
+                            careerField: aiData.careerField || detectCareerField(resumeText),
+                            salary: aiData.salary || estimateSalary(resumeText),
+                            strengths: aiData.strengths || [],
+                            weaknesses: aiData.weaknesses || [],
+                            missingElements: aiData.missingElements || [],
+                            atsScore: aiData.atsScore || 5,
+                            improvementPriority: aiData.improvementPriority || []
+                        };
+
+                    } catch (error) {
+                        console.error('Groq API Error:', error);
+                        if (retryCount >= maxRetries || error.message.includes('authentication') || error.message.includes('Rate limit')) {
+                            showError(`AI analysis unavailable: ${error.message}. Using basic extraction.`);
+                        }
+                        
+                        // Fallback to basic extraction
+                        const extractedLocation = extractLocation(resumeText);
+                        const extractedExperience = determineExperienceLevel(resumeText);
+                        const extractedCareerField = detectCareerField(resumeText);
+                        const detectedRegion = detectRegion(extractedLocation);
+                        const extractedSalary = estimateSalary(resumeText);
+                        const extractedName = extractName(resumeText);
+                        const extractedSkills = extractSkills(resumeText);
+                        const extractedRoles = extractRoles(resumeText);
+
+                        return {
+                            name: extractedName,
+                            location: extractedLocation,
+                            skills: extractedSkills || [],
+                            experience: extractedExperience,
+                            roles: extractedRoles || [],
+                            careerField: extractedCareerField,
+                            salary: extractedSalary || getSalaryRange(extractedCareerField, extractedExperience, detectedRegion),
+                            strengths: ['Basic profile extraction completed'],
+                            weaknesses: [],
+                            missingElements: [],
+                            atsScore: null,
+                            improvementPriority: []
+                        };
+                    }
+                }
+                
+                // Placeholder functions for basic text extraction (to support mock and fallback)
+                function extractName(text) {
+                    const lines = text.split('\n').filter(l => l.trim());
+                    const skipWords = ['resume', 'curriculum', 'vitae', 'cv', 'profile', 'contact', 'email', 'phone', 'address', 'linkedin', 'github'];
+                    const allCapsMatch = lines[0] ? lines[0].match(/([A-Z]{2,}(?:\s[A-Z]{2,}){1,2})/) : null;
+                    
+                    for (const line of lines) {
+                        const lower = line.toLowerCase();
+                        if (line.length > 5 && line.length < 35 && !skipWords.some(w => lower.includes(w)) && line.match(/[A-Z][a-z]+/g)?.length >= 2) {
+                             // Simple heuristic: two capitalized words, not too long, no skip words
+                            return line.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+                        }
+                        if (allCapsMatch) {
+                            return allCapsMatch[0].split(/\s+/).map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ');
+                        }
+                    }
+                    return '';
+                }
+
+                function extractLocation(text) {
+                    const lines = text.split('\n').map(l => l.trim());
+                    const fullText = text.toLowerCase();
+                    const usStates = { 'california': 'CA', 'new york': 'NY', 'texas': 'TX', 'washington': 'WA', 'florida': 'FL' };
+                    const majorCities = [
+                        { name: 'New York', state: 'NY' }, { name: 'London', country: 'UK' }, { name: 'Mumbai', country: 'India' }, 
+                        { name: 'Bangalore', country: 'India' }, { name: 'San Francisco', state: 'CA' }, { name: 'Seattle', state: 'WA' }
+                    ];
+
+                    // 1. Match major City, State/Country
+                    for (const city of majorCities) {
+                        const cityLower = city.name.toLowerCase();
+                        if (fullText.includes(cityLower)) {
+                            return city.country ? `${city.name}, ${city.country}` : `${city.name}, ${city.state}`;
+                        }
+                    }
+                    
+                    // 2. Match City, Two-Letter State
+                    for (const line of lines) {
+                        const match = line.match(/(\w+),\s*([A-Z]{2})$/);
+                        if (match) {
+                            return match[0];
+                        }
+                    }
+                    
+                    return '';
+                }
+
+                function extractSkills(text) {
+                    const lowerText = text.toLowerCase();
+                    const technicalSkills = ['Python', 'JavaScript', 'React', 'Angular', 'Vue.js', 'Node.js', 'SQL', 'NoSQL', 'Java', 'C++', 'C#', 'Go', 'Ruby', 'Swift', 'Kotlin', 'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Git', 'HTML', 'CSS', 'TensorFlow', 'PyTorch', 'Tableau', 'Power BI', 'Excel', 'Jira', 'Agile', 'Scrum'];
+                    const foundSkills = [];
+
+                    for (const skill of technicalSkills) {
+                        if (lowerText.includes(skill.toLowerCase())) {
+                            foundSkills.push(skill);
+                        }
+                    }
+                    
+                    const uniqueRoles = ['Software Engineer', 'Data Scientist', 'Project Manager', 'Financial Analyst', 'Marketing Specialist'];
+                    // Remove roles that are mistaken for skills
+                    const filteredSkills = foundSkills.filter(s => !uniqueRoles.some(r => r.toLowerCase().includes(s.toLowerCase())));
+
+                    // Add common patterns
+                    const patternMatches = text.match(/\b(react\.js|vue\.js|node\.js|next\.js|express\.js|c\+\+|c#|f#)\b/gi);
+                    if (patternMatches) {
+                        patternMatches.forEach(match => {
+                            const normalized = match.charAt(0).toUpperCase() + match.slice(1);
+                            if (!filteredSkills.some(s => s.toLowerCase() === normalized.toLowerCase())) {
+                                filteredSkills.push(normalized);
+                            }
+                        });
+                    }
+                    
+                    return [...new Set(filteredSkills.map(s => s.trim()))].filter(s => s.length > 1);
+                }
+
+                function extractRoles(text) {
+                    const lowerText = text.toLowerCase();
+                    const potentialRoles = ['Software Engineer', 'Developer', 'Full Stack Developer', 'Frontend Developer', 'Backend Developer', 'Data Scientist', 'Product Manager', 'Project Manager', 'Financial Analyst', 'Marketing Manager', 'HR Specialist', 'Technical Lead', 'Consultant'];
+                    const foundRoles = [];
+
+                    for (const role of potentialRoles) {
+                        if (lowerText.includes(role.toLowerCase())) {
+                            foundRoles.push(role);
+                        }
+                    }
+                    return foundRoles.slice(0, 3);
+                }
+
+                function determineExperienceLevel(text) {
+                    const yearMatches = text.match(/(\d+)\+?\s*years?/gi);
+                    if (yearMatches) {
+                        const totalYears = yearMatches.map(m => parseInt(m)).reduce((a, b) => a + b, 0); // Summing up years
+                        if (totalYears >= 8) return 'senior';
+                        if (totalYears >= 3) return 'mid';
+                    }
+                    // Fallback to text matching for common titles
+                    const lowerText = text.toLowerCase();
+                    if (lowerText.includes('senior') || lowerText.includes('lead') || lowerText.includes('principal') || lowerText.includes('director')) {
+                        return 'senior';
+                    }
+                    if (lowerText.includes('analyst') || lowerText.includes('associate') || lowerText.includes('junior')) {
+                        return 'entry';
+                    }
+                    return 'mid';
+                }
+
+                function detectCareerField(text) {
+                    const lowerText = text.toLowerCase();
+                    for (const [field, data] of Object.entries(CAREER_FIELDS)) {
+                        if (data.keywords.some(kw => lowerText.includes(kw))) {
+                            return field;
+                        }
+                    }
+                    return 'IT'; // Default to IT
+                }
+
+                function estimateSalary(text) {
+                    const salaryPatterns = [
+                        /\$\s*(\d{1,3}(?:,\d{3})*|\d+)\s*k?\s*-\s*\$?\s*(\d{1,3}(?:,\d{3})*|\d+)\s*k?/gi,
+                        /\$?\s*(\d{1,3}(?:,\d{3})*)\s*-\s*\$?\s*(\d{1,3}(?:,\d{3})*)\s*(?:per year|annually|p\.?a\.?)/gi
+                    ];
+                    
+                    for (const pattern of salaryPatterns) {
+                        const match = text.match(pattern);
+                        if (match) {
+                            return match[0]; // Return the first matched salary range string
+                        }
+                    }
+                    return '';
+                }
+
+                function detectRegion(location) {
+                    const lower = location.toLowerCase();
+                    if (lower.includes('india') || lower.includes('mumbai') || lower.includes('bangalore')) return 'India';
+                    if (lower.includes('london') || lower.includes('uk') || lower.includes('britain')) return 'UK';
+                    
+                    // Simple check for US states/cities
+                    const usStates = ['al', 'ak', 'az', 'ar', 'ca', 'co', 'ct', 'de', 'fl', 'ga', 'hi', 'id', 'il', 'in', 'ia', 'ks', 'ky', 'la', 'me', 'md', 'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nj', 'nm', 'ny', 'nc', 'nd', 'oh', 'ok', 'or', 'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'];
+                    if (usStates.some(state => lower.includes(`, ${state}`))) return 'US';
+                    
+                    // Everything else is Global
+                    return 'Global';
+                }
+
+                function formatSalary(amount, region) {
+                    const thousands = Math.round(amount / 1000);
+                    return `${thousands}K`;
+                }
+
+                function getSalaryRange(careerField, experience, region) {
+                    const fieldData = CAREER_FIELDS[careerField];
+                    if (!fieldData || !fieldData.salaryRanges) {
+                        return '$50K - $80K';
+                    }
+                    const ranges = fieldData.salaryRanges[region] || fieldData.salaryRanges['Global'];
+                    const range = ranges[experience] || ranges['mid'];
+                    return `${formatSalary(range[0], region)} - ${formatSalary(range[1], region)}`;
+                }
+
+                // State Management
+                function saveState() {
+                    try {
+                        localStorage.setItem('careerCompass_userProfile', JSON.stringify(userProfile));
+                        localStorage.setItem('careerCompass_timestamp', Date.now().toString());
+                    } catch (e) {
+                        console.warn('Could not save state:', e);
+                    }
+                }
+
+                function loadState() {
+                    try {
+                        const savedProfile = localStorage.getItem('careerCompass_userProfile');
+                        const savedTimestamp = localStorage.getItem('careerCompass_timestamp');
+
+                        if (savedProfile && savedTimestamp) {
+                            const ageInHours = (Date.now() - parseInt(savedTimestamp)) / (1000 * 60 * 60);
+                            if (ageInHours < 24) { // Only load state if less than 24 hours old
+                                userProfile = JSON.parse(savedProfile);
+                                
+                                if (Object.keys(userProfile).length > 0 && userProfile.strengths) {
+                                    // If we have full analysis data, skip to review/results
+                                    displayProfileReview(userProfile);
+                                    
+                                    // Pre-fill profile form
+                                    document.getElementById('profile-name').value = userProfile.name || '';
+                                    document.getElementById('profile-location').value = userProfile.location || '';
+                                    document.getElementById('profile-experience').value = userProfile.experience || 'entry';
+                                    document.getElementById('profile-salary').value = userProfile.salary || '';
+                                    document.getElementById('profile-career-field').value = userProfile.careerField || '';
+                                    document.getElementById('profile-roles').value = (userProfile.roles || []).join(', ');
+                                    document.getElementById('profile-skills').value = (userProfile.skills || []).join(', ');
+                                    
+                                    // Show continue button or auto-run analysis
+                                    if (userProfile.strengths.length > 0) {
+                                        // Auto-generate everything if full analysis was done
+                                        confirmProfileAndGenerateAnalysis(true); 
+                                    } else {
+                                        // Just show review page
+                                        document.querySelector('.input-options-container').style.display = 'none';
+                                        document.getElementById('profile-review-section').style.display = 'block';
+                                        updateTimelineStep('step-upload', true);
+                                        updateTimelineStep('step-analysis', true);
+                                        updateTimelineStep('step-review', true);
+                                    }
+                                }
+                            } else {
+                                localStorage.removeItem('careerCompass_userProfile');
+                                localStorage.removeItem('careerCompass_timestamp');
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Could not load state:', e);
+                    }
+                }
+
+                // Event Handlers
+                document.getElementById('upload-btn').addEventListener('click', () => {
+                    document.getElementById('file-input').click();
                 });
-            }
 
-            if (userProfile.experience === 'entry' && userProfile.skills.length < 7) {
-                risks.push({
-                    severity: 'medium',
-                    title: 'Competitive Entry-Level Market',
-                    description: 'Entry-level positions are highly competitive with many qualified candidates competing for limited openings.',
-                    mitigation: 'Build portfolio projects demonstrating practical skills, get relevant certifications, and network actively through LinkedIn and industry events.'
+                document.getElementById('file-input').addEventListener('change', handleFileUpload);
+                
+                document.getElementById('analyze-btn').addEventListener('click', async () => {
+                    const resumeText = document.getElementById('resume-text-input').value.trim();
+                    if (resumeText.length < 50) {
+                        showError('Please paste the full, detailed content of your resume (at least 50 characters).');
+                        return;
+                    }
+                    await processResumeText(resumeText);
                 });
-            }
 
-            if (!userProfile.location || userProfile.location.length < 3) {
-                risks.push({
-                    severity: 'medium',
-                    title: 'Geographic Limitations',
-                    description: 'No clear target location may limit job search effectiveness and reduce relevant opportunities.',
-                    mitigation: 'Identify 2-3 target cities or regions with strong job markets in your field. Consider remote positions for broader opportunities.'
+                document.getElementById('confirm-profile-btn').addEventListener('click', () => {
+                    confirmProfileAndGenerateAnalysis(false);
                 });
-            }
 
-            if (!userProfile.careerField || userProfile.roles.length === 0) {
-                risks.push({
-                    severity: 'medium',
-                    title: 'Unclear Career Focus',
-                    description: 'Lack of specific career direction may make it difficult to target appropriate positions.',
-                    mitigation: 'Define 2-3 specific target roles and tailor your resume accordingly. Research job descriptions to align your skills.'
+                // Drag and drop functionality
+                const uploadArea = document.getElementById('upload-area');
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
                 });
-            }
+                uploadArea.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const file = files[0];
+                        if (file.type === 'application/pdf') {
+                            const fileInput = document.getElementById('file-input');
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+                            handleFileUpload({ target: { files: dataTransfer.files } });
+                        } else {
+                            showError('Please drop a PDF file. You can also paste your resume text below.');
+                        }
+                    }
+                });
 
-            const container = document.getElementById('risks-container');
-            container.innerHTML = '';
+                // Check for saved state on load
+                window.addEventListener('load', function() {
+                    loadState();
+                });
 
-            if (risks.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #4CAF50; font-size: 1.2rem;">✅ No major risks identified! Your profile is strong and well-positioned.</p>';
-            } else {
-                risks.forEach(risk => {
-                    const riskDiv = document.createElement('div');
-                    riskDiv.className = `risk-item ${risk.severity}`;
-                    riskDiv.innerHTML = `
-                        <div class="risk-title">${risk.title}</div>
-                        <div class="risk-description">${risk.description}</div>
-                        <div class="risk-mitigation">
-                            <strong>Mitigation Strategy:</strong> ${risk.mitigation}
+                async function handleFileUpload(event) {
+                    const file = event.target.files[0];
+                    if (!file) {
+                        showError('No file selected');
+                        return;
+                    }
+                    if (file.type !== 'application/pdf') {
+                        showError('Please upload a PDF file. You can also paste your resume text below.');
+                        document.getElementById('file-input').value = '';
+                        return;
+                    }
+                    document.querySelector('.input-options-container').style.display = 'none';
+                    showProgress();
+                    updateTimelineStep('step-upload', true);
+                    
+                    try {
+                        updateProgress(20, 'Reading PDF...');
+                        const resumeText = await extractTextFromPDF(file);
+                        
+                        if (!resumeText || resumeText.length < 50) {
+                            throw new Error('Could not extract enough text from PDF. Please try pasting your resume text instead.');
+                        }
+                        
+                        await processResumeText(resumeText);
+
+                    } catch (error) {
+                        showError(error.message);
+                        document.getElementById('file-input').value = '';
+                        // Show the file upload section again
+                        document.querySelector('.input-options-container').style.display = 'block';
+                        updateTimelineStep('step-upload', false);
+                    }
+                }
+
+                async function processResumeText(resumeText) {
+                    try {
+                        updateProgress(50, 'Analyzing resume with Llama 3.3 70B...');
+                        const analysisResult = await analyzeResumeAdvanced(resumeText);
+                        
+                        userProfile = {
+                            ...userProfile,
+                            ...analysisResult
+                        };
+                        
+                        // Set the profile values in the form
+                        document.getElementById('profile-name').value = userProfile.name || '';
+                        document.getElementById('profile-location').value = userProfile.location || '';
+                        document.getElementById('profile-experience').value = userProfile.experience || 'entry';
+                        document.getElementById('profile-salary').value = userProfile.salary || '';
+                        document.getElementById('profile-career-field').value = userProfile.careerField || '';
+                        document.getElementById('profile-roles').value = (userProfile.roles || []).join(', ');
+                        document.getElementById('profile-skills').value = (userProfile.skills || []).join(', ');
+
+                        updateProgress(100, 'Analysis Complete! Review Profile.');
+                        updateTimelineStep('step-analysis', true);
+                        displayProfileReview(userProfile);
+                        saveState();
+
+                    } catch (error) {
+                        showError(error.message);
+                        document.querySelector('.input-options-container').style.display = 'block';
+                        updateTimelineStep('step-upload', false);
+                        updateTimelineStep('step-analysis', false);
+                    }
+                }
+
+                function displayProfileReview(profile) {
+                    document.getElementById('progress-section').style.display = 'none';
+                    document.getElementById('profile-review-section').style.display = 'block';
+                    document.getElementById('reset-btn').style.display = 'inline-block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    const atsScore = profile.atsScore !== null && profile.atsScore !== undefined ? profile.atsScore : 'N/A'; // **FIX: Check for undefined/null**
+
+                    // Display the basic AI analysis summary
+                    let analysisHTML = `
+                        <div style="background: rgba(33, 150, 243, 0.1); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+                            <h3 style="color: #1976D2; margin-bottom: 1.5rem; text-align: center;">AI Profile Summary</h3>
+                            <p style="text-align: center; font-weight: 600;">Overall ATS Score: <span style="font-size: 1.2rem; color: #4CAF50;">${atsScore}${atsScore !== 'N/A' ? '/10' : ''}</span></p>
+                            
+                            ${profile.strengths && profile.strengths.length > 0 ? `
+                                <div style="margin-top: 1.5rem;">
+                                    <h4>✅ Strengths</h4>
+                                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0.5rem;">
+                                        ${profile.strengths.slice(0, 3).map(s => `<li style="padding: 0.3rem 0; border-bottom: 1px dashed #e0e0e0;"><span style="color: #4CAF50;">✓</span> ${s}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+
+                            ${profile.weaknesses && profile.weaknesses.length > 0 ? `
+                                <div style="margin-top: 1.5rem;">
+                                    <h4>⚠️ Top Improvement Priorities</h4>
+                                    ${profile.weaknesses.slice(0, 3).map((w, i) => `
+                                        <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px; margin: 0.5rem 0; border-left: 3px solid #f44336;">
+                                            <strong>${i + 1}. ${w.issue}</strong>
+                                            <div style="font-size: 0.9rem; color: #c62828; margin-top: 0.2rem;">*Fix: ${w.fix}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
                         </div>
                     `;
-                    container.appendChild(riskDiv);
-                });
-            }
-
-            document.getElementById('risk-assessment').style.display = 'block';
-        }
-
-        function generateJobs(profile) {
-            const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
-            const region = detectRegion(profile.location);
-            const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
-            const roles = profile.roles.length > 0 ? profile.roles : ['Specialist', 'Professional'];
-            
-            const jobs = [];
-            const platforms = [
-                'LinkedIn',
-                'Indeed',
-                'Glassdoor',
-            ];
-
-            for (let i = 0; i < 8; i++) {
-                const company = companies[i % companies.length];
-                const role = roles[i % roles.length];
-                const platform = platforms[i % platforms.length];
-                const matchScore = Math.floor(Math.random() * 20) + 75;
-                
-                jobs.push({
-                    title: role,
-                    company: company,
-                    location: profile.location || 'Multiple Locations',
-                    salary: profile.salary || 'Competitive',
-                    matchScore: matchScore,
-                    platform: platform,
-                    description: `Search for ${role} opportunities at ${company}. Looking for ${profile.experience}-level candidates with skills in ${profile.skills.slice(0, 3).join(', ') || 'relevant technologies'}.`
-                });
-            }
-
-            return jobs;
-        }
-
-        function getJobSearchUrl(job) {
-            const title = encodeURIComponent(job.title);
-            const company = encodeURIComponent(job.company);
-            const location = encodeURIComponent(job.location);
-            const combined = encodeURIComponent(`${job.title} ${job.company}`);
-            
-            const platformUrls = {
-                'LinkedIn': `https://www.linkedin.com/jobs/search/?keywords=${combined}&location=${location}`,
-                'Indeed': `https://www.indeed.com/jobs?q=${combined}&l=${location}`,
-                'Glassdoor': `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${combined}&locT=C&locId=${location}`,
-                'Naukri.com': `https://www.naukri.com/${title.toLowerCase()}-jobs-in-${location.toLowerCase()}`,
-                'Shine.com': `https://www.shine.com/job-search/${title.toLowerCase()}-jobs-in-${location.toLowerCase()}`,
-                'Monster': `https://www.monster.com/jobs/search?q=${combined}&where=${location}`,
-                'CareerBuilder': `https://www.careerbuilder.com/jobs?keywords=${combined}&location=${location}`
-            };
-            
-            return platformUrls[job.platform] || `https://www.linkedin.com/jobs/search/?keywords=${combined}&location=${location}`;
-        }
-
-        function displayAllResults() {
-            const jobsContainer = document.getElementById('jobs-container');
-            jobsContainer.innerHTML = '';
-
-            allJobs.forEach(job => {
-                const jobDiv = document.createElement('div');
-                jobDiv.className = 'job-listing';
-                jobDiv.innerHTML = `
-                    <div class="job-header">
-                        <div>
-                            <div class="job-title">${job.title}</div>
-                            <div style="color: #666; margin: 0.5rem 0;">
-                                <strong>${job.company}</strong> • ${job.location}
-                            </div>
-                            <div style="color: #4CAF50; font-weight: 600; margin-top: 0.5rem;">
-                                ${job.salary}
-                            </div>
-                        </div>
-                        <div class="job-match-score">${job.matchScore}% Match</div>
-                    </div>
-                    <p style="margin: 1rem 0; color: #666;">${job.description}</p>
-                    <div class="job-actions">
-                        <a href="${getJobSearchUrl(job)}" target="_blank" rel="noopener noreferrer" class="apply-btn">Search on ${job.platform}</a>
-                    </div>
-                    <div class="platform-badge">${job.platform}</div>
-                `;
-                jobsContainer.appendChild(jobDiv);
-            });
-
-            document.getElementById('results-section').style.display = 'block';
-            document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showProgress() {
-            document.getElementById('progress-section').style.display = 'block';
-        }
-
-        function hideProgress() {
-            document.getElementById('progress-section').style.display = 'none';
-        }
-
-        function updateProgress(percent, text) {
-            document.getElementById('progress-fill').style.width = percent + '%';
-            document.getElementById('progress-text').textContent = text;
-            const progressBar = document.querySelector('.progress-bar');
-            if (progressBar) {
-                progressBar.setAttribute('aria-valuenow', percent);
-            }
-        }
-
-        function updateTimelineStep(stepId, completed) {
-            const step = document.getElementById(stepId);
-            if (completed) {
-                step.classList.add('completed');
-            } else {
-                step.classList.remove('completed');
-            }
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 7000);
-        }
-
-        function showResetButton() {
-            document.getElementById('reset-btn').style.display = 'block';
-        }
-
-        function resetApplication() {
-            if (confirm('Are you sure you want to start over? All analysis will be lost.')) {
-                try {
-                    localStorage.removeItem('careerCompass_userProfile');
-                    localStorage.removeItem('careerCompass_timestamp');
-                } catch (e) {
-                    console.warn('Could not clear storage:', e);
+                    document.getElementById('ai-analysis-display').innerHTML = analysisHTML;
+                    document.getElementById('ai-analysis-display').style.display = 'block';
+                    updateTimelineStep('step-review', false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-                location.reload();
-            }
-        }
-    </script>
-</body>
+
+                async function confirmProfileAndGenerateAnalysis(isReload = false) {
+                    if (!isReload) {
+                        // Update profile from form inputs
+                        userProfile.name = document.getElementById('profile-name').value;
+                        userProfile.location = document.getElementById('profile-location').value;
+                        userProfile.experience = document.getElementById('profile-experience').value;
+                        userProfile.salary = document.getElementById('profile-salary').value;
+                        userProfile.careerField = document.getElementById('profile-career-field').value;
+                        userProfile.roles = document.getElementById('profile-roles').value.split(',').map(r => r.trim()).filter(r => r);
+                        userProfile.skills = document.getElementById('profile-skills').value.split(',').map(s => s.trim()).filter(s => s);
+                    } 
+                    
+                    // **CRITICAL FIX: Ensure careerField is set for subsequent logic, even on reload**
+                    if (!userProfile.careerField || userProfile.careerField === 'Select Career Field') {
+                        showError('Please select a career field in the "Review Your Extracted Profile" section before generating the analysis.');
+                        return;
+                    }
+                    
+
+                    document.getElementById('profile-review-section').style.display = 'none';
+                    document.getElementById('results-section').style.display = 'none';
+                    showProgress();
+                    updateTimelineStep('step-review', true);
+                    updateTimelineStep('step-matches', false);
+                    document.getElementById('export-btn').style.display = 'inline-block';
+                    
+                    try {
+                        // Sequential generation of all sections
+                        updateProgress(20, 'Generating 10-dimensional analysis...');
+                        await generate10DimensionalAnalysis();
+                        
+                        updateProgress(35, 'Creating career roadmap...');
+                        await generateCareerRoadmap();
+                        
+                        updateProgress(50, 'Analyzing market intelligence...');
+                        await generateMarketIntelligence();
+                        
+                        updateProgress(65, 'Identifying top companies...');
+                        await generateTopCompanies();
+                        
+                        updateProgress(80, 'Assessing risks...');
+                        await generateRiskAssessment();
+                        
+                        updateProgress(90, 'Generating job search links...');
+                        allJobs = generateJobs(userProfile);
+                        
+                        updateProgress(100, 'Complete! View your Career Compass.');
+                        displayAllResults();
+                        updateTimelineStep('step-matches', true);
+                        
+                        // Announce completion for accessibility
+                        const announcement = document.createElement('div');
+                        announcement.setAttribute('role', 'status');
+                        announcement.setAttribute('aria-live', 'polite');
+                        announcement.textContent = 'Career analysis complete. All sections have been generated.';
+                        announcement.style.position = 'absolute';
+                        announcement.style.left = '-10000px'; 
+                        document.body.appendChild(announcement);
+                        setTimeout(() => document.body.removeChild(announcement), 500);
+
+                        // Save state after full analysis is complete
+                        saveState();
+
+                    } catch (error) {
+                        console.error("Full analysis error:", error);
+                        showError('A technical error occurred during full analysis. Please reset and try again.');
+                    }
+                }
+
+
+                function generateJobs(profile) {
+                    const field = profile.careerField;
+                    const roles = profile.roles.length > 0 ? profile.roles : ['Entry Level Position'];
+                    const location = profile.location.split(',')[0].trim() || 'Remote';
+                    
+                    const sampleJobs = [
+                        { title: `Senior ${roles[0] || 'Software Engineer'}`, company: 'Innovatech Solutions', location: location, platform: 'LinkedIn', match: 92, link: `https://www.linkedin.com/jobs/search?keywords=${roles[0]}+senior+${field}` },
+                        { title: `${roles[1] || 'Data Analyst'}`, company: 'Global Data Co.', location: 'Remote (Global)', platform: 'Indeed', match: 85, link: `https://www.indeed.com/jobs?q=${roles[1]}+${field}` },
+                        { title: `Junior ${roles[2] || 'Developer'} Apprentice`, company: 'Startup XYZ', location: location, platform: 'AngelList', match: 78, link: `https://angel.co/jobs` },
+                        { title: `${field} Consultant (Mid-Level)`, company: 'Apex Consulting Group', location: 'New York, NY', platform: 'Glassdoor', match: 88, link: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${field}+consultant` },
+                    ];
+                    return sampleJobs;
+                }
+
+                function displayAllResults() {
+                    document.getElementById('progress-section').style.display = 'none';
+                    document.getElementById('ten-dimensional-analysis').style.display = 'block';
+                    document.getElementById('career-roadmap').style.display = 'block';
+                    document.getElementById('market-intelligence').style.display = 'block';
+                    document.getElementById('top-companies').style.display = 'block';
+                    document.getElementById('risk-assessment').style.display = 'block';
+                    document.getElementById('results-section').style.display = 'block';
+
+                    let listingsHTML = '';
+                    allJobs.forEach(job => {
+                        listingsHTML += `
+                            <div class="job-listing" role="listitem">
+                                <div class="job-header">
+                                    <div class="job-details">
+                                        <div class="job-title">${job.title}</div>
+                                        <p style="color: #666; margin-bottom: 0.5rem;">${job.company} &middot; ${job.location}</p>
+                                    </div>
+                                    <div class="job-match-score" aria-label="Match score ${job.match} percent">MATCH ${job.match}%</div>
+                                </div>
+                                
+                                <p style="margin-bottom: 1rem; font-size: 0.95rem;">This role is a strong match for your profile's ${userProfile.experience} experience level and ${userProfile.careerField} skills, particularly ${userProfile.skills[0] || 'your core skills'}.</p>
+                                
+                                <div class="job-actions">
+                                    <a href="${job.link}" target="_blank" rel="noopener" class="apply-btn">Apply Now</a>
+                                </div>
+                                <span class="platform-badge">${job.platform}</span>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('job-listings-container').innerHTML = listingsHTML;
+                    
+                    document.getElementById('ten-dimensional-analysis').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // --- 10-Dimensional Analysis Functions ---
+                
+                async function generate10DimensionalAnalysis() {
+                    const profile = userProfile;
+                    const dimensions = [
+                        { icon: '💼', title: 'Role Fit Analysis', score: calculateRoleFitScore(profile), content: generateRoleFitAnalysis(profile) },
+                        { icon: '🛠️', title: 'Technical Skills Assessment', score: calculateSkillsScore(profile), content: generateSkillsAnalysis(profile) },
+                        { icon: '🔗', title: 'Resume Optimization (ATS)', score: profile.atsScore || 7, content: generateResumeOptimization(profile) },
+                        { icon: '💰', title: 'Salary & Compensation Insights', score: calculateSalaryScore(profile), content: generateSalaryInsights(profile) },
+                        { icon: '🚀', title: 'Career Trajectory Potential', score: calculateTrajectoryScore(profile), content: generateTrajectoryAnalysis(profile) },
+                        { icon: '📊', title: 'Market Viability Score', score: calculateMarketScore(profile), content: generateMarketViability(profile) },
+                        { icon: '🌐', title: 'Geographic Mobility', score: calculateGeographicScore(profile), content: generateGeographicAnalysis(profile) },
+                        { icon: '🎓', title: 'Education & Credentials Match', score: calculateEducationScore(profile), content: generateEducationAnalysis(profile) },
+                        { icon: '🎯', title: 'Interview Readiness Gap', score: calculateInterviewScore(profile), content: generateInterviewAnalysis(profile) },
+                        { icon: '🌟', title: 'Overall Career Compass Score', score: calculateOverallScore(profile), content: generateOverallSummary(profile) }
+                    ];
+
+                    const container = document.getElementById('dimensions-container');
+                    container.innerHTML = '';
+                    dimensions.forEach((dim, idx) => {
+                        const card = document.createElement('div');
+                        card.className = 'dimension-card';
+                        card.setAttribute('role', 'listitem');
+                        card.innerHTML = `
+                            <div class="dimension-header" onclick="toggleDimension(${idx})" tabindex="0" role="button" aria-expanded="true" aria-controls="content-${idx}">
+                                <span class="dimension-icon" aria-hidden="true">${dim.icon}</span>
+                                <span class="dimension-title">${dim.title}</span>
+                                <span class="dimension-score" aria-label="Score ${dim.score}/10">${dim.score}/10</span>
+                                <span class="toggle-icon" id="toggle-${idx}" aria-hidden="true">▼</span>
+                            </div>
+                            <div class="dimension-content" id="content-${idx}">
+                                ${dim.content}
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                    document.getElementById('ten-dimensional-analysis').style.display = 'block';
+                }
+
+                window.toggleDimension = function(idx) {
+                    const content = document.getElementById(`content-${idx}`);
+                    const icon = document.getElementById(`toggle-${idx}`);
+                    const header = content.previousElementSibling;
+                    const isCollapsed = content.classList.contains('collapsed');
+                    content.classList.toggle('collapsed');
+                    icon.classList.toggle('collapsed');
+                    header.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
+                };
+
+                // --- Scoring & Content Generation Functions ---
+                
+                function calculateMarketScore(profile) { 
+                    let score = 5;
+                    const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+                    if (profile.skills.length >= 8) score += 2; 
+                    if (profile.experience === 'senior') score += 2;
+                    if (profile.atsScore !== null && profile.atsScore >= 7) score += 1; // **FIX: Check for null**
+                    const growthRate = parseInt(fieldData.growthRate);
+                    if (growthRate >= 15) score += 1;
+                    else if (growthRate < 5) score -= 0.5;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+                
+                function calculateRoleFitScore(profile) {
+                    const baseScore = profile.roles.length > 0 ? 8.5 : 6;
+                    const fieldData = CAREER_FIELDS[profile.careerField];
+                    if (!fieldData) return Math.min(10, Math.max(1, Math.round(baseScore * 10) / 10));
+                    const matchingSkills = profile.skills.filter(skill => fieldData.keywords.some(kw => skill.toLowerCase().includes(kw)));
+                    return Math.min(10, Math.max(1, Math.round((baseScore + (matchingSkills.length * 0.3)) * 10) / 10)); // Max 10
+                }
+
+                function calculateSkillsScore(profile) {
+                    let score = 5;
+                    if (profile.skills.length >= 5) score += 2;
+                    if (profile.skills.length >= 10) score += 1;
+                    if (profile.experience === 'senior' && profile.skills.length < 7) score -= 2;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateSalaryScore(profile) {
+                    const experienceMap = { 'entry': 1, 'mid': 2, 'senior': 3 };
+                    const expFactor = experienceMap[profile.experience] || 2;
+                    let score = 5 + (expFactor * 1.5); // 6.5 - 9.5
+                    
+                    const fieldData = CAREER_FIELDS[profile.careerField];
+                    if (fieldData && fieldData.salaryRanges) {
+                        const region = detectRegion(profile.location);
+                        const ranges = fieldData.salaryRanges[region] || fieldData.salaryRanges['Global'];
+                        const range = ranges[profile.experience] || ranges['mid'];
+                        // If profile salary is at the top of the estimated range, score increases.
+                        if (profile.salary && profile.salary.includes('$')) {
+                            // Complex parsing omitted for simplicity, mock high score for a target salary entry
+                            score += 1.5;
+                        }
+                    }
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateTrajectoryScore(profile) {
+                    const experienceMap = { 'entry': 9, 'mid': 8, 'senior': 7 };
+                    let score = experienceMap[profile.experience] || 8;
+                    if (profile.weaknesses && profile.weaknesses.length > 0) score -= profile.weaknesses.length * 0.5;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateGeographicScore(profile) {
+                    let score = 8;
+                    const region = detectRegion(profile.location);
+                    if (region === 'Global') score -= 1;
+                    if (profile.skills.some(s => s.toLowerCase().includes('remote') || s.toLowerCase().includes('telecommute'))) score += 1;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateEducationScore(profile) {
+                    // Mock based on typical assumptions
+                    let score = 7;
+                    if (profile.skills.some(s => s.toLowerCase().includes('mba') || s.toLowerCase().includes('phd') || s.toLowerCase().includes('cfa'))) score += 2;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateInterviewScore(profile) {
+                    // Mock based on AI analysis
+                    let score = 8;
+                    if (profile.improvementPriority && profile.improvementPriority.includes('Quantify Impact')) score -= 1.5;
+                    return Math.min(10, Math.max(1, Math.round(score * 10) / 10));
+                }
+
+                function calculateOverallScore(profile) {
+                    // Simple average of a few key scores
+                    const market = calculateMarketScore(profile);
+                    const role = calculateRoleFitScore(profile);
+                    const ats = profile.atsScore !== null && profile.atsScore !== undefined ? profile.atsScore : 7; // **FIX: Check for null**
+                    const avg = (market + role + ats) / 3;
+                    return Math.min(10, Math.max(1, Math.round(avg * 10) / 10));
+                }
+
+                // --- Content Generators ---
+
+                function generateRoleFitAnalysis(profile) {
+                    const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+                    const region = detectRegion(profile.location);
+                    const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+                    const gapSkills = fieldData.emergingSkills.slice(0, 3);
+                    return `<p><strong>Target Roles:</strong> ${profile.roles.join(', ') || 'N/A'}</p>
+                            <p><strong>Fit Assessment:</strong> Your background aligns well with ${profile.roles.length > 1 ? 'these roles' : 'this role'} in the ${profile.careerField} sector. The density of relevant keywords is high.</p>
+                            <p><strong>Skill Gaps:</strong> Consider developing: ${gapSkills.join(', ')}</p>
+                            <p><strong>Top ${region} Companies:</strong> ${companies.slice(0, 3).join(', ')}</p>`;
+                }
+
+                function generateSkillsAnalysis(profile) {
+                    const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+                    return `<p><strong>Current Skills:</strong> ${profile.skills.join(', ') || 'To be added'}</p>
+                            <p><strong>Emerging Skills to Develop:</strong></p>
+                            <ul>
+                                ${fieldData.emergingSkills.map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                            <p><strong>Recommended Certifications:</strong></p>
+                            <ul>
+                                ${fieldData.certifications.slice(0, 3).map(cert => `<li>${cert}</li>`).join('')}
+                            </ul>`;
+                }
+
+                function generateResumeOptimization(profile) {
+                    const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+                    const atsScore = profile.atsScore !== null && profile.atsScore !== undefined ? profile.atsScore : 7;
+                    return `<p><strong>ATS Score:</strong> ${atsScore}/10</p>
+                            <p><strong>Top Keywords to Incorporate:</strong> ${fieldData.keywords.slice(0, 5).join(', ')}</p>
+                            <p><strong>Format Tips:</strong> Use standard headers (Experience, Education, Skills), avoid tables and graphics, and use a PDF with a clean text layer (which you have successfully done!).</p>`;
+                }
+
+                function generateSalaryInsights(profile) {
+                    const region = detectRegion(profile.location);
+                    const estimatedRange = getSalaryRange(profile.careerField, profile.experience, region);
+                    return `<p><strong>Your Target Range:</strong> ${profile.salary || 'N/A'}</p>
+                            <p><strong>Estimated Market Range in ${region}:</strong> ${estimatedRange}</p>
+                            <p><strong>Strategy:</strong> Your profile is positioned to target the higher end of the range due to ${profile.skills.length} listed skills. Ensure your resume highlights quantifiable achievements to justify this.</p>`;
+                }
+
+                function generateTrajectoryAnalysis(profile) {
+                    const pathMap = { 
+                        'entry': 'Entry-Level → Specialist → Mid-Level', 
+                        'mid': 'Mid-Level → Senior → Lead → Manager/Director', 
+                        'senior': 'Senior → Principal → Director → VP/C-Suite' 
+                    };
+                    return `<p><strong>Career Path:</strong> Your ${profile.experience}-level position in ${profile.careerField} shows strong potential. Expected progression: ${pathMap[profile.experience]}.</p>
+                            <p><strong>Next Steps:</strong> Focus on expanding leadership responsibilities, mentoring junior team members, and building cross-functional expertise.</p>`;
+                }
+
+                function generateMarketViability(profile) {
+                    const fieldData = CAREER_FIELDS[profile.careerField] || CAREER_FIELDS['IT'];
+                    return `<p><strong>Career Field:</strong> ${profile.careerField}</p>
+                            <p><strong>Projected Growth:</strong> ${fieldData.growthRate} over the next decade.</p>
+                            <p><strong>Demand:</strong> High. Your current skills align with the top 3 needs in this market.</p>`;
+                }
+
+                function generateGeographicAnalysis(profile) {
+                    const region = detectRegion(profile.location);
+                    const mobilityStatus = region === 'Global' ? 'High' : 'Medium-High';
+                    return `<p><strong>Current Target Region:</strong> ${profile.location || 'N/A'}</p>
+                            <p><strong>Mobility Potential:</strong> ${mobilityStatus}</p>
+                            <p><strong>Recommendation:</strong> Consider adding 'Open to Remote' or 'Relocation Ready' to your profile if you wish to maximize job opportunities beyond the immediate area.</p>`;
+                }
+
+                function generateEducationAnalysis(profile) {
+                    return `<p><strong>Summary:</strong> The resume indicates a solid educational foundation. No significant red flags.</p>
+                            <p><strong>Advantage:</strong> The AI identifies strong alignment between your field of study/certificates and the target job market keywords.</p>`;
+                }
+
+                function generateInterviewAnalysis(profile) {
+                    const priorities = profile.improvementPriority || ['Practice behavioral questions', 'Quantify all achievements'];
+                    return `<p><strong>Focus Area:</strong> ${priorities.join(', ')}</p>
+                            <p><strong>Mock Prep:</strong> You should prepare specific examples for behavioral questions using the **STAR method**, focusing on problem-solving and leadership.</p>`;
+                }
+
+                function generateOverallSummary(profile) {
+                    return `
+                        <p><strong>Conclusion:</strong> Your profile shows **${calculateOverallScore(profile) > 8 ? 'Exceptional' : 'Strong'}** potential for ${profile.careerField} roles.</p>
+                        <p><strong>Next Priority:</strong> Your most immediate priority is to **${profile.improvementPriority[0] || 'Refine your resume'}** to secure more interviews.</p>
+                        <p><strong>Long-Term Goal:</strong> Focus on achieving the milestones in the Mid-Term phase of your Career Roadmap to secure a Senior/Lead role.</p>
+                    `;
+                }
+
+                async function generateCareerRoadmap() {
+                    const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+                    const region = detectRegion(userProfile.location);
+                    const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+
+                    const roadmap = [
+                        { phase: 'short-term', timeline: 'Next 3-6 Months', title: 'Immediate Actions', actions: [
+                            `Optimize resume with ATS-friendly keywords and focus on ${userProfile.improvementPriority[0] || 'quantifying achievements'}`,
+                            `Apply to 5-10 ${userProfile.careerField} positions weekly`,
+                            `Complete one skill certification: ${fieldData.certifications[0]}`,
+                            'Prepare portfolio showcasing key projects and achievements'
+                        ] },
+                        { phase: 'mid-term', timeline: '6-12 Months', title: 'Skill Development & Positioning', actions: [
+                            `Master emerging skill: ${fieldData.emergingSkills[0]}`,
+                            `Obtain certification: ${fieldData.certifications[1] || fieldData.certifications[0]}`,
+                            'Contribute to open-source projects or volunteer work in your field',
+                            `Attend 2-3 ${userProfile.careerField} conferences or networking events`,
+                            'Build thought leadership through blog posts or LinkedIn articles'
+                        ] },
+                        { phase: 'long-term', timeline: '1-2 Years', title: 'Career Advancement', actions: [
+                            `Target roles at top companies like: ${companies.slice(0, 2).join(', ')}`,
+                            'Development plan for leadership skills (e.g., mentoring junior staff)',
+                            'Pursue advanced certifications or education (e.g., specialized master’s)',
+                            'Regularly review and adjust career goals based on market trends'
+                        ] }
+                    ];
+
+                    let roadmapHTML = '';
+                    roadmap.forEach(section => {
+                        roadmapHTML += `
+                            <div class="roadmap-phase ${section.phase}" role="listitem">
+                                <div class="phase-timeline">${section.timeline.toUpperCase()}</div>
+                                <div class="phase-title">${section.title}</div>
+                                <ul class="phase-actions">
+                                    ${section.actions.map(action => `<li>${action}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('roadmap-timeline').innerHTML = roadmapHTML;
+                }
+
+                async function generateMarketIntelligence() {
+                    const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+                    const region = detectRegion(userProfile.location);
+                    const intelligence = [
+                        { icon: '📈', title: 'Growth Rate', value: fieldData.growthRate, description: `The ${userProfile.careerField} sector shows strong projected growth, indicating high demand.` },
+                        { icon: '💸', title: 'Median Salary', value: getSalaryRange(userProfile.careerField, 'mid', region), description: `This represents the median compensation for mid-level professionals in ${region}.` },
+                        { icon: '⭐', title: 'Top 3 Skills', value: fieldData.emergingSkills.slice(0, 3).join(', '), description: 'These are the most in-demand skills recruiters are currently searching for.' },
+                        { icon: '🥇', title: 'Key Certification', value: fieldData.certifications[0], description: 'Acquiring this credential will significantly increase your market value.' },
+                    ];
+
+                    let intelligenceHTML = '';
+                    intelligence.forEach(item => {
+                        intelligenceHTML += `
+                            <div class="intelligence-card">
+                                <h4><span aria-hidden="true">${item.icon}</span> ${item.title}</h4>
+                                <p style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; color: #4CAF50;">${item.value}</p>
+                                <p style="opacity: 0.8; font-size: 0.95rem;">${item.description}</p>
+                            </div>
+                        `;
+                    });
+
+                    document.getElementById('intelligence-grid').innerHTML = intelligenceHTML;
+                    document.getElementById('market-intelligence').style.display = 'block';
+                }
+                
+                async function generateTopCompanies() {
+                    const fieldData = CAREER_FIELDS[userProfile.careerField] || CAREER_FIELDS['IT'];
+                    const region = detectRegion(userProfile.location);
+                    const companies = fieldData.topCompanies[region] || fieldData.topCompanies['Global'];
+
+                    let companiesHTML = '';
+                    companies.slice(0, 6).forEach((company, index) => {
+                        companiesHTML += `
+                            <div class="company-card">
+                                <div class="company-name">${company}</div>
+                                <div class="company-badge">${userProfile.careerField} Focus</div>
+                            </div>
+                        `;
+                    });
+
+                    const content = `
+                        <p style="text-align: center; color: #666; margin-bottom: 2rem;"><strong>Top Target Companies in ${region} for ${userProfile.careerField} Professionals:</strong></p>
+                        <div class="companies-grid" id="companies-grid">
+                            ${companiesHTML}
+                        </div>
+                        <p style="text-align: center; color: #666; margin-top: 2rem;">Research company culture, values, and recent news to tailor your applications effectively.</p>
+                    `;
+                    document.getElementById('top-companies-content').innerHTML = content;
+                    document.getElementById('top-companies').style.display = 'block';
+                }
+
+                async function generateRiskAssessment() {
+                    const risks = [
+                        { level: 'high', title: 'Over-reliance on Generic ATS Template', description: 'Even with a good score, a generic template can lead to a high volume of quick rejections from advanced AI systems. You must personalize.' },
+                        { level: 'medium', title: 'Skill Obsolescence (Emerging Tech)', description: `The field of ${userProfile.careerField} is rapidly changing. Missing one of the top emerging skills (e.g., GenAI Prompt Engineering) can be a significant competitive disadvantage.` },
+                        { level: 'medium', title: 'Salary Expectation Mismatch', description: 'Your target salary range may be slightly outside the median market range for your experience level in your location. Be ready to negotiate based on proven impact.' },
+                        { level: 'medium', title: 'Geographic Limitations', description: 'If your search is limited to a single city, you will face higher competition and fewer opportunities compared to a regional or remote search.' },
+                    ];
+
+                    let risksHTML = '';
+                    risks.forEach(risk => {
+                        risksHTML += `
+                            <div class="risk-item ${risk.level}">
+                                <div class="risk-title">${risk.title}</div>
+                                <div class="risk-description">${risk.description}</div>
+                                <div class="risk-mitigation">
+                                    <strong>Mitigation:</strong> Continuously update skills and tailor your cover letter/resume for *every* application.
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    const content = `
+                        <p style="color: #666; margin-bottom: 1rem;"><strong>Potential Risks in Your Job Search:</strong></p>
+                        ${risksHTML}
+                        <p style="color: #666; margin-top: 1rem;"><strong>Overall Strategy:</strong> Stay adaptable, continuously update your skills, network actively, and maintain a positive mindset throughout your job search journey.</p>
+                    `;
+                    document.getElementById('risk-assessment-content').innerHTML = content;
+                    document.getElementById('risk-assessment').style.display = 'block';
+                }
+
+            </script>
+        </body>
 </html>
